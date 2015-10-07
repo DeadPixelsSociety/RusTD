@@ -59,7 +59,8 @@ int main()
     lev->addTower(t3);
     lev->addTower(t4);
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "RusTD");
+    sf::RenderWindow window(sf::VideoMode(800,450), "RusTD");
+    window.setFramerateLimit(60);
     sf::Clock clockwerk;
 
     while(window.isOpen())
