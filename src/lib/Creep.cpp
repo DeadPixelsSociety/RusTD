@@ -1,6 +1,7 @@
 #include "../include/Creep.hpp"
 #include "../include/Projectile.hpp"
 #include "../include/ProjectileList.hpp"
+#include "../include/tools.hpp"
 
 Creep::Creep(void)
 {

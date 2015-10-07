@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 
+#include "../include/tools.hpp"
 #include "../include/Level.hpp"
 
 constexpr float MAXIMAL_FRAME_DURATION = 1/15.f;
@@ -71,7 +72,9 @@ int main()
             case sf::Event::Closed:
                 window.close();
                 break;
-
+			case sf::Event::Resized:
+				resizeWindow(window, event.size.width, event.size.height);
+				break;
             default:
                 break;
 			}

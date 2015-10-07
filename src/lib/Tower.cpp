@@ -5,6 +5,7 @@
 
 #include "../include/Random.hpp"
 #include "../include/Tower.hpp"
+#include "../include/tools.hpp"
 
 Tower::Tower(void)
 {

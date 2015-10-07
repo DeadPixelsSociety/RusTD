@@ -1,7 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <iostream>
 #include <SFML/Graphics.hpp>
 
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
@@ -55,7 +54,5 @@ struct Stats
 	float health, health_regen;
 	int bounty;
 };
-
-float getDistanceBetweenPoints(sf::Vector2f p1,sf::Vector2f p2);
 
 #endif
