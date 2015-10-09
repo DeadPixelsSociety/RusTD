@@ -2,18 +2,24 @@
 
 #include "../include/tools.hpp"
 #include "../include/Level.hpp"
+#include "../include/ResourceManager.hpp"
+#include "../include/GameStateManager.hpp"
+#include "../include/GameStateMenu.hpp"
+
+#include <iostream>
 
 constexpr float MAXIMAL_FRAME_DURATION = 1/15.f;
 
 int main()
 {
+
     ////////////////////////////////////
-    Attack att = Attack();
+    /*Attack att = Attack();
     Range ran = Range();
     ran.minimal = 0.f;
     ran.maximal = 200.f;
     att.range = ran;
-    att.damage = 0.01f;
+    att.damage = 0.03f;
     att.speed = 0.01f;
     att.availableTarget[UnitType::GROUND] = true;
     att.availableTarget[UnitType::AIR] = false;
@@ -27,7 +33,7 @@ int main()
     cons.time = 0.f;
     cons.foundation = found;
 
-    TTower tt = TTower(1, "Tour de garde", att, cons);
+    TTower tt = TTower(1, "Tour de garde", att, cons);*/
 
     ////////////////////////////////////
     /*
@@ -47,7 +53,7 @@ int main()
     ////////////////////////////////////
     ////////////////////////////////////
 
-    Level* lev = new Level();
+    /*Level* lev = new Level();
 
     Tower* t = new Tower(&tt, sf::Vector2i(10,8));
     Tower* t2 = new Tower(&tt, sf::Vector2i(1,1));
@@ -57,15 +63,19 @@ int main()
     lev->addTower(t);
     lev->addTower(t2);
     lev->addTower(t3);
-    lev->addTower(t4);
+    lev->addTower(t4);*/
 
     sf::RenderWindow window(sf::VideoMode(1200,675), "RusTD");
     window.setFramerateLimit(60);
     resizeWindow(window, 1200, 675);
     sf::Clock clockwerk;
+	ResourceManager::Initialize();
+	GameStateManager* gsm = new GameStateManager(window);
+	gsm->pushState(new GameStateMenu(), false, false, false);
 
     while(window.isOpen())
 	{
+		gsm->initLoop();
         sf::Event event;
         while(window.pollEvent(event))
 		{
@@ -77,6 +87,24 @@ int main()
 			case sf::Event::Resized:
 				resizeWindow(window, event.size.width, event.size.height);
 				break;
+			case sf::Event::MouseButtonPressed:
+				gsm->mouseDown(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
+				break;
+			case sf::Event::MouseButtonReleased:
+				gsm->mouseUp(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
+				break;
+			case sf::Event::MouseMoved:
+				gsm->mouseMove(event.mouseMove.x, event.mouseMove.y);
+				break;
+			case sf::Event::MouseWheelMoved:
+				gsm->mouseWheel(event.mouseWheel.delta, event.mouseWheel.x, event.mouseWheel.y);
+				break;
+			case sf::Event::KeyPressed:
+				gsm->keyDown(event.key.code);
+				break;
+			case sf::Event::KeyReleased:
+				gsm->keyUp(event.key.code);
+				break;
             default:
                 break;
 			}
@@ -86,12 +114,18 @@ int main()
         dt = MIN(dt,MAXIMAL_FRAME_DURATION);
 
         //
-        lev->update(dt);
+        gsm->update(dt);
+        //lev->update(dt);
 
         window.clear();
-        lev->render(window);
+        gsm->render(window);
+        //lev->render(window);
         window.display();
+        gsm->endLoop(window);
     }
+
+	delete gsm;
+	ResourceManager::Destroy();
 
     return 0;
 }

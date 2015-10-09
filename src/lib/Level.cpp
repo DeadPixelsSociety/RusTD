@@ -45,8 +45,7 @@ void Level::update(float dt)
         Movement move = Movement();
         move.speed = 100.f;
 
-        srand(time(NULL));
-        int rand_creep_index = rand()%2;
+        int rand_creep_index = Random::NextInt(0, 1);
         move.type = UnitType::GROUND;
 
         if(rand_creep_index==0)

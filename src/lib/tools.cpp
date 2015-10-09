@@ -16,8 +16,8 @@ void resizeWindow(sf::RenderWindow& window, unsigned int width, unsigned int hei
 	float ratioWH = (float)width/(float)height;
 	constexpr float stdratio = 16.f/9.f;
 	sf::View v = window.getView();
-	v.setSize(1366, 768);
-	v.setCenter(683, 384);
+	v.setSize(VIEW_WIDTH, VIEW_HEIGHT);
+	v.setCenter(VIEW_WIDTH / 2, VIEW_HEIGHT / 2);
 	if(ratioWH > stdratio) // Width too big
 	{
 		float tmp = (width - height * stdratio) / width;

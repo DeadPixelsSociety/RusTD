@@ -90,8 +90,9 @@ void Creep::update(float dt)
 
     if(this->m_path_point_index<this->m_path.size())
     {
-        if(getDistanceBetweenPoints(this->m_path[this->m_path_point_index],this->m_position)<0.1f)
+        if(getDistanceBetweenPoints(this->m_path[this->m_path_point_index],this->m_position)<1.f)
         {
+        	this->m_position = this->m_path[this->m_path_point_index];
             this->m_path_point_index++;
         }
         sf::Vector2f move_point = this->m_path[this->m_path_point_index];
