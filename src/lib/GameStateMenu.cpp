@@ -1,6 +1,7 @@
 #include "../include/GameStateMenu.hpp"
 #include "../include/ResourceManager.hpp"
 #include "../include/GameStateManager.hpp"
+#include "../include/GameStatePlaying.hpp"
 
 /*explicit*/ GameStateMenu::GameStateMenu()
 : GameState()
@@ -22,9 +23,7 @@
 }
 
 /*virtual*/ void GameStateMenu::update(float deltaTimeInSeconds)
-{
-
-}
+{}
 
 /*virtual*/ void GameStateMenu::render(sf::RenderWindow& window)
 {
@@ -35,6 +34,15 @@
 /*virtual*/ void GameStateMenu::mouseUp(sf::Mouse::Button button, int positionX, int positionY)
 {
 	if(button == sf::Mouse::Left && m_buttonPlay->isInButton(positionX, positionY))
+	{
+		GameStateManager::Instance()->pushState(new GameStatePlaying(), false, false, false);
+		//GameStateManager::Instance()->quit();
+	}
+}
+
+/*virtual*/ void GameStateMenu::keyUp(sf::Keyboard::Key key)
+{
+	if(key == sf::Keyboard::Escape)
 	{
 		GameStateManager::Instance()->quit();
 	}

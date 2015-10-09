@@ -15,6 +15,7 @@ public:
 	virtual void update(float deltaTimeInSeconds);
 	virtual void render(sf::RenderWindow& window);
 	virtual void mouseUp(sf::Mouse::Button button, int positionX, int positionY);
+	virtual void keyUp(sf::Keyboard::Key);
 
 protected:
 

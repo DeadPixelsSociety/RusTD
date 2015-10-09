@@ -244,7 +244,7 @@ struct GameStateHandler
 			break;
 		}
 	}
-	return MAX(depth, 0);
+	return MAX(depth+1, 0);
 }
 
 /*virtual*/ int GameStateManager::computeRenderDepth()
@@ -261,7 +261,7 @@ struct GameStateHandler
 			break;
 		}
 	}
-	return MAX(depth, 0);
+	return MAX(depth+1, 0);
 }
 
 /*virtual*/ int GameStateManager::computeInputDepth()
@@ -278,7 +278,7 @@ struct GameStateHandler
 			break;
 		}
 	}
-	return MAX(depth, 0);
+	return MAX(depth+1, 0);
 }
 
 /*static*/ GameStateManager* GameStateManager::s_instance = nullptr;
