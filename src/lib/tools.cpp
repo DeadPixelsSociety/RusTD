@@ -64,3 +64,24 @@ sf::Vector2f getWindowCenterInWorld(sf::RenderWindow& window)
 	return window.mapPixelToCoords(sf::Vector2i(s.x / 2, s.y / 2));
 }
 
+float getLookingAngle(const sf::Vector2f& v)
+{
+	if(v.x != 0.f)
+	{
+		float a = atan(v.y / v.x);
+		if(v.x < 0.f)
+		{
+			a += _PI;
+		}
+		return a;
+	}
+	else if(v.y > 0.f)
+	{
+		return _PI / 2.f;
+	}
+	else
+	{
+		return _PI * 1.5f;
+	}
+}
+

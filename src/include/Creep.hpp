@@ -2,6 +2,8 @@
 #define CREEP_H
 
 #include "TCreep.hpp"
+#include <SFML/Graphics/Sprite.hpp>
+#include "../include/Animation.hpp"
 
 class Projectile;
 class ProjectileList;
@@ -39,6 +41,8 @@ protected:
     ProjectileList* m_aProjectile;
     unsigned int m_path_point_index;
     int m_state;
+    sf::Sprite* m_sprite;
+    Animation* m_animation;
 
 };
 

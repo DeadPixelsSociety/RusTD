@@ -2,6 +2,7 @@
 #include "../include/Projectile.hpp"
 #include "../include/ProjectileList.hpp"
 #include "../include/tools.hpp"
+#include "../include/ResourceManager.hpp"
 
 Creep::Creep(void)
 {
@@ -11,6 +12,9 @@ Creep::Creep(void)
 	this->m_state = 0;
 	this->m_path_point_index = 0;
 	this->m_aProjectile = new ProjectileList();
+	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->registerTexture("data/texture/anim_basic_robot.png", "Animation Basic Robot")));
+	this->m_sprite->setOrigin(32, 32);
+	this->m_animation = new Animation(m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
 }
 
 Creep::Creep(TCreep* tc)
@@ -24,10 +28,17 @@ Creep::Creep(TCreep* tc)
     this->m_state = 0;
     this->m_path_point_index = 0;
 	this->m_aProjectile = new ProjectileList();
+	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->registerTexture("data/texture/anim_basic_robot.png", "Animation Basic Robot")));
+	this->m_sprite->setOrigin(32, 32);
+	this->m_animation = new Animation(m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
 }
 
 Creep::~Creep(void)
-{}
+{
+	delete this->m_animation;
+	delete this->m_sprite;
+	delete this->m_aProjectile;
+}
 
 TCreep* Creep::getTCreep(void)
 {
@@ -75,7 +86,7 @@ void Creep::takeDamage(float damage)
 {
     this->m_current_health = MAX(0.f,this->m_current_health-damage);
 }
-
+#include <iostream>
 void Creep::update(float dt)
 {
     if(this->m_state==0 && this->m_current_health<=0.f)
@@ -105,8 +116,11 @@ void Creep::update(float dt)
             float coef = this->m_tcreep->getMovement().speed*dt / distance;
             sf::Vector2f vec_speed = sf::Vector2f(distance_x*coef, distance_y*coef);
             this->m_position += vec_speed;
+			this->m_sprite->setPosition(this->m_position);
+			this->m_sprite->setRotation(RAD_TO_DEG(getLookingAngle(vec_speed)) - 90.f);
         }
     }
+	this->m_animation->update();
 }
 
 void Creep::render(sf::RenderWindow& window)
@@ -122,6 +136,8 @@ void Creep::render(sf::RenderWindow& window)
     }
     else
     {
+		window.draw(*m_sprite);
+
         sf::RectangleShape health_bar_back(sf::Vector2f(20, 3));
         health_bar_back.setFillColor(sf::Color::Red);
         health_bar_back.setOrigin(10,2);
@@ -135,5 +151,6 @@ void Creep::render(sf::RenderWindow& window)
         health_bar.setPosition(sf::Vector2f(this->m_position.x,this->m_position.y-12));
         window.draw(health_bar);
     }
-    window.draw(shape);
+    if(this->m_state>0)
+		window.draw(shape);
 }
