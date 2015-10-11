@@ -11,4 +11,8 @@ float getDistanceBetweenPoints(sf::Vector2f p1,sf::Vector2f p2);
 
 void resizeWindow(sf::RenderWindow& window, unsigned int width, unsigned int height);
 
+void switchFullScreen(sf::RenderWindow* pWindow, bool fullscreen);
+
+sf::Vector2f getWindowCenterInWorld(sf::RenderWindow& window);
+
 #endif // TOOLS_HPP

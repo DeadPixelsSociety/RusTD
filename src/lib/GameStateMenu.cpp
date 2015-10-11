@@ -2,6 +2,8 @@
 #include "../include/ResourceManager.hpp"
 #include "../include/GameStateManager.hpp"
 #include "../include/GameStatePlaying.hpp"
+#include "../include/tools.hpp"
+#include "../include/Window.hpp"
 
 /*explicit*/ GameStateMenu::GameStateMenu()
 : GameState()
@@ -36,14 +38,20 @@
 	if(button == sf::Mouse::Left && m_buttonPlay->isInButton(positionX, positionY))
 	{
 		GameStateManager::Instance()->pushState(new GameStatePlaying(), false, false, false);
-		//GameStateManager::Instance()->quit();
 	}
 }
 
 /*virtual*/ void GameStateMenu::keyUp(sf::Keyboard::Key key)
 {
-	if(key == sf::Keyboard::Escape)
+	switch(key)
 	{
-		GameStateManager::Instance()->quit();
+	case sf::Keyboard::Escape:
+		GameStateManager::Instance()->requestQuit();
+		break;
+	case sf::Keyboard::F:
+		switchFullScreen(GameStateManager::Instance()->getWindow(), !Window::isFullScreen);
+		break;
+	default:
+		break;
 	}
 }

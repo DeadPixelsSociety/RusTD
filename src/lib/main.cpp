@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../include/tools.hpp"
+#include "../include/Window.hpp"
 #include "../include/Level.hpp"
 #include "../include/ResourceManager.hpp"
 #include "../include/GameStateManager.hpp"
@@ -65,11 +66,16 @@ int main()
     lev->addTower(t3);
     lev->addTower(t4);*/
 
-    sf::RenderWindow window(sf::VideoMode(1200,675), "RusTD");
+	// Initializing window
+	Window::Initialize();
+    sf::RenderWindow& window = *(new sf::RenderWindow(Window::windowedVideoMode, GAME_TITLE, sf::Style::Titlebar | sf::Style::Close));
+    resizeWindow(window, Window::windowedVideoMode.width, Window::windowedVideoMode.height);
     window.setFramerateLimit(300);
-    resizeWindow(window, 1200, 675);
+    // frame time counter
     sf::Clock clockwerk;
+    // Initializing resources
 	ResourceManager::Initialize();
+	// Creating GameStateManager and pushing first state
 	GameStateManager* gsm = new GameStateManager(window);
 	gsm->pushState(new GameStateMenu(), false, false, false);
 
@@ -82,11 +88,8 @@ int main()
 			switch(event.type)
 			{
             case sf::Event::Closed:
-                window.close();
+                gsm->requestQuit();
                 break;
-			case sf::Event::Resized:
-				resizeWindow(window, event.size.width, event.size.height);
-				break;
 			case sf::Event::MouseButtonPressed:
 				gsm->mouseDown(event.mouseButton.button, event.mouseButton.x, event.mouseButton.y);
 				break;
@@ -126,6 +129,7 @@ int main()
 
 	delete gsm;
 	ResourceManager::Destroy();
+	delete &window;
 
     return 0;
 }

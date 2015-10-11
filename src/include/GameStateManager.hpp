@@ -38,6 +38,8 @@ public:
 	virtual void setWindow(sf::RenderWindow& window);
 	virtual sf::RenderWindow* getWindow(void);
 
+	virtual void requestQuit(void);
+
 	static GameStateManager* Instance(void);
 
 protected:

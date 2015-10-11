@@ -25,6 +25,7 @@ protected:
 
 	Level* m_level;
 	std::vector<Tower*> m_towers;
+	std::vector<TTower*> m_ttowers;
 
 };
 

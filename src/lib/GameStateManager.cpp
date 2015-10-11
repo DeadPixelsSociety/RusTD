@@ -1,6 +1,7 @@
 #include "../include/GameStateManager.hpp"
 #include "../include/GameState.hpp"
 #include "../include/config.hpp"
+#include "../include/GameStateQuestionBox.hpp"
 
 struct GameStateHandler
 {
@@ -26,10 +27,9 @@ struct GameStateHandler
 , m_loopStackSize(0)
 , m_pendingDelete(false)
 , m_pendingQuit(false)
-, m_window(nullptr)
+, m_window(&window)
 {
 	s_instance = this;
-	m_window = &window;
 }
 
 /*virtual*/ GameStateManager::~GameStateManager()
@@ -225,6 +225,25 @@ struct GameStateHandler
 	return m_window;
 }
 
+/*virtual*/ void GameStateManager::requestQuit()
+{
+	const char* buttons[] = {"Yes", "No"};
+	std::function<void(int,void*)> callback =
+		[] (int index, void* data) -> void
+		{
+			if(index == 0)
+			{
+				GameStateManager::Instance()->quit(); // Quit game
+			}
+			else
+			{
+				GameStateManager::Instance()->popState(); // Pop this state
+			}
+		};
+	GameStateQuestionBox* qb = new GameStateQuestionBox("Do you really want to quit ?", 2, buttons, callback, nullptr);
+	pushState(qb, true, true, false);
+}
+
 /*static*/ GameStateManager* GameStateManager::Instance()
 {
 	return s_instance;
@@ -232,7 +251,7 @@ struct GameStateHandler
 
 /*virtual*/ int GameStateManager::computeUpdateDepth()
 {
-	int depth = m_loopStackSize - 1;
+	int depth = m_loopStackSize;
 	while(depth > 0)
 	{
 		if(m_stateStack[depth].m_updateSubStates)
@@ -244,12 +263,12 @@ struct GameStateHandler
 			break;
 		}
 	}
-	return MAX(depth+1, 0);
+	return MAX(depth, 0);
 }
 
 /*virtual*/ int GameStateManager::computeRenderDepth()
 {
-	int depth = m_loopStackSize - 1;
+	int depth = m_loopStackSize;
 	while(depth > 0)
 	{
 		if(m_stateStack[depth].m_renderSubStates)
@@ -261,12 +280,12 @@ struct GameStateHandler
 			break;
 		}
 	}
-	return MAX(depth+1, 0);
+	return MAX(depth, 0);
 }
 
 /*virtual*/ int GameStateManager::computeInputDepth()
 {
-	int depth = m_loopStackSize - 1;
+	int depth = m_loopStackSize;
 	while(depth > 0)
 	{
 		if(m_stateStack[depth].m_inputSubStates)
@@ -278,7 +297,7 @@ struct GameStateHandler
 			break;
 		}
 	}
-	return MAX(depth+1, 0);
+	return MAX(depth, 0);
 }
 
 /*static*/ GameStateManager* GameStateManager::s_instance = nullptr;

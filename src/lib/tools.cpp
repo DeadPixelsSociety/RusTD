@@ -1,6 +1,9 @@
 #include <cmath>
 
 #include "../include/tools.hpp"
+#include "../include/config.hpp"
+#include "../include/GameStateManager.hpp"
+#include "../include/Window.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 
 float getDistanceBetweenPoints(sf::Vector2f p1,sf::Vector2f p2)
@@ -13,6 +16,7 @@ float getDistanceBetweenPoints(sf::Vector2f p1,sf::Vector2f p2)
 
 void resizeWindow(sf::RenderWindow& window, unsigned int width, unsigned int height)
 {
+	window.setSize(sf::Vector2u(width, height));
 	float ratioWH = (float)width/(float)height;
 	constexpr float stdratio = 16.f/9.f;
 	sf::View v = window.getView();
@@ -30,3 +34,33 @@ void resizeWindow(sf::RenderWindow& window, unsigned int width, unsigned int hei
 	}
 	window.setView(v);
 }
+
+void switchFullScreen(sf::RenderWindow* pWindow, bool fullscreen)
+{
+	if(Window::isFullScreen == fullscreen)
+	{
+		return;
+	}
+	Window::isFullScreen = fullscreen;
+	if(pWindow)
+	{
+		delete pWindow;
+		if(fullscreen)
+		{
+			pWindow = new sf::RenderWindow(Window::availableVideoModes[Window::selectedFullScreenVideoMode], GAME_TITLE, sf::Style::Fullscreen);
+		}
+		else
+		{
+			pWindow = new sf::RenderWindow(Window::windowedVideoMode, GAME_TITLE, sf::Style::Titlebar | sf::Style::Close);
+		}
+		resizeWindow(*pWindow, pWindow->getSize().x, pWindow->getSize().y);
+		GameStateManager::Instance()->setWindow(*pWindow);
+	}
+}
+
+sf::Vector2f getWindowCenterInWorld(sf::RenderWindow& window)
+{
+	sf::Vector2u s = window.getSize();
+	return window.mapPixelToCoords(sf::Vector2i(s.x / 2, s.y / 2));
+}
+

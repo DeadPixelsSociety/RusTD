@@ -2,7 +2,6 @@
 
 #include <cstdio>
 
-
 #include "../include/Random.hpp"
 #include "../include/Tower.hpp"
 #include "../include/tools.hpp"
