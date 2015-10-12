@@ -43,7 +43,7 @@ protected:
     int m_state;
     sf::Sprite* m_sprite;
     Animation* m_animation;
-
+	float m_randDead;
 };
 
 #endif

@@ -29,6 +29,7 @@ public:
 	virtual int getHeight(void) const;
 	virtual bool isMouseInButton(sf::RenderWindow& window) const;
 	virtual bool isInButton(int x, int y) const;
+	virtual sf::RectangleShape* getShape(void);
 
 	virtual void update(float deltaTimeInSeconds);
 	virtual void render(sf::RenderWindow& window);

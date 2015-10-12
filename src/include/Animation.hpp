@@ -5,7 +5,6 @@
 #define ANIM_STOP false
 
 #include <SFML/Graphics/Sprite.hpp>
-#include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
 enum
@@ -18,12 +17,10 @@ class Animation
 	public:
 
 		explicit Animation(sf::Sprite* sprite, sf::IntRect first, int count, int frameMs);
-		void update(void);
+		void update(float deltaTimeInMs);
 		void play(void);
 		void stop(void);
 		void pause(void);
-
-	private:
 
 	protected:
 
@@ -33,7 +30,7 @@ class Animation
 		sf::IntRect m_rect;
 		bool m_state;
 		int m_frameTime;
-		sf::Clock m_clock;
+		int m_timeSum;
 
 };
 

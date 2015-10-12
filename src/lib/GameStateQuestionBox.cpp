@@ -40,7 +40,7 @@
 , m_cbData(cbData)
 {
 	// Place texture on panel
-	m_panel->setTexture(*(ResourceManager::Instance()->registerTexture("data/texture/qb_panel.png", "Question Box Panel")));
+	m_panel->setTexture(*(ResourceManager::Instance()->getTexture( "Question Box Panel")));
 	// Center the panel on the screen
 	sf::Vector2f centerWorld = getWindowCenterInWorld(*(GameStateManager::Instance()->getWindow()));
 	m_panel->setPosition(sf::Vector2f(centerWorld.x - m_panel->getLocalBounds().width / 2, centerWorld.y - m_panel->getLocalBounds().height / 2));
@@ -68,7 +68,6 @@
 	{
 		delete *it;
 	}
-	ResourceManager::Instance()->releaseTexture("Question Box Panel");
 }
 
 /*virtual*/ void GameStateQuestionBox::update(float deltaTimeInSeconds)

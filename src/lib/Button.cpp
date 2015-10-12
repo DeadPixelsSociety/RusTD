@@ -10,6 +10,7 @@
 {
 	m_shape->setTexture(texture);
 	m_shape->setSize(sf::Vector2f(texture->getSize().x, texture->getSize().y));
+	m_shape->setOrigin(m_shape->getLocalBounds().width / 2, m_shape->getLocalBounds().height / 2);
 	setPosition(sf::Vector2f());
 }
 
@@ -18,6 +19,7 @@
 , m_text(new sf::Text(text, font, textSize))
 {
 	m_shape->setFillColor(color);
+	m_shape->setOrigin(m_shape->getLocalBounds().width / 2, m_shape->getLocalBounds().height / 2);
 	m_text->setColor(textColor);
 	setPosition(sf::Vector2f());
 }
@@ -105,6 +107,11 @@
 /*virtual*/ bool Button::isInButton(int x, int y) const
 {
 	return m_shape->getGlobalBounds().contains(GameStateManager::Instance()->getWindow()->mapPixelToCoords(sf::Vector2i(x, y)));
+}
+
+/*virtual*/ sf::RectangleShape* Button::getShape()
+{
+	return m_shape;
 }
 
 /*virtual*/ void Button::update(float deltaTimeInSeconds)

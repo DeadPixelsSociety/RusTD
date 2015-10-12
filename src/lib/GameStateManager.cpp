@@ -241,7 +241,7 @@ struct GameStateHandler
 			}
 		};
 	GameStateQuestionBox* qb = new GameStateQuestionBox("Do you really want to quit ?", 2, buttons, callback, nullptr);
-	pushState(qb, true, true, false);
+	pushState(qb, false, true, false);
 }
 
 /*static*/ GameStateManager* GameStateManager::Instance()

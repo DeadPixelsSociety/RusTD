@@ -3,6 +3,7 @@
 #include "../include/ProjectileList.hpp"
 #include "../include/tools.hpp"
 #include "../include/ResourceManager.hpp"
+#include "../include/Random.hpp"
 
 Creep::Creep(void)
 {
@@ -12,9 +13,10 @@ Creep::Creep(void)
 	this->m_state = 0;
 	this->m_path_point_index = 0;
 	this->m_aProjectile = new ProjectileList();
-	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->registerTexture("data/texture/anim_basic_robot.png", "Animation Basic Robot")));
+	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Basic Robot")));
 	this->m_sprite->setOrigin(32, 32);
 	this->m_animation = new Animation(m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
+	this->m_randDead = Random::NextFloat(0, 360);
 }
 
 Creep::Creep(TCreep* tc)
@@ -28,9 +30,10 @@ Creep::Creep(TCreep* tc)
     this->m_state = 0;
     this->m_path_point_index = 0;
 	this->m_aProjectile = new ProjectileList();
-	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->registerTexture("data/texture/anim_basic_robot.png", "Animation Basic Robot")));
+	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Basic Robot")));
 	this->m_sprite->setOrigin(32, 32);
 	this->m_animation = new Animation(m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
+	this->m_randDead = Random::NextFloat(0, 360);
 }
 
 Creep::~Creep(void)
@@ -86,7 +89,7 @@ void Creep::takeDamage(float damage)
 {
     this->m_current_health = MAX(0.f,this->m_current_health-damage);
 }
-#include <iostream>
+
 void Creep::update(float dt)
 {
     if(this->m_state==0 && this->m_current_health<=0.f)
@@ -120,19 +123,18 @@ void Creep::update(float dt)
 			this->m_sprite->setRotation(RAD_TO_DEG(getLookingAngle(vec_speed)) - 90.f);
         }
     }
-	this->m_animation->update();
+	this->m_animation->update(dt);
 }
 
 void Creep::render(sf::RenderWindow& window)
 {
-    sf::CircleShape shape(10);
-    shape.setFillColor(sf::Color::Red);
-    shape.setPosition(this->m_position);
-    shape.setOrigin(10,10);
-
     if(this->m_state>0)
     {
-        shape.setFillColor(sf::Color::Yellow);
+    	sf::Sprite dead(*(ResourceManager::Instance()->getTexture("Static Dead Basic Robot")));
+    	dead.setOrigin(32, 32);
+    	dead.setPosition(this->m_position);
+    	dead.setRotation(m_randDead);
+        window.draw(dead);
     }
     else
     {
@@ -141,16 +143,14 @@ void Creep::render(sf::RenderWindow& window)
         sf::RectangleShape health_bar_back(sf::Vector2f(20, 3));
         health_bar_back.setFillColor(sf::Color::Red);
         health_bar_back.setOrigin(10,2);
-        health_bar_back.setPosition(sf::Vector2f(this->m_position.x,this->m_position.y-12));
+        health_bar_back.setPosition(sf::Vector2f(this->m_position.x,this->m_position.y-15));
         window.draw(health_bar_back);
 
         float pour_cd = MAX(0.f,this->m_current_health / this->m_tcreep->getStats().health);
         sf::RectangleShape health_bar(sf::Vector2f(pour_cd*20, 3));
         health_bar.setFillColor(sf::Color::Green);
         health_bar.setOrigin(10,2);
-        health_bar.setPosition(sf::Vector2f(this->m_position.x,this->m_position.y-12));
+        health_bar.setPosition(sf::Vector2f(this->m_position.x,this->m_position.y-15));
         window.draw(health_bar);
     }
-    if(this->m_state>0)
-		window.draw(shape);
 }
