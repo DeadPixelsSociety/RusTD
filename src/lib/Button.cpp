@@ -18,7 +18,7 @@
 , m_text(new sf::Text(text, font, textSize))
 {
 	m_shape->setFillColor(color);
-	m_shape->setOrigin(m_shape->getLocalBounds().width / 2, m_shape->getLocalBounds().height / 2);
+	m_text->setColor(textColor);
 	setPosition(sf::Vector2f());
 }
 
