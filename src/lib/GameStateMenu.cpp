@@ -54,6 +54,9 @@
 		}
 		else if(m_buttonOption->isInButton(positionX, positionY))
 		{
+			m_mouseInOptions = false;
+			sf::RectangleShape* rs = m_buttonOption->getShape();
+			if(rs)rs->setRotation(0.f);
 			GameStateManager::Instance()->requestQuit();
 		}
 	}

@@ -29,8 +29,8 @@ class Animation
 		int m_index;
 		sf::IntRect m_rect;
 		bool m_state;
-		int m_frameTime;
-		int m_timeSum;
+		float m_frameTime;
+		float m_timeSum;
 
 };
 

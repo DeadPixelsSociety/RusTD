@@ -7,23 +7,23 @@
 , m_rect(first)
 , m_state(ANIM_PLAY)
 , m_frameTime(frameMs)
-, m_timeSum(0)
+, m_timeSum(0.f)
 {}
 
 void Animation::update(float deltaTimeInSeconds)
 {
-	m_timeSum += (int)(deltaTimeInSeconds * 1000);
+	m_timeSum += (deltaTimeInSeconds * 1000);
 	if(ANIM_PLAY == m_state)
 	{
 		if(m_timeSum >= m_frameTime)
 		{
-			m_timeSum = 0;
+			m_timeSum = 0.f;
 			m_index = (m_index+1)%m_count;
 		}
 	}
 	else
 	{
-		m_timeSum = 0;
+		m_timeSum = 0.f;
 	}
 	m_rect.left = m_rect.width * m_index;
 	m_sprite->setTextureRect(m_rect);
