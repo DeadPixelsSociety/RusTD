@@ -10,7 +10,6 @@
 {
 	m_shape->setTexture(texture);
 	m_shape->setSize(sf::Vector2f(texture->getSize().x, texture->getSize().y));
-	m_shape->setOrigin(m_shape->getLocalBounds().width / 2, m_shape->getLocalBounds().height / 2);
 	setPosition(sf::Vector2f());
 }
 
@@ -20,7 +19,6 @@
 {
 	m_shape->setFillColor(color);
 	m_shape->setOrigin(m_shape->getLocalBounds().width / 2, m_shape->getLocalBounds().height / 2);
-	m_text->setColor(textColor);
 	setPosition(sf::Vector2f());
 }
 
