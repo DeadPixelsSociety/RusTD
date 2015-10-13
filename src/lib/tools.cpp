@@ -85,3 +85,7 @@ float getLookingAngle(const sf::Vector2f& v)
 	}
 }
 
+sf::Vector2f getConvertedPosition(sf::Vector2i position)
+{
+    return sf::Vector2f(position.x*GRID_UNIT,position.y*GRID_UNIT);
+}
