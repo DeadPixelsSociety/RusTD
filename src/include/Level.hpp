@@ -25,7 +25,7 @@ protected:
 	CreepList* m_cl;
     ProjectileList* m_pl;
     TowerList* m_tl;
-    std::vector<sf::Vector2f> m_path;
+    std::vector<sf::Vector2i> m_path;
     float t_creep_spawn_cd;
 
 };

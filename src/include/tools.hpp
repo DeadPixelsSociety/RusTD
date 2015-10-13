@@ -21,4 +21,6 @@ sf::Vector2f getWindowCenterInWorld(sf::RenderWindow& window);
 
 float getLookingAngle(const sf::Vector2f& v);
 
+sf::Vector2f getConvertedPosition(sf::Vector2i);
+
 #endif // TOOLS_HPP

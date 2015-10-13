@@ -5,15 +5,14 @@ Level::Level(void)
     this->m_cl = new CreepList();
     this->m_pl = new ProjectileList();
     this->m_tl = new TowerList();
-    this->m_path.push_back(sf::Vector2f(100.f,0.f));
-    this->m_path.push_back(sf::Vector2f(100.f,50.f));
-    this->m_path.push_back(sf::Vector2f(300.f,50.f));
-    this->m_path.push_back(sf::Vector2f(300.f,400.f));
-    this->m_path.push_back(sf::Vector2f(500.f,400.f));
-    this->m_path.push_back(sf::Vector2f(500.f,200.f));
-    this->m_path.push_back(sf::Vector2f(250.f,200.f));
-    this->m_path.push_back(sf::Vector2f(250.f,800.f));
-
+    this->m_path.push_back(sf::Vector2i(2,-1));
+    this->m_path.push_back(sf::Vector2i(2,2));
+    this->m_path.push_back(sf::Vector2i(5,2));
+    this->m_path.push_back(sf::Vector2i(5,5));
+    this->m_path.push_back(sf::Vector2i(10,5));
+    this->m_path.push_back(sf::Vector2i(10,2));
+    this->m_path.push_back(sf::Vector2i(5,2));
+    this->m_path.push_back(sf::Vector2i(5,12));
 //
     this->t_creep_spawn_cd = 100000.f;
 
