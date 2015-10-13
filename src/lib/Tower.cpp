@@ -2,7 +2,6 @@
 
 #include <cstdio>
 
-
 #include "../include/Random.hpp"
 #include "../include/Tower.hpp"
 #include "../include/tools.hpp"
@@ -30,11 +29,6 @@ Tower::Tower(TTower* tt, sf::Vector2i position)
 Tower::~Tower(void)
 {}
 
-sf::Vector2f Tower::getConvertedPosition(void)
-{
-    return sf::Vector2f(this->m_position.x*TOWER_SIZE_UNIT,this->m_position.y*TOWER_SIZE_UNIT);
-}
-
 bool Tower::inRange(Creep* c)
 {
     if(c==nullptr)
@@ -45,7 +39,7 @@ bool Tower::inRange(Creep* c)
     Attack att = this->m_ttower->getAttack();
 
     sf::Vector2f last_target_pos = c->getPosition();
-    sf::Vector2f tower_pos = this->getConvertedPosition();
+    sf::Vector2f tower_pos = getConvertedPosition(this->m_position);
     float distance = getDistanceBetweenPoints(tower_pos,last_target_pos);
 
     return (distance>=att.range.minimal && distance<=att.range.maximal);
@@ -118,8 +112,8 @@ Projectile* Tower::attack(Creep* c)
     this->m_attack_cooldown = this->m_ttower->getAttack().speed;
 
     //
-    float offset = TOWER_SIZE_UNIT/2.f;
-    sf::Vector2f tower_pos = this->getConvertedPosition()+sf::Vector2f(offset,offset);
+    float offset = GRID_UNIT/2.f;
+    sf::Vector2f tower_pos = getConvertedPosition(this->m_position)+sf::Vector2f(offset,offset);
     Projectile* p = new Projectile(this->m_proj_speed, att.damage, c, tower_pos);
     c->addProjectile(p);
     return p;
@@ -132,10 +126,10 @@ void Tower::update(float dt)
 
 void Tower::render(sf::RenderWindow& window)
 {
-    sf::Vector2f tower_pos = this->getConvertedPosition();
+    sf::Vector2f tower_pos = getConvertedPosition(this->m_position);
     sf::Vector2f cooldown_bar_pos = tower_pos+COOLDOWN_BAR_OFFSET;
 
-    sf::RectangleShape shape(sf::Vector2f(TOWER_SIZE_UNIT,TOWER_SIZE_UNIT));
+    sf::RectangleShape shape(sf::Vector2f(GRID_UNIT,GRID_UNIT));
     shape.setFillColor(sf::Color::Blue);
     shape.setPosition(tower_pos);
 
@@ -157,13 +151,13 @@ void Tower::render(sf::RenderWindow& window)
         if(att.range.minimal==0)
         {
             range.setRadius(att.range.maximal);
-            range.setOrigin(sf::Vector2f(att.range.maximal-TOWER_SIZE_UNIT/2,att.range.maximal-TOWER_SIZE_UNIT/2));
+            range.setOrigin(sf::Vector2f(att.range.maximal-GRID_UNIT/2,att.range.maximal-GRID_UNIT/2));
             range.setOutlineThickness(1.f);
         }
         else
         {
             range.setRadius(att.range.minimal);
-            range.setOrigin(sf::Vector2f(att.range.minimal-TOWER_SIZE_UNIT/2,att.range.minimal-TOWER_SIZE_UNIT/2));
+            range.setOrigin(sf::Vector2f(att.range.minimal-GRID_UNIT/2,att.range.minimal-GRID_UNIT/2));
             range.setOutlineThickness(att.range.maximal-att.range.minimal);
         }
 

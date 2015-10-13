@@ -5,15 +5,14 @@ Level::Level(void)
     this->m_cl = new CreepList();
     this->m_pl = new ProjectileList();
     this->m_tl = new TowerList();
-    this->m_path.push_back(sf::Vector2f(100.f,0.f));
-    this->m_path.push_back(sf::Vector2f(100.f,50.f));
-    this->m_path.push_back(sf::Vector2f(300.f,50.f));
-    this->m_path.push_back(sf::Vector2f(300.f,400.f));
-    this->m_path.push_back(sf::Vector2f(500.f,400.f));
-    this->m_path.push_back(sf::Vector2f(500.f,200.f));
-    this->m_path.push_back(sf::Vector2f(250.f,200.f));
-    this->m_path.push_back(sf::Vector2f(250.f,800.f));
-
+    this->m_path.push_back(sf::Vector2i(2,-1));
+    this->m_path.push_back(sf::Vector2i(2,2));
+    this->m_path.push_back(sf::Vector2i(5,2));
+    this->m_path.push_back(sf::Vector2i(5,5));
+    this->m_path.push_back(sf::Vector2i(10,5));
+    this->m_path.push_back(sf::Vector2i(10,2));
+    this->m_path.push_back(sf::Vector2i(7,2));
+    this->m_path.push_back(sf::Vector2i(7,12));
 //
     this->t_creep_spawn_cd = 100000.f;
 
@@ -45,8 +44,7 @@ void Level::update(float dt)
         Movement move = Movement();
         move.speed = 100.f;
 
-        srand(time(NULL));
-        int rand_creep_index = rand()%2;
+        int rand_creep_index = Random::NextInt(0, 1);
         move.type = UnitType::GROUND;
 
         if(rand_creep_index==0)
@@ -73,6 +71,7 @@ void Level::update(float dt)
 
 void Level::render(sf::RenderWindow& window)
 {
+/*
     int i;
     int size = this->m_path.size()-1;
     for(i=0 ; i<size ; i++)
@@ -84,8 +83,13 @@ void Level::render(sf::RenderWindow& window)
         };
         window.draw(line, 2, sf::Lines);
     }
-
+*/
     this->m_cl->render(window);
     this->m_tl->render(window);
     this->m_pl->render(window);
+}
+
+std::vector<sf::Vector2i>& Level::getPath()
+{
+	return this->m_path;
 }

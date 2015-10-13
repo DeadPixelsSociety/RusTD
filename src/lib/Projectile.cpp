@@ -66,7 +66,7 @@ void Projectile::update(float dt)
     float distance = sqrt(pow(distance_x,2) + pow(distance_y,2));
 
     if((distance_x==0.f && distance_y==0.f) ||
-        distance<0.1f ||
+        distance<10.f ||
         (((distance_x<0.f && this->m_target_sign.x==-1) || (distance_x>0.f && this->m_target_sign.x==1)) &&
             ((distance_y<0.f && this->m_target_sign.y==-1) || (distance_y>0.f && this->m_target_sign.y==1))))
     {
