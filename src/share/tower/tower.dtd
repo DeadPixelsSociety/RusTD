@@ -1,0 +1,27 @@
+<!ELEMENT tower (id, name, construction?, upgrade*, attack?)>
+	
+	<!ATTLIST tower id CDATA>
+
+	<!ELEMENT name #PCDATA>
+
+	<!ELEMENT construction (foundation?)>
+		<!ATTLIST construction cost CDATA "0">
+		<!ATTLIST construction time CDATA "0">
+		<!ELEMENT foundation EMPTY>
+			<!ATTLIST foundation size CDATA "1">
+			<!ATTLIST foundation type (ground | water) "ground">
+
+	<!ELEMENT upgrade EMPTY>
+		<!ATTLIST upgrade tower_id CDATA #REQUIRED>
+
+	<!ELEMENT attack (range?, target?)>
+		<!ATTLIST attack speed CDATA "1">
+		<!ATTLIST attack damage CDATA "0">
+
+		<!ELEMENT range EMPTY>
+			<!ATTLIST range minimal CDATA "0">
+			<!ATTLIST range maximal CDATA "NULL">
+
+		<!ELEMENT target EMPTY>
+			<!ATTLIST target ground (yes | no) "yes">
+			<!ATTLIST target air (yes | no) "yes">

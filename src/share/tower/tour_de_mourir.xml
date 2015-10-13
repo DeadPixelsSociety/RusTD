@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE bibliography SYSTEM "tower.dtd" >
+
+<tower id="5">
+	<name>tour de mourir</name>
+	<construction time="2" cost="80">
+		<foundation size="1" type="ground"/>
+	</construction>
+	<upgrade tower_id="21"/>
+	<attack speed="0.2" damage="2">
+		<range minimal="0" maximal="7"/>
+		<target ground="true" air="true" water="false"/>
+	</attack>
+</tower>

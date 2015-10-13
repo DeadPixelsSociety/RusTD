@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE bibliography SYSTEM "tower.dtd" >
+
+<creep id="0">
+	<name>robot</name>
+	<stats health="50" health_regen="5" bounty="100"/>
+	<movement speed="30" type="ground"/>
+</creep>

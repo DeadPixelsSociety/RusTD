@@ -1,0 +1,13 @@
+<!ELEMENT creep (id, name, stats?, movement?)>
+	<!ATTLIST creep id CDATA>
+	
+	<!ELEMENT name #PCDATA>
+
+	<!ELEMENT stats EMPTY>
+		<!ATTLIST stats health CDATA "1">
+		<!ATTLIST stats health_regen CDATA "0">
+		<!ATTLIST stats bounty CDATA "0">
+
+	<!ELEMENT movement EMPTY>
+		<!ATTLIST movement speed CDATA "1">
+		<!ATTLIST movement type (ground | air) "ground">

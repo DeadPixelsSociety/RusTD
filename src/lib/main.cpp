@@ -7,6 +7,7 @@
 #include "../include/ResourceLoading.hpp"
 #include "../include/GameStateManager.hpp"
 #include "../include/GameStateMenu.hpp"
+#include "../include/TDoodad.hpp"
 
 #include <iostream>
 
@@ -24,6 +25,8 @@ int main()
     // Initializing resources
 	ResourceManager::Initialize();
 	LoadResources();
+	std::string sharePath("C:/Users/Teddy/Documents/GitHub/RusTD/src/share");
+	TDoodad::load_XML(sharePath);
 	// Creating GameStateManager and pushing first state
 	GameStateManager* gsm = new GameStateManager(window);
 	gsm->pushState(new GameStateMenu(), false, false, false);
