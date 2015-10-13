@@ -43,7 +43,8 @@ protected:
     int m_state;
     sf::Sprite* m_sprite;
     Animation* m_animation;
-	float m_randDead;
+	float m_rand_dead;
+	sf::Vector2f m_next_point;
 };
 
 #endif

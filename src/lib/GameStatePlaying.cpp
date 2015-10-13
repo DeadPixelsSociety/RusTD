@@ -4,6 +4,7 @@
 /*explicit*/ GameStatePlaying::GameStatePlaying()
 : GameState()
 , m_level(nullptr)
+, m_map(nullptr)
 {
 	m_level = new Level();
 	Attack att = Attack();
@@ -35,6 +36,7 @@
     m_level->addTower(m_towers.back());
     m_towers.push_back(new Tower(&tt, sf::Vector2i(5,5)));
     m_level->addTower(m_towers.back());
+    m_map = new Map(25, 15, m_level->getPath());
 }
 
 /*virtual*/ GameStatePlaying::~GameStatePlaying()
@@ -44,6 +46,7 @@
 	{
 		delete *it;
 	}
+	delete m_map;
 }
 
 /*virtual*/ void GameStatePlaying::update(float deltaTimeInSeconds)
@@ -53,6 +56,7 @@
 
 /*virtual*/ void GameStatePlaying::render(sf::RenderWindow& window)
 {
+	window.draw(sf::Sprite(*(m_map->getTexture())));
 	m_level->render(window);
 }
 

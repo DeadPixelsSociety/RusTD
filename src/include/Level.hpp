@@ -19,6 +19,8 @@ public:
 	void update(float dt);
     void render(sf::RenderWindow& window);
 
+    std::vector<sf::Vector2f>& getPath(void);
+
 protected:
 	CreepList* m_cl;
     ProjectileList* m_pl;

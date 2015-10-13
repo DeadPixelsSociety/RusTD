@@ -3,6 +3,7 @@
 
 #include "GameState.hpp"
 #include "Level.hpp"
+#include "Map.hpp"
 #include <vector>
 
 class GameStatePlaying : public GameState
@@ -26,6 +27,7 @@ protected:
 	Level* m_level;
 	std::vector<Tower*> m_towers;
 	std::vector<TTower*> m_ttowers;
+	Map* m_map;
 
 };
 

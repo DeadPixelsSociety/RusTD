@@ -16,7 +16,7 @@ Creep::Creep(void)
 	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Basic Robot")));
 	this->m_sprite->setOrigin(32, 32);
 	this->m_animation = new Animation(m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
-	this->m_randDead = Random::NextFloat(0, 360);
+	this->m_rand_dead = Random::NextFloat(0, 360);
 }
 
 Creep::Creep(TCreep* tc)
@@ -33,7 +33,7 @@ Creep::Creep(TCreep* tc)
 	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Basic Robot")));
 	this->m_sprite->setOrigin(32, 32);
 	this->m_animation = new Animation(m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
-	this->m_randDead = Random::NextFloat(0, 360);
+	this->m_rand_dead = Random::NextFloat(0, 360);
 }
 
 Creep::~Creep(void)
@@ -66,8 +66,10 @@ float Creep::getCurrentHealth(void)
 void Creep::setPath(std::vector<sf::Vector2f>& path)
 {
     this->m_path = path;
-    this->m_position = path[0];
-    this->m_path_point_index = 1;
+    this->m_next_point = path[0];
+    this->m_next_point.x += Random::NextFloat(-16.f, 16.f);
+    this->m_position = m_next_point;
+    this->m_path_point_index = 0;
 }
 
 void Creep::addProjectile(Projectile* proj)
@@ -102,17 +104,19 @@ void Creep::update(float dt)
         return;
     }
 
-    if(this->m_path_point_index<this->m_path.size())
+    if(this->m_path_point_index < this->m_path.size())
     {
-        if(getDistanceBetweenPoints(this->m_path[this->m_path_point_index],this->m_position)<1.f)
+        if(getDistanceBetweenPoints(this->m_next_point, this->m_position) < 1.f)
         {
-        	this->m_position = this->m_path[this->m_path_point_index];
+        	this->m_position = m_next_point;
             this->m_path_point_index++;
+            this->m_next_point = this->m_path[this->m_path_point_index];
+            this->m_next_point.x += Random::NextFloat(-16.f, 16.f);
+            this->m_next_point.y += Random::NextFloat(-16.f, 16.f);
         }
-        sf::Vector2f move_point = this->m_path[this->m_path_point_index];
 
-        float distance_x = move_point.x - this->m_position.x;
-        float distance_y = move_point.y - this->m_position.y;
+        float distance_x = m_next_point.x - this->m_position.x;
+        float distance_y = m_next_point.y - this->m_position.y;
         float distance = sqrt(pow(distance_x,2) + pow(distance_y,2));
         if(distance!=0.f)
         {
@@ -133,11 +137,15 @@ void Creep::render(sf::RenderWindow& window)
     	sf::Sprite dead(*(ResourceManager::Instance()->getTexture("Static Dead Basic Robot")));
     	dead.setOrigin(32, 32);
     	dead.setPosition(this->m_position);
-    	dead.setRotation(m_randDead);
+    	dead.setRotation(m_rand_dead);
         window.draw(dead);
     }
     else
     {
+    	sf::Sprite shadow(*(ResourceManager::Instance()->getTexture("Static Shadow")));
+    	shadow.setOrigin(32, 32);
+    	shadow.setPosition(this->m_position);
+    	window.draw(shadow);
 		window.draw(*m_sprite);
 
         sf::RectangleShape health_bar_back(sf::Vector2f(20, 3));

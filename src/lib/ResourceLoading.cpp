@@ -11,6 +11,9 @@ void LoadResources()
 	R->registerTexture("data/texture/testBackground.png", "Menu Background");
 	R->registerTexture("data/texture/qb_panel.png", "Question Box Panel");
 	R->registerTexture("data/texture/static_gear.png", "Static Gear");
+	R->registerTexture("data/texture/static_ground_textures.png", "Static Ground Textures");
+	R->registerTexture("data/texture/static_shadow.png", "Static Shadow");
+	R->registerTexture("data/texture/static_road.png", "Static Road");
 	// Registering fonts
 	R->registerFont("data/font/Hanken-Book.ttf", "Global Font");
 	// Registering musics

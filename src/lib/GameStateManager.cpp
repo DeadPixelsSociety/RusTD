@@ -229,7 +229,7 @@ struct GameStateHandler
 {
 	const char* buttons[] = {"Yes", "No"};
 	std::function<void(int,void*)> callback =
-		[] (int index, void* data) -> void
+		[this] (int index, void* data) -> void
 		{
 			if(index == 0)
 			{

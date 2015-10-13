@@ -72,6 +72,7 @@ void Level::update(float dt)
 
 void Level::render(sf::RenderWindow& window)
 {
+/*
     int i;
     int size = this->m_path.size()-1;
     for(i=0 ; i<size ; i++)
@@ -83,8 +84,13 @@ void Level::render(sf::RenderWindow& window)
         };
         window.draw(line, 2, sf::Lines);
     }
-
+*/
     this->m_cl->render(window);
     this->m_tl->render(window);
     this->m_pl->render(window);
+}
+
+std::vector<sf::Vector2f>& Level::getPath()
+{
+	return m_path;
 }
