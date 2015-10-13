@@ -21,7 +21,7 @@ public:
     int getState(void);
     float getCurrentHealth(void);
 
-    void setPath(std::vector<sf::Vector2f>& path);
+    void setPath(std::vector<sf::Vector2i>& path);
 
     void addProjectile(Projectile* proj);
     void removeProjectile(Projectile* proj);
@@ -37,7 +37,7 @@ protected:
 	TCreep* m_tcreep;
 	float m_current_health;
 	sf::Vector2f m_position;
-    std::vector<sf::Vector2f> m_path;//?
+    std::vector<sf::Vector2i> m_path;//?
     ProjectileList* m_aProjectile;
     unsigned int m_path_point_index;
     int m_state;

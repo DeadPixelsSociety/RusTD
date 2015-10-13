@@ -88,8 +88,3 @@ void Level::render(sf::RenderWindow& window)
     this->m_tl->render(window);
     this->m_pl->render(window);
 }
-
-std::vector<sf::Vector2f>& Level::getPath()
-{
-	return m_path;
-}
