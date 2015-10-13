@@ -11,8 +11,8 @@ Level::Level(void)
     this->m_path.push_back(sf::Vector2i(5,5));
     this->m_path.push_back(sf::Vector2i(10,5));
     this->m_path.push_back(sf::Vector2i(10,2));
-    this->m_path.push_back(sf::Vector2i(5,2));
-    this->m_path.push_back(sf::Vector2i(5,12));
+    this->m_path.push_back(sf::Vector2i(7,2));
+    this->m_path.push_back(sf::Vector2i(7,12));
 //
     this->t_creep_spawn_cd = 100000.f;
 
@@ -87,4 +87,9 @@ void Level::render(sf::RenderWindow& window)
     this->m_cl->render(window);
     this->m_tl->render(window);
     this->m_pl->render(window);
+}
+
+std::vector<sf::Vector2i>& Level::getPath()
+{
+	return this->m_path;
 }

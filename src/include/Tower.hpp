@@ -5,7 +5,7 @@
 #include "CreepList.hpp"
 #include "Projectile.hpp"
 
-const sf::Vector2f COOLDOWN_BAR_RECTANGLE = sf::Vector2f(40.f,3.f);
+const sf::Vector2f COOLDOWN_BAR_RECTANGLE = sf::Vector2f(GRID_UNIT,3.f);
 const sf::Vector2f COOLDOWN_BAR_OFFSET = sf::Vector2f(0.f,0.f);
 
 class Tower

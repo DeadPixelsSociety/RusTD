@@ -24,14 +24,14 @@ class Map
 public:
 
 	explicit Map(uint32_t width, uint32_t height);
-	explicit Map(uint32_t width, uint32_t height, const std::vector<sf::Vector2f>& path);
+	explicit Map(uint32_t width, uint32_t height, const std::vector<sf::Vector2i>& path);
 	virtual ~Map(void);
 
 	virtual void generateBackground(void);
 	virtual void generateBackground(uint32_t width, uint32_t height);
-	virtual void generatePath(const std::vector<sf::Vector2f>& path);
-	virtual void generate(uint32_t width, uint32_t height, const std::vector<sf::Vector2f>& path);
-	virtual void generate(const std::vector<sf::Vector2f>& path);
+	virtual void generatePath(const std::vector<sf::Vector2i>& path);
+	virtual void generate(uint32_t width, uint32_t height, const std::vector<sf::Vector2i>& path);
+	virtual void generate(const std::vector<sf::Vector2i>& path);
 	virtual sf::Texture* getTexture(void);
 
 protected:

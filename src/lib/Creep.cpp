@@ -67,7 +67,7 @@ void Creep::setPath(std::vector<sf::Vector2i>& path)
 {
     this->m_path = path;
     this->m_next_point = getConvertedPosition(path[0]);
-    this->m_next_point.x += Random::NextFloat(-16.f, 16.f);
+    this->m_next_point.x += Random::NextFloat(16.f, 48.f);
     this->m_position = m_next_point;
     this->m_path_point_index = 0;
 }
@@ -111,8 +111,8 @@ void Creep::update(float dt)
         	this->m_position = m_next_point;
             this->m_path_point_index++;
             this->m_next_point = getConvertedPosition(this->m_path[this->m_path_point_index]);
-            this->m_next_point.x += Random::NextFloat(-16.f, 16.f);
-            this->m_next_point.y += Random::NextFloat(-16.f, 16.f);
+            this->m_next_point.x += Random::NextFloat(16.f, 48.f);
+            this->m_next_point.y += Random::NextFloat(16.f, 48.f);
         }
 
         float distance_x = m_next_point.x - this->m_position.x;

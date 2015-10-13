@@ -2,6 +2,7 @@
 #include "../include/Random.hpp"
 #include "../include/ResourceManager.hpp"
 #include "../include/tools.hpp"
+#include "../include/config.hpp"
 
 /*explicit*/ Map::Map(uint32_t width, uint32_t height)
 : m_texture(nullptr)
@@ -13,7 +14,7 @@
 	this->generateBackground();
 }
 
-/*explicit*/ Map::Map(uint32_t width, uint32_t height, const std::vector<sf::Vector2f>& path)
+/*explicit*/ Map::Map(uint32_t width, uint32_t height, const std::vector<sf::Vector2i>& path)
 : m_texture(nullptr)
 , m_image(nullptr)
 , m_textures(nullptr)
@@ -66,24 +67,24 @@
 		delete m_image;
 	}
 	m_image = new sf::Image();
-	m_image->create(64 * m_width, 64 * m_height, sf::Color::Transparent);
+	m_image->create(GRID_UNIT * m_width, GRID_UNIT * m_height, sf::Color::Transparent);
 	// Create textures
 	if(nullptr == m_textures)
 	{
 		sf::Image textures = ResourceManager::Instance()->getTexture("Static Ground Textures")->copyToImage();
 		m_textures = new sf::Image();
-		m_textures->create(64 * 5, 64 * 4, sf::Color::Transparent);
+		m_textures->create(GRID_UNIT * 5, GRID_UNIT * 4, sf::Color::Transparent);
 		sf::Image currentImage;
 		sf::Texture tmp;
 		for(int i = 0; i < 5; ++i)
 		{
-			tmp.loadFromImage(textures, sf::IntRect(i * 64, 0, 64, 64));
+			tmp.loadFromImage(textures, sf::IntRect(i * GRID_UNIT, 0, GRID_UNIT, GRID_UNIT));
 			currentImage = tmp.copyToImage();
-			m_textures->copy(currentImage, i * 64, 0, sf::IntRect(0, 0, 64, 64));
+			m_textures->copy(currentImage, i * GRID_UNIT, 0, sf::IntRect(0, 0, GRID_UNIT, GRID_UNIT));
 			for(int j = 1; j < 4; ++j)
 			{
 				flipTile(currentImage, 1);
-				m_textures->copy(currentImage, i * 64, j * 64, sf::IntRect(0, 0, 64, 64));
+				m_textures->copy(currentImage, i * GRID_UNIT, j * GRID_UNIT, sf::IntRect(0, 0, GRID_UNIT, GRID_UNIT));
 			}
 		}
 	}
@@ -97,7 +98,7 @@
 	generateBackground();
 }
 
-/*virtual*/ void Map::generatePath(const std::vector<sf::Vector2f>& path)
+/*virtual*/ void Map::generatePath(const std::vector<sf::Vector2i>& path)
 {
 	if(path.size() <= 1 || nullptr == m_texture)
 	{
@@ -109,34 +110,35 @@
 	int loopEnd = path.size() - 1;
 	for(int i = 0; i < loopEnd; ++i)
 	{
-		sf::Vector2f currentPoint = path[i];
-		sf::Vector2f nextPoint = path[i + 1];
-		int count = getDistanceBetweenPoints(currentPoint, nextPoint) / 32.f;
+		sf::Vector2f currentPoint = getConvertedPosition(path[i]);
+		sf::Vector2f nextPoint = getConvertedPosition(path[i + 1]);
+		int count = getDistanceBetweenPoints(currentPoint, nextPoint) / (GRID_UNIT / 2);
 		sf::Vector2f director = sf::Vector2f((nextPoint.x - currentPoint.x) / count, (nextPoint.y - currentPoint.y) / count);
 		for(int j = 0; j < count; ++j)
 		{
-			if(currentPoint.x > 32.f && currentPoint.y > 32.f)
+			if(currentPoint.x > 0.f && currentPoint.y > 0.f)
 			{
 				flipTile(texture, Random::NextInt(0, 3));
-				background.copy(texture, currentPoint.x - 32, currentPoint.y - 32, sf::IntRect(0, 0, 64, 64), true);
+				background.copy(texture, currentPoint.x, currentPoint.y, sf::IntRect(0, 0, GRID_UNIT, GRID_UNIT), true);
 			}
 			currentPoint += director;
 		}
 	}
-	if(path[loopEnd].x > 32.f && path[loopEnd].y > 32.f)
+	sf::Vector2f last_point = getConvertedPosition(path[loopEnd]);
+	if(last_point.x > 0.f && last_point.y > 0.f)
 	{
-		background.copy(texture, path[loopEnd].x - 32, path[loopEnd].y - 32, sf::IntRect(0, 0, 64, 64), true);
+		background.copy(texture, last_point.x, last_point.y, sf::IntRect(0, 0, GRID_UNIT, GRID_UNIT), true);
 	}
-	m_texture->loadFromImage(background, sf::IntRect(0, 0, m_width * 64, m_height * 64));
+	m_texture->loadFromImage(background, sf::IntRect(0, 0, m_width * GRID_UNIT, m_height * GRID_UNIT));
 }
 
-/*virtual*/ void Map::generate(uint32_t width, uint32_t height, const std::vector<sf::Vector2f>& path)
+/*virtual*/ void Map::generate(uint32_t width, uint32_t height, const std::vector<sf::Vector2i>& path)
 {
 	generateBackground(width, height);
 	generatePath(path);
 }
 
-/*virtual*/ void Map::generate(const std::vector<sf::Vector2f>& path)
+/*virtual*/ void Map::generate(const std::vector<sf::Vector2i>& path)
 {
 	generateBackground(m_width, m_height);
 	generatePath(path);
@@ -160,15 +162,15 @@
 	}
 	m_texture = new sf::Texture();
 	sf::Image img;
-	img.create(64 * m_width, 64 * m_height, sf::Color::Transparent);
+	img.create(GRID_UNIT * m_width, GRID_UNIT * m_height, sf::Color::Transparent);
 	for(uint32_t i = 0; i < m_width; ++i)
 	{
 		for(uint32_t j = 0; j < m_height; ++j)
 		{
-			img.copy(*m_textures, i * 64, j * 64, sf::IntRect(64 * (m_background[i][j] & 0xf), 64 * (m_background[i][j] >> 0x4), 64, 64));
+			img.copy(*m_textures, i * GRID_UNIT, j * GRID_UNIT, sf::IntRect(GRID_UNIT * (m_background[i][j] & 0xf), GRID_UNIT * (m_background[i][j] >> 0x4), GRID_UNIT, GRID_UNIT));
 		}
 	}
-	m_texture->loadFromImage(img, sf::IntRect(0, 0, m_width * 64, m_height * 64));
+	m_texture->loadFromImage(img, sf::IntRect(0, 0, m_width * GRID_UNIT, m_height * GRID_UNIT));
 }
 
 /*virtual*/ void Map::flipTile(sf::Image& tile, int rotationIndex)
@@ -178,11 +180,11 @@
 		return;
 	}
 	sf::Color flipping[4];
-	for(int i = 0; i < 32; ++i)
+	for(int i = 0; i < GRID_UNIT / 2; ++i)
 	{
-		for(int j = 0; j < 32; ++j)
+		for(int j = 0; j < GRID_UNIT / 2; ++j)
 		{
-			int a = 63 - i, b = 63 - j;
+			int a = GRID_UNIT - 1 - i, b = GRID_UNIT - 1 - j;
 			flipping[0] = tile.getPixel(i, j);
 			flipping[1] = tile.getPixel(b, i);
 			flipping[2] = tile.getPixel(a, b);

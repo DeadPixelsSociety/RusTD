@@ -19,7 +19,7 @@ public:
 	void update(float dt);
     void render(sf::RenderWindow& window);
 
-    std::vector<sf::Vector2f>& getPath(void);
+    std::vector<sf::Vector2i>& getPath(void);
 
 protected:
 	CreepList* m_cl;
