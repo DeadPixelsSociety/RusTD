@@ -87,22 +87,7 @@
 			}
 		}
 	}
-	if(nullptr != m_texture)
-	{
-		delete m_texture;
-	}
-	m_texture = new sf::Texture();
-	sf::Image img;
-	img.create(64 * m_width, 64 * m_height, sf::Color::Transparent);
-	for(uint32_t i = 0; i < m_width; ++i)
-	{
-		for(uint32_t j = 0; j < m_height; ++j)
-		{
-			//m_texture->loadFromImage(*m_textures, sf::IntRect(64 * (m_background[i][j] & 0xf), 64 * (m_background[i][j] >> 0x4), 64, 64));
-			img.copy(*m_textures, i * 64, j * 64, sf::IntRect(64 * (m_background[i][j] & 0xf), 64 * (m_background[i][j] >> 0x4), 64, 64));
-		}
-	}
-	m_texture->loadFromImage(img, sf::IntRect(0, 0, m_width * 64, m_height * 64));
+	drawBackground();
 }
 
 /*virtual*/ void Map::generateBackground(uint32_t width, uint32_t height)
@@ -118,6 +103,7 @@
 	{
 		return;
 	}
+	drawBackground();
 	sf::Image texture = ResourceManager::Instance()->getTexture("Static Road")->copyToImage();
 	sf::Image background = m_texture->copyToImage();
 	int loopEnd = path.size() - 1;
@@ -131,6 +117,7 @@
 		{
 			if(currentPoint.x > 32.f && currentPoint.y > 32.f)
 			{
+				flipTile(texture, Random::NextInt(0, 3));
 				background.copy(texture, currentPoint.x - 32, currentPoint.y - 32, sf::IntRect(0, 0, 64, 64), true);
 			}
 			currentPoint += director;
@@ -158,6 +145,30 @@
 /*virtual*/ sf::Texture* Map::getTexture()
 {
 	return m_texture;
+}
+
+/*virtual*/ void Map::drawBackground()
+{
+	if(nullptr == m_textures)
+	{
+		generateBackground();
+		return;
+	}
+	if(nullptr != m_texture)
+	{
+		delete m_texture;
+	}
+	m_texture = new sf::Texture();
+	sf::Image img;
+	img.create(64 * m_width, 64 * m_height, sf::Color::Transparent);
+	for(uint32_t i = 0; i < m_width; ++i)
+	{
+		for(uint32_t j = 0; j < m_height; ++j)
+		{
+			img.copy(*m_textures, i * 64, j * 64, sf::IntRect(64 * (m_background[i][j] & 0xf), 64 * (m_background[i][j] >> 0x4), 64, 64));
+		}
+	}
+	m_texture->loadFromImage(img, sf::IntRect(0, 0, m_width * 64, m_height * 64));
 }
 
 /*virtual*/ void Map::flipTile(sf::Image& tile, int rotationIndex)

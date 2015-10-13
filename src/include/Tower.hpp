@@ -5,7 +5,7 @@
 #include "CreepList.hpp"
 #include "Projectile.hpp"
 
-const float TOWER_SIZE_UNIT = 40.f;
+const float TOWER_SIZE_UNIT = 64.f;
 const sf::Vector2f COOLDOWN_BAR_RECTANGLE = sf::Vector2f(40.f,3.f);
 const sf::Vector2f COOLDOWN_BAR_OFFSET = sf::Vector2f(0.f,0.f);
 

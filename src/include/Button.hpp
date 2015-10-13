@@ -30,6 +30,7 @@ public:
 	virtual bool isMouseInButton(sf::RenderWindow& window) const;
 	virtual bool isInButton(int x, int y) const;
 	virtual sf::RectangleShape* getShape(void);
+	virtual sf::Text* getText(void);
 
 	virtual void update(float deltaTimeInSeconds);
 	virtual void render(sf::RenderWindow& window);

@@ -111,6 +111,10 @@
 {
 	return m_shape;
 }
+/*virtual*/ sf::Text* Button::getText()
+{
+	return m_text;
+}
 
 /*virtual*/ void Button::update(float deltaTimeInSeconds)
 {}

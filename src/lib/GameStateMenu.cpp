@@ -2,6 +2,7 @@
 #include "../include/ResourceManager.hpp"
 #include "../include/GameStateManager.hpp"
 #include "../include/GameStatePlaying.hpp"
+#include "../include/GameStateOptions.hpp"
 #include "../include/tools.hpp"
 #include "../include/Window.hpp"
 
@@ -57,7 +58,8 @@
 			m_mouseInOptions = false;
 			sf::RectangleShape* rs = m_buttonOption->getShape();
 			if(rs)rs->setRotation(0.f);
-			GameStateManager::Instance()->requestQuit();
+			//GameStateManager::Instance()->requestQuit();
+			GameStateManager::Instance()->pushState(new GameStateOptions(), false, false, false);
 		}
 	}
 }

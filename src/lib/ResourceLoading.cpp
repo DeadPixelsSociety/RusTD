@@ -14,6 +14,7 @@ void LoadResources()
 	R->registerTexture("data/texture/static_ground_textures.png", "Static Ground Textures");
 	R->registerTexture("data/texture/static_shadow.png", "Static Shadow");
 	R->registerTexture("data/texture/static_road.png", "Static Road");
+	R->registerTexture("data/texture/static_option_background.png", "Static Option Background");
 	// Registering fonts
 	R->registerFont("data/font/Hanken-Book.ttf", "Global Font");
 	// Registering musics

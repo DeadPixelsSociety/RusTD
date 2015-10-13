@@ -36,6 +36,7 @@ public:
 
 protected:
 
+	virtual void drawBackground(void);
 	virtual void flipTile(sf::Image& tile, int rotationIndex);
 
 	sf::Texture* m_texture;
