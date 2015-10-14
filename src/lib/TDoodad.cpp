@@ -215,5 +215,10 @@ void TDoodad::destroy_objects()
 	}
 }
 
+TTower* TDoodad::getTower(int i)
+{
+    return TDoodad::m_ttower[i];
+}
+
 std::vector<TTower*> TDoodad::m_ttower;
 std::vector<TCreep*> TDoodad::m_tcreep;
