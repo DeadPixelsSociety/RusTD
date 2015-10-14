@@ -25,8 +25,7 @@ int main()
     // Initializing resources
 	ResourceManager::Initialize();
 	LoadResources();
-	std::string sharePath("C:/Users/Teddy/Documents/GitHub/RusTD/src/share");
-	TDoodad::load_XML(sharePath);
+	TDoodad::load_XML(std::string("../src/share"));
 	// Creating GameStateManager and pushing first state
 	GameStateManager* gsm = new GameStateManager(window);
 	gsm->pushState(new GameStateMenu(), false, false, false);

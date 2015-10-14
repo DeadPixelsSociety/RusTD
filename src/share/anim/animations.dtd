@@ -1,0 +1,10 @@
+<!ELEMENT animations (animation*)>
+	<!ELEMENT animation EMPTY>
+		<!ATTLIST animation id CDATA #REQUIRED>
+		<!ATTLIST animation ms_per_frames CDATA #REQUIRED>
+		<!ATTLIST animation frame_count CDATA #REQUIRED>
+		<!ATTLIST animation frame_x CDATA #REQUIRED>
+		<!ATTLIST animation frame_y CDATA #REQUIRED>
+		<!ATTLIST animation frame_width CDATA #REQUIRED>
+		<!ATTLIST animation frame_height CDATA #REQUIRED>
+		

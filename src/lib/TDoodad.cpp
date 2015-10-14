@@ -8,7 +8,7 @@ TDoodad::TDoodad(void)
 TDoodad::~TDoodad(void)
 {}
 
-bool TDoodad::load_XML(std::string& share_path)
+bool TDoodad::load_XML(const std::string& share_path)
 {
 	std::string tower_path(share_path + "/tower");
 	std::string creep_path(share_path + "/creep");
@@ -16,7 +16,7 @@ bool TDoodad::load_XML(std::string& share_path)
 	return load_towerXML(tower_path) && load_creepXML(creep_path);
 }
 
-bool TDoodad::load_towerXML(std::string& tower_path)
+bool TDoodad::load_towerXML(const std::string& tower_path)
 {
 	DIR* rep = opendir(tower_path.c_str());
 
@@ -56,9 +56,8 @@ bool TDoodad::load_towerXML(std::string& tower_path)
 	return true;
 }
 
-bool TDoodad::load_towerFile(std::string& tower_file_path)
+bool TDoodad::load_towerFile(const std::string& tower_file_path)
 {
-    printf("%s\n",tower_file_path.c_str());
 	tinyxml2::XMLDocument level_file;
 
     tinyxml2::XMLError error =  level_file.LoadFile(tower_file_path.c_str());
@@ -112,7 +111,7 @@ bool TDoodad::load_towerFile(std::string& tower_file_path)
 	return true;
 }
 
-bool TDoodad::load_creepXML(std::string& creep_path)
+bool TDoodad::load_creepXML(const std::string& creep_path)
 {
 	DIR* rep = opendir(creep_path.c_str());
 
@@ -152,9 +151,8 @@ bool TDoodad::load_creepXML(std::string& creep_path)
 	return true;
 }
 
-bool TDoodad::load_creepFile(std::string& creep_file_path)
+bool TDoodad::load_creepFile(const std::string& creep_file_path)
 {
-    printf("%s\n",creep_file_path.c_str());
 	tinyxml2::XMLDocument level_file;
 
     tinyxml2::XMLError error =  level_file.LoadFile(creep_file_path.c_str());

@@ -8,6 +8,7 @@
 , m_state(ANIM_PLAY)
 , m_frameTime(frameMs)
 , m_timeSum(0.f)
+, m_originalRect(first)
 {}
 
 void Animation::update(float deltaTimeInSeconds)
@@ -46,4 +47,25 @@ void Animation::pause()
 {
 	m_state = ANIM_STOP;
 }
+
+sf::IntRect Animation::getCurrentRect() const
+{
+	return m_rect;
+}
+
+sf::IntRect Animation::getOriginalRect() const
+{
+	return m_originalRect;
+}
+
+float Animation::getFrameTime() const
+{
+	return m_frameTime;
+}
+
+int Animation::getFrameCount() const
+{
+	return m_count;
+}
+
 

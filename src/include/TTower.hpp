@@ -13,7 +13,12 @@ public:
 
 	~TTower(void);
 
-	Attack getAttack(void);
+	int getId(void) const;
+	std::string getName(void) const;
+	std::vector<TTower*>& getUpgrades(void);
+	Attack getAttack(void) const;
+	float getProjSpeed(void) const;
+	Construction getConstruction(void) const;
 
 protected:
 	int m_id;

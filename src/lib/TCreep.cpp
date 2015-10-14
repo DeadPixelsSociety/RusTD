@@ -24,12 +24,22 @@ TCreep::TCreep(int id, std::string name, Movement movement, Stats stats)
 TCreep::~TCreep(void)
 {}
 
-Movement TCreep::getMovement(void)
+int TCreep::getId() const
+{
+	return m_id;
+}
+
+std::string TCreep::getName() const
+{
+	return m_name;
+}
+
+Movement TCreep::getMovement(void) const
 {
     return this->m_movement;
 }
 
-Stats TCreep::getStats(void)
+Stats TCreep::getStats(void) const
 {
     return this->m_stats;
 }

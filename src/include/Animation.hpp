@@ -21,6 +21,10 @@ class Animation
 		void play(void);
 		void stop(void);
 		void pause(void);
+		sf::IntRect getCurrentRect(void) const;
+		sf::IntRect getOriginalRect(void) const;
+		float getFrameTime(void) const;
+		int getFrameCount(void) const;
 
 	protected:
 
@@ -31,7 +35,7 @@ class Animation
 		bool m_state;
 		float m_frameTime;
 		float m_timeSum;
-
+		sf::IntRect m_originalRect;
 };
 
 #endif // ANIMATION_HPP

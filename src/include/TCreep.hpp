@@ -11,8 +11,10 @@ public:
 
 	~TCreep(void);
 
-    Movement getMovement(void);
-    Stats getStats(void);
+	int getId(void) const;
+	std::string getName(void) const;
+    Movement getMovement(void) const;
+    Stats getStats(void) const;
 
 protected:
 	int m_id;

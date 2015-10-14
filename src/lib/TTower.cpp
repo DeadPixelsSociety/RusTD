@@ -1,6 +1,6 @@
 #include "../include/TTower.hpp"
 
-TTower::TTower(void)
+TTower::TTower()
 {
 	this->m_id = -1;
 	this->m_name = "";
@@ -28,10 +28,35 @@ TTower::TTower(int id, std::string name, Attack attack, Construction constr)
 	this->m_constr = constr;
 }
 
-TTower::~TTower(void)
+TTower::~TTower()
 {}
 
-Attack TTower::getAttack(void)
+int TTower::getId() const
+{
+	return m_id;
+}
+
+std::string TTower::getName() const
+{
+	return m_name;
+}
+
+std::vector<TTower*>& TTower::getUpgrades()
+{
+	return m_upgrades;
+}
+
+Attack TTower::getAttack() const
 {
     return this->m_attack;
+}
+
+float TTower::getProjSpeed() const
+{
+	return m_proj_speed;
+}
+
+Construction TTower::getConstruction() const
+{
+	return m_constr;
 }
