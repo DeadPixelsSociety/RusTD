@@ -2,12 +2,12 @@
 
 #include "../include/tools.hpp"
 #include "../include/Window.hpp"
-#include "../include/Level.hpp"
 #include "../include/ResourceManager.hpp"
 #include "../include/ResourceLoading.hpp"
 #include "../include/GameStateManager.hpp"
 #include "../include/GameStateMenu.hpp"
 #include "../include/TDoodad.hpp"
+#include "../include/Random.hpp"
 
 #include <iostream>
 
@@ -20,6 +20,8 @@ int main()
     sf::RenderWindow& window = *(new sf::RenderWindow(Window::windowedVideoMode, GAME_TITLE, sf::Style::Titlebar | sf::Style::Close));
     resizeWindow(window, Window::windowedVideoMode.width, Window::windowedVideoMode.height);
     window.setFramerateLimit(300);
+    // Seed random class
+    Random::SetSeed(time(NULL));
     // frame time counter
     sf::Clock clockwerk;
     // Initializing resources

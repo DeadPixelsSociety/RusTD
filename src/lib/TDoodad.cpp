@@ -213,5 +213,23 @@ void TDoodad::destroy_objects()
 	}
 }
 
+TCreep* TDoodad::getTCreep(int i)
+{
+    if(i>(int)TDoodad::m_tcreep.size() || i<0)
+    {
+        return nullptr;
+    }
+    return TDoodad::m_tcreep[i];
+}
+
+TTower* TDoodad::getTTower(int i)
+{
+    if(i>(int)TDoodad::m_ttower.size() || i<0)
+    {
+        return nullptr;
+    }
+    return TDoodad::m_ttower[i];
+}
+
 std::vector<TTower*> TDoodad::m_ttower;
 std::vector<TCreep*> TDoodad::m_tcreep;
