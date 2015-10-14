@@ -35,7 +35,6 @@ protected:
     TowerList* m_tl;
     std::vector<sf::Vector2i> m_path;
     float t_creep_spawn_cd;
-	//Level* m_level;
 	std::vector<Tower*> m_towers;
 	std::vector<TTower*> m_ttowers;
 	Map* m_map;

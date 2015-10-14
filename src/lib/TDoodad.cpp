@@ -58,7 +58,6 @@ bool TDoodad::load_towerXML(std::string& tower_path)
 
 bool TDoodad::load_towerFile(std::string& tower_file_path)
 {
-    printf("%s\n",tower_file_path.c_str());
 	tinyxml2::XMLDocument level_file;
 
     tinyxml2::XMLError error =  level_file.LoadFile(tower_file_path.c_str());
@@ -154,7 +153,6 @@ bool TDoodad::load_creepXML(std::string& creep_path)
 
 bool TDoodad::load_creepFile(std::string& creep_file_path)
 {
-    printf("%s\n",creep_file_path.c_str());
 	tinyxml2::XMLDocument level_file;
 
     tinyxml2::XMLError error =  level_file.LoadFile(creep_file_path.c_str());
@@ -215,8 +213,21 @@ void TDoodad::destroy_objects()
 	}
 }
 
-TTower* TDoodad::getTower(int i)
+TCreep* TDoodad::getTCreep(int i)
 {
+    if(i>(int)TDoodad::m_tcreep.size() || i<0)
+    {
+        return nullptr;
+    }
+    return TDoodad::m_tcreep[i];
+}
+
+TTower* TDoodad::getTTower(int i)
+{
+    if(i>(int)TDoodad::m_ttower.size() || i<0)
+    {
+        return nullptr;
+    }
     return TDoodad::m_ttower[i];
 }
 

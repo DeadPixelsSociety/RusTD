@@ -16,7 +16,11 @@ public:
 	static bool load_creepFile(std::string& creep_file_path);
 	static void destroy_objects();
 
-    static TTower* getTower(int i);
+    static TCreep* getTCreep(int i);
+    static TTower* getTTower(int i);
+
+    //static TCreep* getTCreepByID(int id);
+    //static TTower* getTTowerByID(int id);
 
 protected:
 	static std::vector<TTower*> m_ttower;
