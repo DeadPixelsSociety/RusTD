@@ -3,6 +3,14 @@
 
 #include <SFML/Graphics.hpp>
 
+#define SHARE_DIR "../src/share" // !! No ending '/'
+#define DATA_DIR "data/" // !! With ending '/'
+
+#define LOAD_XML 0
+#define LOAD_BIN 1
+
+#define ENTITIES_LOADING_MODE LOAD_XML // Use LOAD_BIN only if data are compiled in data directory
+
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 

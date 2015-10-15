@@ -51,11 +51,6 @@ Attack TTower::getAttack() const
     return this->m_attack;
 }
 
-float TTower::getProjSpeed() const
-{
-	return m_proj_speed;
-}
-
 Construction TTower::getConstruction() const
 {
 	return m_constr;

@@ -15,7 +15,7 @@ Creep::Creep(void)
 	this->m_aProjectile = new ProjectileList();
 	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Basic Robot")));
 	this->m_sprite->setOrigin(32, 32);
-	this->m_animation = new Animation(m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
+	this->m_animation = new Animation(0, "", m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
 	this->m_rand_dead = Random::NextFloat(0, 360);
 }
 
@@ -32,7 +32,7 @@ Creep::Creep(TCreep* tc)
 	this->m_aProjectile = new ProjectileList();
 	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Basic Robot")));
 	this->m_sprite->setOrigin(32, 32);
-	this->m_animation = new Animation(m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
+	this->m_animation = new Animation(0, "", m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
 	this->m_rand_dead = Random::NextFloat(0, 360);
 }
 

@@ -3,6 +3,7 @@
 
 #include "TTower.hpp"
 #include "TCreep.hpp"
+#include "Animation.hpp"
 
 class TDoodad
 {
@@ -18,6 +19,7 @@ public:
 
     static TCreep* getTCreep(int i);
     static TTower* getTTower(int i);
+    static Animation* getAnimation(int i);
 
     //static TCreep* getTCreepByID(int id);
     //static TTower* getTTowerByID(int id);
@@ -25,6 +27,7 @@ public:
 protected:
 	static std::vector<TTower*> m_ttower;
 	static std::vector<TCreep*> m_tcreep;
+	static std::vector<Animation*> m_animation;
 
 private:
 	TDoodad(void);

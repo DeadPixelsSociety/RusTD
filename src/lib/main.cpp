@@ -19,7 +19,7 @@ int main()
 	Window::Initialize();
     sf::RenderWindow& window = *(new sf::RenderWindow(Window::windowedVideoMode, GAME_TITLE, sf::Style::Titlebar | sf::Style::Close));
     resizeWindow(window, Window::windowedVideoMode.width, Window::windowedVideoMode.height);
-    window.setFramerateLimit(300);
+    window.setFramerateLimit(120);
     // Seed random class
     Random::SetSeed(time(NULL));
     // frame time counter
@@ -27,7 +27,7 @@ int main()
     // Initializing resources
 	ResourceManager::Initialize();
 	LoadResources();
-	TDoodad::load_XML(std::string("../src/share"));
+	TDoodad::load_XML(SHARE_DIR);
 	// Creating GameStateManager and pushing first state
 	GameStateManager* gsm = new GameStateManager(window);
 	gsm->pushState(new GameStateMenu(), false, false, false);

@@ -2,5 +2,5 @@
 <!DOCTYPE bibliography SYSTEM "animations.dtd" >
 
 <animations>
-	<animation id="basic_creep_walking" ms_per_frames="100" frame_count="10" frame_x="0" frame_y="0" frame_width="64" frame_height="64"/>
+	<animation id="1" name="basic_creep_walking" ms_per_frames="100" frame_count="10" frame_x="0" frame_y="0" frame_width="64" frame_height="64"/>
 </animations>

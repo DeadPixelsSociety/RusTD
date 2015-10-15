@@ -1,7 +1,9 @@
 #include "../include/Animation.hpp"
 
-/*explicit*/ Animation::Animation(sf::Sprite* sprite, sf::IntRect first, int count, int frameMs)
-: m_sprite(sprite)
+/*explicit*/ Animation::Animation(int id, const std::string& name, sf::Sprite* sprite, sf::IntRect first, int count, int frameMs)
+: m_id(id)
+, m_name(name)
+, m_sprite(sprite)
 , m_count(count)
 , m_index(0)
 , m_rect(first)
@@ -47,6 +49,17 @@ void Animation::pause()
 {
 	m_state = ANIM_STOP;
 }
+
+int Animation::getId() const
+{
+	return m_id;
+}
+
+std::string Animation::getName() const
+{
+	return m_name;
+}
+
 
 sf::IntRect Animation::getCurrentRect() const
 {
