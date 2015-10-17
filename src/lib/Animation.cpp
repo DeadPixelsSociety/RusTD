@@ -13,6 +13,11 @@
 , m_originalRect(first)
 {}
 
+void Animation::setSprite(sf::Sprite* sprite)
+{
+	m_sprite = sprite;
+}
+
 void Animation::update(float deltaTimeInSeconds)
 {
 	m_timeSum += (deltaTimeInSeconds * 1000);
@@ -29,14 +34,20 @@ void Animation::update(float deltaTimeInSeconds)
 		m_timeSum = 0.f;
 	}
 	m_rect.left = m_rect.width * m_index;
-	m_sprite->setTextureRect(m_rect);
+	if(nullptr != m_sprite)
+	{
+		m_sprite->setTextureRect(m_rect);
+	}
 }
 
 void Animation::play()
 {
 	m_state = ANIM_PLAY;
 	m_rect.left = m_rect.width * m_index;
-	m_sprite->setTextureRect(m_rect);
+	if(nullptr != m_sprite)
+	{
+		m_sprite->setTextureRect(m_rect);
+	}
 }
 
 void Animation::stop()

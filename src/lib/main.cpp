@@ -27,7 +27,19 @@ int main()
     // Initializing resources
 	ResourceManager::Initialize();
 	LoadResources();
+#if ENTITIES_LOADING_MODE == LOAD_XML
+	// Load doodad from xml files
 	TDoodad::load_XML(SHARE_DIR);
+#else // ENTITIES_LOADING_MODE != LOAD_XML
+	// Load doodad from binary file
+	Data* data = new Data("data.bin");
+	data->freeTextures();
+	data->freeFonts();
+	data->freeSounds();
+	TDoodad::load_Data(*data);
+	/// \todo Load resources from data
+	delete data;
+#endif // ENTITIES_LOADING_MODE = LOAD_XML
 	// Creating GameStateManager and pushing first state
 	GameStateManager* gsm = new GameStateManager(window);
 	gsm->pushState(new GameStateMenu(), false, false, false);
@@ -80,6 +92,7 @@ int main()
 
 	delete gsm;
 	ResourceManager::Destroy();
+	TDoodad::destroy_objects();
 	delete &window;
 
     return 0;

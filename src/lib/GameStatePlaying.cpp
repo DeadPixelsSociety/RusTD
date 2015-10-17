@@ -20,8 +20,8 @@
 //
     this->t_creep_spawn_cd = 100000.f;
 
-    TTower* tt2 = TDoodad::getTTower(0);
-    TTower* tt3 = TDoodad::getTTower(1);
+    TTower* tt2 = TDoodad::getTTower(5);
+    TTower* tt3 = TDoodad::getTTower(6);
 
     m_towers.push_back(new Tower(tt2, sf::Vector2i(10,8)));
     this->addTower(m_towers.back());

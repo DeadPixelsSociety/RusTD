@@ -19,6 +19,7 @@ class Animation
 public:
 
 	explicit Animation(int id, const std::string& name, sf::Sprite* sprite, sf::IntRect first, int count, int frameMs);
+	void setSprite(sf::Sprite* sprite);
 	void update(float deltaTimeInMs);
 	void play(void);
 	void stop(void);

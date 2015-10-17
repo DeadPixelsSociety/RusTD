@@ -15,14 +15,14 @@ public:
 
 	int getId(void) const;
 	std::string getName(void) const;
-	std::vector<TTower*>& getUpgrades(void);
+	std::vector<int>& getUpgrades(void);
 	Attack getAttack(void) const;
 	Construction getConstruction(void) const;
 
 protected:
 	int m_id;
 	std::string m_name;
-	std::vector<TTower*> m_upgrades;
+	std::vector<int> m_upgrades;
 	Attack m_attack;
 	Construction m_constr;
 };

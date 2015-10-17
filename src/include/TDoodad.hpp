@@ -4,6 +4,7 @@
 #include "TTower.hpp"
 #include "TCreep.hpp"
 #include "Animation.hpp"
+#include "DataCompiler.hpp"
 
 class TDoodad
 {
@@ -17,6 +18,8 @@ public:
 	static bool load_creepFile(const std::string& creep_file_path);
 	static void destroy_objects();
 
+	static bool load_Data(Data& data, bool destroyExisting = true);
+
     static TCreep* getTCreep(int i);
     static TTower* getTTower(int i);
     static Animation* getAnimation(int i);
@@ -25,9 +28,9 @@ public:
     //static TTower* getTTowerByID(int id);
 
 protected:
-	static std::vector<TTower*> m_ttower;
-	static std::vector<TCreep*> m_tcreep;
-	static std::vector<Animation*> m_animation;
+	static std::map<int, TTower*> m_ttower;
+	static std::map<int, TCreep*> m_tcreep;
+	static std::map<int, Animation*> m_animation;
 
 private:
 	TDoodad(void);

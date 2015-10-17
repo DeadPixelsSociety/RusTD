@@ -1,11 +1,12 @@
 #include "../include/TDoodad.hpp"
 #include "../include/tinyxml2.h"
 #include <dirent.h>
+#include <iostream>
 
-TDoodad::TDoodad(void)
+TDoodad::TDoodad()
 {}
 
-TDoodad::~TDoodad(void)
+TDoodad::~TDoodad()
 {}
 
 bool TDoodad::load_XML(const std::string& share_path)
@@ -106,7 +107,15 @@ bool TDoodad::load_towerFile(const std::string& tower_file_path)
 	constructionTower.time = tower->FirstChildElement("construction")->FloatAttribute("time");
 	constructionTower.foundation = foundationTower;
 
-    m_ttower.push_back(new TTower(tower->IntAttribute("id"), std::string(tower->FirstChildElement("name")->GetText()), attackTower, constructionTower));
+	int id = tower->IntAttribute("id");
+	if(m_ttower.find(id) == m_ttower.end())
+	{
+		m_ttower[id] = new TTower(id, std::string(tower->FirstChildElement("name")->GetText()), attackTower, constructionTower);
+	}
+	else
+	{
+		fprintf(stderr, "TTower with id [%d] already exists.\n", id);
+	}
 
 	return true;
 }
@@ -188,58 +197,93 @@ bool TDoodad::load_creepFile(const std::string& creep_file_path)
     statsCreep.health = creep->FirstChildElement("stats")->FloatAttribute("health");
     statsCreep.health_regen = creep->FirstChildElement("stats")->FloatAttribute("health_regen");
 
-    m_tcreep.push_back(new TCreep(creep->IntAttribute("id"), std::string(creep->FirstChildElement("name")->GetText()), movementCreep, statsCreep));
+
+	int id = creep->IntAttribute("id");
+	if(m_tcreep.find(id) == m_tcreep.end())
+	{
+		m_tcreep[id] = new TCreep(id, std::string(creep->FirstChildElement("name")->GetText()), movementCreep, statsCreep);
+	}
+	else
+	{
+		fprintf(stderr, "TCreep with id [%d] already exists.\n", id);
+	}
 
 	return true;
 }
 
 void TDoodad::destroy_objects()
 {
-	TTower* tmpt;
-	TCreep* tmpc;
-
-	while(!m_ttower.empty())
+	for(std::map<int,TTower*>::iterator it = m_ttower.begin(); it != m_ttower.end(); ++it)
 	{
-		tmpt = m_ttower.back();
-		delete tmpt;
-		m_ttower.pop_back();
+		delete it->second;
 	}
-
-	while(!m_tcreep.empty())
+	for(std::map<int,TCreep*>::iterator it = m_tcreep.begin(); it != m_tcreep.end(); ++it)
 	{
-		tmpc = m_tcreep.back();
-		delete tmpc;
-		m_tcreep.pop_back();
+		delete it->second;
 	}
+	for(std::map<int,Animation*>::iterator it = m_animation.begin(); it != m_animation.end(); ++it)
+	{
+		delete it->second;
+	}
+}
+
+bool TDoodad::load_Data(Data& data, bool destroyExisting)
+{
+	std::vector<TCreep*> tc = data.getTCreeps();
+	std::vector<TTower*> tt = data.getTTowers();
+	std::vector<Animation*> anim = data.getAnimations();
+	if(destroyExisting)
+	{
+		destroy_objects();
+	}
+	for(uint32_t i = 0; i < tc.size(); ++i)
+	{
+		m_tcreep[tc[i]->getId()] = tc[i];
+	}
+	for(uint32_t i = 0; i < tt.size(); ++i)
+	{
+		m_ttower[tt[i]->getId()] = tt[i];
+	}
+	for(uint32_t i = 0; i < anim.size(); ++i)
+	{
+		m_animation[anim[i]->getId()] = anim[i];
+	}
+	return true;
 }
 
 TCreep* TDoodad::getTCreep(int i)
 {
-    if(i>=(int)TDoodad::m_tcreep.size() || i<0)
-    {
-        return nullptr;
-    }
-    return TDoodad::m_tcreep[i];
+	std::map<int,TCreep*>::iterator it = m_tcreep.find(i);
+	if(it == m_tcreep.end())
+	{
+		std::cerr << "Not found : TCreep with id [" << i << "]" << std::endl;
+		return nullptr;
+	}
+	return it->second;
 }
 
 TTower* TDoodad::getTTower(int i)
 {
-    if(i>=(int)TDoodad::m_ttower.size() || i<0)
-    {
-        return nullptr;
-    }
-    return TDoodad::m_ttower[i];
+    std::map<int,TTower*>::iterator it = m_ttower.find(i);
+	if(it == m_ttower.end())
+	{
+		std::cerr << "Not found : TTower with id [" << i << "]" << std::endl;
+		return nullptr;
+	}
+	return it->second;
 }
 
 Animation* TDoodad::getAnimation(int i)
 {
-    if(i>=(int)TDoodad::m_animation.size() || i<0)
-    {
-        return nullptr;
-    }
-    return TDoodad::m_animation[i];
+    std::map<int,Animation*>::iterator it = m_animation.find(i);
+	if(it == m_animation.end())
+	{
+		std::cerr << "Not found : Animation with id [" << i << "]" << std::endl;
+		return nullptr;
+	}
+	return it->second;
 }
 
-std::vector<TTower*> TDoodad::m_ttower;
-std::vector<TCreep*> TDoodad::m_tcreep;
-std::vector<Animation*> TDoodad::m_animation;
+std::map<int, TTower*> TDoodad::m_ttower;
+std::map<int, TCreep*> TDoodad::m_tcreep;
+std::map<int, Animation*> TDoodad::m_animation;

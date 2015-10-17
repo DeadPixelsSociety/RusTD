@@ -41,7 +41,7 @@ std::string TTower::getName() const
 	return m_name;
 }
 
-std::vector<TTower*>& TTower::getUpgrades()
+std::vector<int>& TTower::getUpgrades()
 {
 	return m_upgrades;
 }

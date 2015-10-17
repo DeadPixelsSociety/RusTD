@@ -32,12 +32,16 @@ Creep::Creep(TCreep* tc)
 	this->m_aProjectile = new ProjectileList();
 	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Basic Robot")));
 	this->m_sprite->setOrigin(32, 32);
+	// TODO get the animation from index and doodad, replace by following two lines
+	// this->m_animation = TDoodad::getAnimation(0);
+	// this->m_animation->setSprite(m_sprite);
 	this->m_animation = new Animation(0, "", m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
 	this->m_rand_dead = Random::NextFloat(0, 360);
 }
 
 Creep::~Creep(void)
 {
+	// TODO suppress delete animation
 	delete this->m_animation;
 	delete this->m_sprite;
 	delete this->m_aProjectile;

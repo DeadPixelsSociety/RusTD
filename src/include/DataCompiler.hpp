@@ -11,7 +11,7 @@
 
 #define COMPILE_UNITS true
 #define COMPILE_TEXTURES true
-#define COMPILE_FONTS false
+#define COMPILE_FONTS true
 #define COMPILE_MUSICS false
 #define COMPILE_SOUNDS false
 
@@ -46,9 +46,11 @@ union byte_accessor
 
 struct file_info
 {
+	file_info():file_name(""),file_path(""),file_size(0),data(nullptr){}
 	std::string file_name;
 	std::string file_path;
 	int file_size;
+	char* data;
 };
 
 struct data_save
@@ -111,6 +113,46 @@ bool dc_extractString(std::string* value, data_byte data_bloc, int* data_pointer
 bool dc_extractInteger(int* value, data_byte data_bloc, int* data_pointer, int bloc_size);
 bool dc_extractFloat(float* value, data_byte data_bloc, int* data_pointer, int bloc_size);
 bool dc_extractChar(char* value, data_byte data_bloc, int* data_pointer, int bloc_size);
+
+class Data
+{
+public:
+	Data(const std::string& filename);
+	~Data(void);
+
+	bool loadingState();
+
+	std::vector<TCreep*> getTCreeps(void);
+	std::vector<TTower*> getTTowers(void);
+	std::vector<Animation*> getAnimations(void);
+	std::vector<file_info> getTextures(void);
+	std::vector<file_info> getFonts(void);
+	std::vector<file_info> getMusics(void);
+	std::vector<file_info> getSounds(void);
+
+	void freeTCreeps(void);
+	void freeTTowers(void);
+	void freeAnimations(void);
+	void freeTextures(void);
+	void freeFonts(void);
+	void freeMusics(void);
+	void freeSounds(void);
+
+protected:
+
+	int m_state;
+
+	bool m_ftc, m_ftt, m_fan, m_fte, m_ffo, m_fmu, m_fso;
+
+	std::vector<TCreep*> m_tcreep;
+	std::vector<TTower*> m_ttower;
+	std::vector<Animation*> m_animations;
+	std::vector<file_info> m_textures;
+	std::vector<file_info> m_fonts;
+	std::vector<file_info> m_musics;
+	std::vector<file_info> m_sounds;
+
+};
 
 #endif
 
