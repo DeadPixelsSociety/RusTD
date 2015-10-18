@@ -91,7 +91,6 @@ type32_converter setByte(type32_converter tc, int b0_to_3, uint8_t b)
 }
 
 #include <iostream>
-#include <iomanip>
 
 int dc_error()
 {
@@ -138,7 +137,7 @@ bool dc_compileTower(TTower* tt, data_byte data_bloc, int* data_pointer, int blo
 	int id = tt->getId();
 	char trueChar = 't', falseChar = 'f';
 	std::string name = tt->getName();
-	std::vector<TTower*> upgrades = tt->getUpgrades();
+	std::vector<int> upgrades = tt->getUpgrades();
 	int usize = upgrades.size();
 	Attack attack = tt->getAttack();
 	Construction construction = tt->getConstruction();
@@ -240,7 +239,11 @@ bool dc_compileChar(char* value, data_byte data_bloc, int* data_pointer, int blo
 	if(bloc_size <= *data_pointer + 1)return false;
 	type8_converter t8c;
 	t8c.byte = *value;
-	data_bloc[*data_pointer] = t8c.ubyte & (*mask)[mask_pointer];
+#ifdef HIDE_DATA
+	data_bloc[*data_pointer] = t8c.ubyte ^ (*mask)[mask_pointer];
+#else
+	data_bloc[*data_pointer] = t8c.ubyte;
+#endif
 	control_sum = control_sum ^ data_bloc[*data_pointer];
 	++mask_pointer;
 	if(mask_pointer >= (int)(mask->size()))mask_pointer = 0;
@@ -297,25 +300,31 @@ int main(int argc, char** argv)
 		TTower* tt = nullptr;
 		Animation* anim = nullptr;
 		std::cout << "Counting TCreep elements..." << std::endl;
-		while(nullptr != (tc = TDoodad::getTCreep(ds.tc_count)))
+		std::vector<int> ids = TDoodad::getTCreepIds();
+		for(uint32_t i = 0; i < ids.size(); ++i)
 		{
+			tc = TDoodad::getTCreep(ids[i]);
 			++ds.tc_count;
 			alloc_size += 28 + tc->getName().size();
-			std::cout << std::setfill(' ') << std::setw(10) << ds.tc_count << " - Allocation size:" << std::setfill(' ') << std::setw(10) << alloc_size << "\n";
+			std::cout << ds.tc_count << " - Allocation size: " << alloc_size << "\n";
 		}
 		std::cout << "Counting TTower elements..." << std::endl;
-		while(nullptr != (tt = TDoodad::getTTower(ds.tt_count)))
+		ids = TDoodad::getTTowerIds();
+		for(uint32_t i = 0; i < ids.size(); ++i)
 		{
+			tt = TDoodad::getTTower(ids[i]);
 			++ds.tt_count;
 			alloc_size += 40 + tt->getUpgrades().size() + (int)(UnitType::UNITTYPE_COUNT) + tt->getName().size();
-			std::cout << std::setfill(' ') << std::setw(10) << ds.tt_count << " - Allocation size:" << std::setfill(' ') << std::setw(10) << alloc_size << "\n";
+			std::cout << ds.tt_count << " - Allocation size: " << alloc_size << "\n";
 		}
 		std::cout << "Counting Animation elements..." << std::endl;
-		while(nullptr != (anim = TDoodad::getAnimation(ds.anim_count)))
+		ids = TDoodad::getAnimationIds();
+		for(uint32_t i = 0; i < ids.size(); ++i)
 		{
+			anim = TDoodad::getAnimation(ids[i]);
 			++ds.anim_count;
 			alloc_size += 32 + anim->getName().size();
-			std::cout << std::setfill(' ') << std::setw(10) << ds.anim_count << " - Allocation size:" << std::setfill(' ') << std::setw(10) << alloc_size << "\n";
+			std::cout << ds.anim_count << " - Allocation size: " << alloc_size << "\n";
 		}
 		alloc_size += 12;
 	}
@@ -356,7 +365,7 @@ int main(int argc, char** argv)
 					f.close();
 				}
 			}
-			std::cout << std::setfill(' ') << std::setw(10) << count_textures << " - Allocation size:" << std::setfill(' ') << std::setw(10) << alloc_size << "\n";
+			std::cout << count_textures << " - Allocation size: " << alloc_size << "\n";
 		}
 		if (-1 == closedir(rep))
 		{
@@ -401,7 +410,7 @@ int main(int argc, char** argv)
 					f.close();
 				}
 			}
-			std::cout << std::setfill(' ') << std::setw(10) << count_fonts << " - Allocation size:" << std::setfill(' ') << std::setw(10) << alloc_size << "\n";
+			std::cout << count_fonts << " - Allocation size: " << alloc_size << "\n";
 		}
 		if (-1 == closedir(rep))
 		{
@@ -426,31 +435,37 @@ int main(int argc, char** argv)
 		tmp = ds.tc_count;
 		ds.tc_count = 0;
 		std::cout << "Compiling TCreep elements..." << std::endl;
-		while(nullptr != (tc = TDoodad::getTCreep(ds.tc_count)))
+		std::vector<int> ids = TDoodad::getTCreepIds();
+		for(uint32_t i = 0; i < ids.size(); ++i)
 		{
+			tc = TDoodad::getTCreep(ids[i]);
 			++ds.tc_count;
 			dc_compileCreep(tc, db, &data_pointer, alloc_size);
-			std::cout << std::setfill(' ') << std::setw(10) << ds.tc_count << " / " << tmp << "\n";
+			std::cout << ds.tc_count << " / " << tmp << "\n";
 		}
 		dc_compileInteger(&(ds.tt_count), db, &data_pointer, alloc_size);
 		tmp = ds.tt_count;
 		ds.tt_count = 0;
 		std::cout << "Compiling TTower elements..." << std::endl;
-		while(nullptr != (tt = TDoodad::getTTower(ds.tt_count)))
+		ids = TDoodad::getTTowerIds();
+		for(uint32_t i = 0; i < ids.size(); ++i)
 		{
+			tt = TDoodad::getTTower(ids[i]);
 			++ds.tt_count;
 			dc_compileTower(tt, db, &data_pointer, alloc_size);
-			std::cout << std::setfill(' ') << std::setw(10) << ds.tt_count << " / " << tmp << "\n";
+			std::cout << ds.tt_count << " / " << tmp << "\n";
 		}
 		dc_compileInteger(&(ds.anim_count), db, &data_pointer, alloc_size);
 		tmp = ds.anim_count;
 		ds.anim_count = 0;
 		std::cout << "Compiling Animation elements..." << std::endl;
-		while(nullptr != (anim = TDoodad::getAnimation(ds.anim_count)))
+		ids = TDoodad::getAnimationIds();
+		for(uint32_t i = 0; i < ids.size(); ++i)
 		{
+			anim = TDoodad::getAnimation(ids[i]);
 			++ds.anim_count;
 			dc_compileAnimation(anim, db, &data_pointer, alloc_size);
-			std::cout << std::setfill(' ') << std::setw(10) << ds.anim_count << " / " << tmp << "\n";
+			std::cout << ds.anim_count << " / " << tmp << "\n";
 		}
 	}
 
@@ -460,7 +475,7 @@ int main(int argc, char** argv)
 		std::cout << "Compiling textures" << std::endl;
 		int s = ds.texture_files.size();
 		dc_compileInteger(&s, db, &data_pointer, alloc_size);
-		std::cout << std::setfill(' ') << std::setw(10) << 0 << " / " << s << "\n";
+		std::cout << "0 / " << s << "\n";
         for(int i = 0; i < s; ++i)
 		{
 			dc_compileString(&(ds.texture_files[i].file_name), db, &data_pointer, alloc_size);
@@ -479,7 +494,7 @@ int main(int argc, char** argv)
 				dc_compileChar(&c, db, &data_pointer, alloc_size);
 			}
 			f.close();
-			std::cout << std::setfill(' ') << std::setw(10) << i << " / " << s << "\n";
+			std::cout << i+1 << " / " << s << "\n";
 		}
 	}
 
@@ -508,7 +523,7 @@ int main(int argc, char** argv)
 				dc_compileChar(&c, db, &data_pointer, alloc_size);
 			}
 			f.close();
-			std::cout << std::setfill(' ') << std::setw(10) << i << " / " << s << "\n";
+			std::cout << i+1 << " / " << s << "\n";
 		}
 	}
 
@@ -645,16 +660,16 @@ bool dc_extractInteger(int* value, data_byte data_bloc, int* data_pointer, int b
 	char c;
 	if(!dc_extractChar(&c, data_bloc, data_pointer, bloc_size))return false;
 	t8c.schar = c;
-	setByte(*value, 0, t8c.ubyte);
+	*value = setByte(*value, 0, t8c.ubyte);
 	if(!dc_extractChar(&c, data_bloc, data_pointer, bloc_size))return false;
 	t8c.schar = c;
-	setByte(*value, 1, t8c.ubyte);
+	*value = setByte(*value, 1, t8c.ubyte);
 	if(!dc_extractChar(&c, data_bloc, data_pointer, bloc_size))return false;
 	t8c.schar = c;
-	setByte(*value, 2, t8c.ubyte);
+	*value = setByte(*value, 2, t8c.ubyte);
 	if(!dc_extractChar(&c, data_bloc, data_pointer, bloc_size))return false;
 	t8c.schar = c;
-	setByte(*value, 3, t8c.ubyte);
+	*value = setByte(*value, 3, t8c.ubyte);
 	return true;
 }
 
@@ -665,23 +680,27 @@ bool dc_extractFloat(float* value, data_byte data_bloc, int* data_pointer, int b
 	char c;
 	if(!dc_extractChar(&c, data_bloc, data_pointer, bloc_size))return false;
 	t8c.schar = c;
-	setByte(*value, 0, t8c.ubyte);
+	*value = setByte(*value, 0, t8c.ubyte);
 	if(!dc_extractChar(&c, data_bloc, data_pointer, bloc_size))return false;
 	t8c.schar = c;
-	setByte(*value, 1, t8c.ubyte);
+	*value = setByte(*value, 1, t8c.ubyte);
 	if(!dc_extractChar(&c, data_bloc, data_pointer, bloc_size))return false;
 	t8c.schar = c;
-	setByte(*value, 2, t8c.ubyte);
+	*value = setByte(*value, 2, t8c.ubyte);
 	if(!dc_extractChar(&c, data_bloc, data_pointer, bloc_size))return false;
 	t8c.schar = c;
-	setByte(*value, 3, t8c.ubyte);
+	*value = setByte(*value, 3, t8c.ubyte);
 	return true;
 }
 
 bool dc_extractChar(char* value, data_byte data_bloc, int* data_pointer, int bloc_size)
 {
 	if(bloc_size <= *data_pointer + 1)return false;
-	*value = data_bloc[*data_pointer] & (*mask)[mask_pointer];
+#ifdef HIDE_DATA
+	*value = data_bloc[*data_pointer] ^ (*mask)[mask_pointer];
+#else
+	*value = data_bloc[*data_pointer];
+#endif
 	control_sum = control_sum ^ *value;
 	++mask_pointer;
 	if(mask_pointer >= (int)(mask->size()))mask_pointer = 0;
@@ -746,30 +765,30 @@ Data::Data(const std::string& filename)
 		int tc_count, tt_count, anim_count;
 		std::cout << "Loading TCreep elements..." << std::endl;
 		dc_extractInteger(&tc_count, db, &data_pointer, file_size);
-		std::cout << std::setfill(' ') << std::setw(10) << 0 << " / " << tc_count << "\n";
+		std::cout << "0 / " << tc_count << "\n";
 		for(int i = 0; i < tc_count; ++i)
 		{
 			dc_extractCreep(&tc, db, &data_pointer, file_size);
 			m_tcreep.push_back(tc);
-			std::cout << std::setfill(' ') << std::setw(10) << i << " / " << tc_count << "\n";
+			std::cout << i+1 << " / " << tc_count << "\n";
 		}
 		std::cout << "Loading TTower elements..." << std::endl;
 		dc_extractInteger(&tt_count, db, &data_pointer, file_size);
-		std::cout << std::setfill(' ') << std::setw(10) << 0 << " / " << tt_count << "\n";
+		std::cout << "0 / " << tt_count << "\n";
 		for(int i = 0; i < tt_count; ++i)
 		{
 			dc_extractTower(&tt, db, &data_pointer, file_size);
 			m_ttower.push_back(tt);
-			std::cout << std::setfill(' ') << std::setw(10) << i << " / " << tt_count << "\n";
+			std::cout << i+1 << " / " << tt_count << "\n";
 		}
 		std::cout << "Loading Animation elements..." << std::endl;
 		dc_extractInteger(&anim_count, db, &data_pointer, file_size);
-		std::cout << std::setfill(' ') << std::setw(10) << 0 << " / " << anim_count << "\n";
+		std::cout << "0 / " << anim_count << "\n";
 		for(int i = 0; i < anim_count; ++i)
 		{
 			dc_extractAnimation(&anim, db, &data_pointer, file_size);
 			m_animations.push_back(anim);
-			std::cout << std::setfill(' ') << std::setw(10) << i << " / " << anim_count << "\n";
+			std::cout << i+1 << " / " << anim_count << "\n";
 		}
 	}
 
@@ -779,7 +798,7 @@ Data::Data(const std::string& filename)
 		std::cout << "Loading textures" << std::endl;
 		int textures_count;
 		dc_extractInteger(&textures_count, db, &data_pointer, file_size);
-		std::cout << std::setfill(' ') << std::setw(10) << 0 << " / " << textures_count << "\n";
+		std::cout << "0 / " << textures_count << "\n";
         for(int i = 0; i < textures_count; ++i)
 		{
 			file_info fi;
@@ -792,7 +811,7 @@ Data::Data(const std::string& filename)
 				dc_extractChar(&(fi.data[j]), db, &data_pointer, file_size);
 			}
 			m_textures.push_back(fi);
-			std::cout << std::setfill(' ') << std::setw(10) << i << " / " << textures_count << "\n";
+			std::cout << i+1 << " / " << textures_count << " : " << fi.file_name << "\n";
 		}
 	}
 
@@ -802,7 +821,7 @@ Data::Data(const std::string& filename)
 		std::cout << "Loading fonts" << std::endl;
 		int fonts_count;
 		dc_extractInteger(&fonts_count, db, &data_pointer, file_size);
-		std::cout << std::setfill(' ') << std::setw(10) << 0 << " / " << fonts_count << "\n";
+		std::cout << 0 << " / " << fonts_count << "\n";
         for(int i = 0; i < fonts_count; ++i)
 		{
 			file_info fi;
@@ -815,7 +834,7 @@ Data::Data(const std::string& filename)
 				dc_extractChar(&(fi.data[j]), db, &data_pointer, file_size);
 			}
 			m_fonts.push_back(fi);
-			std::cout << std::setfill(' ') << std::setw(10) << i << " / " << fonts_count << "\n";
+			std::cout << i+1 << " / " << fonts_count << " : " << fi.file_name << "\n";
 		}
 	}
 

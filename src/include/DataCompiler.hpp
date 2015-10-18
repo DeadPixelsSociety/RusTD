@@ -15,6 +15,8 @@
 #define COMPILE_MUSICS false
 #define COMPILE_SOUNDS false
 
+#define HIDE_DATA
+
 union type32_converter
 {
 	uint32_t uinteger;

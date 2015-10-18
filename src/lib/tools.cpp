@@ -1,4 +1,5 @@
 #include <cmath>
+#include <sstream>
 
 #include "../include/tools.hpp"
 #include "../include/config.hpp"
@@ -88,4 +89,16 @@ float getLookingAngle(const sf::Vector2f& v)
 sf::Vector2f getConvertedPosition(sf::Vector2i position)
 {
     return sf::Vector2f(position.x*GRID_UNIT,position.y*GRID_UNIT);
+}
+
+std::vector<std::string> splitString(const std::string& str, char separator)
+{
+	std::istringstream iss(str);
+	std::vector<std::string> out;
+	std::string temp;
+	while(std::getline(iss, temp, separator))
+	{
+		out.push_back(temp);
+	}
+	return out;
 }

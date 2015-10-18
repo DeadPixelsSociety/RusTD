@@ -3,6 +3,8 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <vector>
+#include <string>
 
 #define VIEW_WIDTH 1600
 #define VIEW_HEIGHT 900
@@ -22,5 +24,7 @@ sf::Vector2f getWindowCenterInWorld(sf::RenderWindow& window);
 float getLookingAngle(const sf::Vector2f& v);
 
 sf::Vector2f getConvertedPosition(sf::Vector2i);
+
+std::vector<std::string> splitString(const std::string& str, char separator);
 
 #endif // TOOLS_HPP

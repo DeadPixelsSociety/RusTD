@@ -226,7 +226,7 @@ void TDoodad::destroy_objects()
 		delete it->second;
 	}
 }
-
+#ifndef DATA_COMPILER
 bool TDoodad::load_Data(Data& data, bool destroyExisting)
 {
 	std::vector<TCreep*> tc = data.getTCreeps();
@@ -250,6 +250,7 @@ bool TDoodad::load_Data(Data& data, bool destroyExisting)
 	}
 	return true;
 }
+#endif
 
 TCreep* TDoodad::getTCreep(int i)
 {
@@ -282,6 +283,36 @@ Animation* TDoodad::getAnimation(int i)
 		return nullptr;
 	}
 	return it->second;
+}
+
+std::vector<int> TDoodad::getTCreepIds()
+{
+	std::vector<int> out;
+	for(std::map<int, TCreep*>::iterator it = m_tcreep.begin(); it != m_tcreep.end(); ++it)
+	{
+		out.push_back(it->first);
+	}
+	return out;
+}
+
+std::vector<int> TDoodad::getTTowerIds()
+{
+	std::vector<int> out;
+	for(std::map<int, TTower*>::iterator it = m_ttower.begin(); it != m_ttower.end(); ++it)
+	{
+		out.push_back(it->first);
+	}
+	return out;
+}
+
+std::vector<int> TDoodad::getAnimationIds()
+{
+	std::vector<int> out;
+	for(std::map<int, Animation*>::iterator it = m_animation.begin(); it != m_animation.end(); ++it)
+	{
+		out.push_back(it->first);
+	}
+	return out;
 }
 
 std::map<int, TTower*> TDoodad::m_ttower;

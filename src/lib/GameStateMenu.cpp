@@ -17,7 +17,7 @@
 	m_backgroundSprite = new sf::Sprite(*(resources->getTexture("Menu Background")));
 	m_buttonPlay = new Button(150, 50, "Play", *(resources->getFont("Global Font")), 30, sf::Color::Transparent, sf::Color::White);
 	m_buttonPlay->setPosition(sf::Vector2f(725, 425));
-	m_buttonOption = new Button(resources->getTexture("Static Gear"), "", *(resources->getFont("GlobalFont")), 30);
+	m_buttonOption = new Button(resources->getTexture("Static Gear"), "", *(resources->getFont("Global Font")), 30);
 	m_buttonOption->setPosition(sf::Vector2f(VIEW_WIDTH - 128, VIEW_HEIGHT - 128));
 	m_buttonOption->getShape()->setOrigin(m_buttonOption->getShape()->getLocalBounds().width / 2, m_buttonOption->getShape()->getLocalBounds().height / 2);
 }

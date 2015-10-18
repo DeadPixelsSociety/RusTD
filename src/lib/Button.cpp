@@ -3,7 +3,7 @@
 #include "../include/config.hpp"
 #include "../include/GameStateManager.hpp"
 #include <SFML/Window/Mouse.hpp>
-
+#include<iostream>
 /*explicit*/ Button::Button(sf::Texture* texture, const std::string& text, sf::Font& font, int textSize)
 : m_shape(new sf::RectangleShape())
 , m_text(new sf::Text(text, font, textSize))

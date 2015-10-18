@@ -1,6 +1,8 @@
 #ifndef RESOURCELOADING_HPP
 #define RESOURCELOADING_HPP
 
-void LoadResources(void);
+#include "DataCompiler.hpp"
+
+void LoadResources(Data* data = nullptr);
 
 #endif // RESOURCELOADING_HPP

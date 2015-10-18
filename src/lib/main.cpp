@@ -26,10 +26,11 @@ int main()
     sf::Clock clockwerk;
     // Initializing resources
 	ResourceManager::Initialize();
-	LoadResources();
 #if ENTITIES_LOADING_MODE == LOAD_XML
 	// Load doodad from xml files
 	TDoodad::load_XML(SHARE_DIR);
+	// Load resources from data directory
+	LoadResources();
 #else // ENTITIES_LOADING_MODE != LOAD_XML
 	// Load doodad from binary file
 	Data* data = new Data("data.bin");
@@ -37,8 +38,8 @@ int main()
 	data->freeFonts();
 	data->freeSounds();
 	TDoodad::load_Data(*data);
-	/// \todo Load resources from data
-	delete data;
+	// Load resources from binary file
+	LoadResources(data);
 #endif // ENTITIES_LOADING_MODE = LOAD_XML
 	// Creating GameStateManager and pushing first state
 	GameStateManager* gsm = new GameStateManager(window);
@@ -94,6 +95,9 @@ int main()
 	ResourceManager::Destroy();
 	TDoodad::destroy_objects();
 	delete &window;
+#if ENTITIES_LOADING_MODE == LOAD_BIN
+	delete data;
+#endif // ENTITIES_LOADING_MODE
 
     return 0;
 }

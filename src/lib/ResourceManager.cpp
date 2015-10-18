@@ -1,8 +1,9 @@
 #include "../include/ResourceManager.hpp"
+#include "../include/tools.hpp"
 
 typedef std::map<std::string, sf::Texture*>::const_iterator TextureIterator;
 typedef std::map<std::string, sf::Font*>::const_iterator FontIterator;
-typedef std::map<std::string, sf::Music*>::const_iterator MusicIterator;
+typedef std::map<std::string, MusicResource>::const_iterator MusicIterator;
 typedef std::map<std::string, sf::SoundBuffer*>::const_iterator SoundIterator;
 
 /*explicit*/ ResourceManager::ResourceManager()
@@ -20,7 +21,11 @@ typedef std::map<std::string, sf::SoundBuffer*>::const_iterator SoundIterator;
 	}
 	for(MusicIterator it = m_musics.begin(); it != m_musics.end(); ++it)
 	{
-		delete it->second;
+		if((it->second).loadedFromMemory)
+		{
+			delete [] (it->second).data;
+		}
+		delete (it->second).music;
 	}
 	for(SoundIterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
 	{
@@ -40,6 +45,33 @@ typedef std::map<std::string, sf::SoundBuffer*>::const_iterator SoundIterator;
 		return data;
 	}
 	return it->second;
+}
+
+/*virtual*/ bool ResourceManager::loadTexturesFromData(Data& data, bool destroyExisting)
+{
+	std::vector<file_info> infos = data.getTextures();
+	for(std::vector<file_info>::iterator it = infos.begin(); it != infos.end(); ++it)
+	{
+		std::vector<std::string> words = splitString(splitString(it->file_name, '.')[0], '_');
+		std::string resultName = "";
+		for(uint32_t i = 0; i < words.size(); ++i)
+		{
+			if(i != 0)
+			{
+				resultName += ' ';
+			}
+			if(words[i][0] >= 'a' && words[i][0] <= 'z')
+			{
+				words[i][0] = words[i][0] + 'A' - 'a';
+			}
+			resultName += words[i];
+		}
+		sf::Texture* data = new sf::Texture();
+		data->loadFromMemory(it->data, it->file_size);
+		data->setSmooth(true);
+		m_textures[resultName] = data;
+	}
+	return true;
 }
 
 /*virtual*/ sf::Texture* ResourceManager::getTexture(const std::string& name) const
@@ -75,6 +107,32 @@ typedef std::map<std::string, sf::SoundBuffer*>::const_iterator SoundIterator;
 	return it->second;
 }
 
+/*virtual*/ bool ResourceManager::loadFontsFromData(Data& data, bool destroyExisting)
+{
+	std::vector<file_info> infos = data.getFonts();
+	for(std::vector<file_info>::iterator it = infos.begin(); it != infos.end(); ++it)
+	{
+		std::vector<std::string> words = splitString(splitString(it->file_name, '.')[0], '_');
+		std::string resultName = "";
+		for(uint32_t i = 0; i < words.size(); ++i)
+		{
+			if(i != 0)
+			{
+				resultName += ' ';
+			}
+			if(words[i][0] >= 'a' && words[i][0] <= 'z')
+			{
+				words[i][0] = words[i][0] + 'A' - 'a';
+			}
+			resultName += words[i];
+		}
+		sf::Font* data = new sf::Font();
+		data->loadFromMemory(it->data, it->file_size);
+		m_fonts[resultName] = data;
+	}
+	return true;
+}
+
 /*virtual*/ sf::Font* ResourceManager::getFont(const std::string& name) const
 {
 	FontIterator it = m_fonts.find(name);
@@ -102,10 +160,44 @@ typedef std::map<std::string, sf::SoundBuffer*>::const_iterator SoundIterator;
 	{
 		sf::Music* data = new sf::Music();
 		data->openFromFile(path);
-		m_musics[name] = data;
+		MusicResource mr;
+		mr.music = data;
+		mr.loadedFromMemory = false;
+		mr.data = nullptr;
+		m_musics[name] = mr;
 		return data;
 	}
-	return it->second;
+	return (it->second).music;
+}
+
+/*virtual*/ bool ResourceManager::loadMusicsFromData(Data& data, bool destroyExisting)
+{
+	std::vector<file_info> infos = data.getMusics();
+	for(std::vector<file_info>::iterator it = infos.begin(); it != infos.end(); ++it)
+	{
+		std::vector<std::string> words = splitString(splitString(it->file_name, '.')[0], '_');
+		std::string resultName = "";
+		for(uint32_t i = 0; i < words.size(); ++i)
+		{
+			if(i != 0)
+			{
+				resultName += ' ';
+			}
+			if(words[i][0] >= 'a' && words[i][0] <= 'z')
+			{
+				words[i][0] = words[i][0] + 'A' - 'a';
+			}
+			resultName += words[i];
+		}
+		sf::Music* data = new sf::Music();
+		data->openFromMemory(it->data, it->file_size);
+		MusicResource mr;
+		mr.music = data;
+		mr.loadedFromMemory = true;
+		mr.data = it->data;
+		m_musics[resultName] = mr;
+	}
+	return true;
 }
 
 /*virtual*/ sf::Music* ResourceManager::getMusic(const std::string& name) const
@@ -115,7 +207,7 @@ typedef std::map<std::string, sf::SoundBuffer*>::const_iterator SoundIterator;
 	{
 		return nullptr;
 	}
-	return it->second;
+	return (it->second).music;
 }
 
 /*virtual*/ void ResourceManager::releaseMusic(const std::string& name)
@@ -123,7 +215,11 @@ typedef std::map<std::string, sf::SoundBuffer*>::const_iterator SoundIterator;
 	MusicIterator it = m_musics.find(name);
 	if(it != m_musics.end())
 	{
-		delete it->second;
+		if((it->second).loadedFromMemory)
+		{
+			delete [] (it->second).data;
+		}
+		delete (it->second).music;
 		m_musics.erase(it);
 	}
 }
@@ -139,6 +235,32 @@ typedef std::map<std::string, sf::SoundBuffer*>::const_iterator SoundIterator;
 		return data;
 	}
 	return it->second;
+}
+
+/*virtual*/ bool ResourceManager::loadSoundsFromData(Data& data, bool destroyExisting)
+{
+	std::vector<file_info> infos = data.getSounds();
+	for(std::vector<file_info>::iterator it = infos.begin(); it != infos.end(); ++it)
+	{
+		std::vector<std::string> words = splitString(splitString(it->file_name, '.')[0], '_');
+		std::string resultName = "";
+		for(uint32_t i = 0; i < words.size(); ++i)
+		{
+			if(i != 0)
+			{
+				resultName += ' ';
+			}
+			if(words[i][0] >= 'a' && words[i][0] <= 'z')
+			{
+				words[i][0] = words[i][0] + 'A' - 'a';
+			}
+			resultName += words[i];
+		}
+		sf::SoundBuffer* data = new sf::SoundBuffer();
+		data->loadFromMemory(it->data, it->file_size);
+		m_sounds[resultName] = data;
+	}
+	return true;
 }
 
 /*virtual*/ sf::SoundBuffer* ResourceManager::getSound(const std::string& name) const
