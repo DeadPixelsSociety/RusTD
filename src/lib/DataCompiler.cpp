@@ -504,7 +504,7 @@ int main(int argc, char** argv)
 		std::cout << "Compiling fonts" << std::endl;
 		int s = ds.font_files.size();
 		dc_compileInteger(&s, db, &data_pointer, alloc_size);
-		std::cout << std::setfill(' ') << std::setw(10) << 0 << " / " << s << "\n";
+		std::cout << "0 / " << s << "\n";
         for(int i = 0; i < s; ++i)
 		{
 			dc_compileString(&(ds.font_files[i].file_name), db, &data_pointer, alloc_size);
