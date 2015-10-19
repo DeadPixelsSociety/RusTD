@@ -31,7 +31,10 @@
 
 #define WIDTH_VIEWPORT_COEF 0.8f
 #define SCROLL_PERCENT 0.1f
-#define SCROLL_MAX_SPEED 1000.0f
+#define SCROLL_MAX_SPEED 750.0f
+
+#define LEVEL_WIDTH 2560
+#define LEVEL_HEIGHT 1800
 
 class GameStateUI;
 

@@ -125,23 +125,27 @@ void GameStatePlaying::addTower(Tower* tow)
 		if(mousePosition.x < minX)
 		{
 			center.x -= SCROLL_MAX_SPEED * dt * (minX - mousePosition.x) / minX;
-			m_view.setCenter(center);
 		}
 		else if(mousePosition.x > maxX)
 		{
 			center.x -= SCROLL_MAX_SPEED * dt * (maxX - mousePosition.x) / minX;
-			m_view.setCenter(center);
 		}
 		if(mousePosition.y < minY)
 		{
 			center.y -= SCROLL_MAX_SPEED * dt * (minY - mousePosition.y) / minY;
-			m_view.setCenter(center);
 		}
 		else if(mousePosition.y > maxY)
 		{
 			center.y -= SCROLL_MAX_SPEED * dt * (maxY - mousePosition.y) / minY;
-			m_view.setCenter(center);
 		}
+		sf::Vector2f limit_world((LEVEL_WIDTH / 4.f) * m_zoomCoefs[m_currentZoom], (LEVEL_HEIGHT / 4.f) * m_zoomCoefs[m_currentZoom]);
+
+		// Check if center do not show empty spaces
+		center.x = MAX(center.x, limit_world.x);
+		center.x = MIN(center.x, LEVEL_WIDTH - limit_world.x);
+		center.y = MAX(center.y, limit_world.y);
+		center.y = MIN(center.y, LEVEL_HEIGHT - limit_world.y);
+		m_view.setCenter(center);
 	}
 }
 
@@ -204,16 +208,16 @@ void GameStatePlaying::addTower(Tower* tow)
 
 	// Calculate new center position
 	sf::Vector2f pos_world(worldPosition.x + deltaInWorld.x * deltaCoef, worldPosition.y + deltaInWorld.y * deltaCoef);
-	sf::Vector2f limit_world(640 * m_zoomCoefs[m_currentZoom], 450 * m_zoomCoefs[m_currentZoom]);
+	sf::Vector2f limit_world((LEVEL_WIDTH / 4.f) * m_zoomCoefs[m_currentZoom], (LEVEL_HEIGHT / 4.f) * m_zoomCoefs[m_currentZoom]);
 
 	// Check if center do not show empty spaces
 	pos_world.x = MAX(pos_world.x, limit_world.x);
-	pos_world.x = MIN(pos_world.x, 2560 - limit_world.x);
+	pos_world.x = MIN(pos_world.x, LEVEL_WIDTH - limit_world.x);
 	pos_world.y = MAX(pos_world.y, limit_world.y);
-	pos_world.y = MIN(pos_world.y, 1800 - limit_world.y);
+	pos_world.y = MIN(pos_world.y, LEVEL_HEIGHT - limit_world.y);
 
 	// Set new view size
-	m_view.setSize(1280 * m_zoomCoefs[m_currentZoom], 900 * m_zoomCoefs[m_currentZoom]);
+	m_view.setSize((LEVEL_WIDTH / 2.f) * m_zoomCoefs[m_currentZoom], (LEVEL_HEIGHT / 2.f) * m_zoomCoefs[m_currentZoom]);
 	m_view.setCenter(pos_world);
 }
 
