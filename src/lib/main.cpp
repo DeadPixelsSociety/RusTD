@@ -1,3 +1,22 @@
+/*
+
+	RusTD - A rusted Tower Defense game
+    Copyright (C) 2015  Beuzmoker, Enferium, Farijo, Vizepi
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 #include <SFML/Graphics.hpp>
 
 #include "../include/tools.hpp"
@@ -10,22 +29,35 @@
 #include "../include/Random.hpp"
 
 #include <iostream>
+#include <fstream>
 
 constexpr float MAXIMAL_FRAME_DURATION = 1/15.f;
 
 int main()
 {
+#if defined _DEBUG && ENTITIES_LOADING_MODE == LOAD_BIN
+	std::ifstream data_check("data.bin", std::ios::binary);
+	if(!data_check.good())
+	{
+		system("DC");
+	}
+	data_check.close();
+#endif // _DEBUG
+
 	// Initializing window
 	Window::Initialize();
     sf::RenderWindow& window = *(new sf::RenderWindow(Window::windowedVideoMode, GAME_TITLE, sf::Style::Titlebar | sf::Style::Close));
     resizeWindow(window, Window::windowedVideoMode.width, Window::windowedVideoMode.height);
     window.setFramerateLimit(120);
+
     // Seed random class
     Random::SetSeed(time(NULL));
+
     // frame time counter
     sf::Clock clockwerk;
     // Initializing resources
 	ResourceManager::Initialize();
+
 #if ENTITIES_LOADING_MODE == LOAD_XML
 	// Load doodad from xml files
 	TDoodad::load_XML(SHARE_DIR);
@@ -41,6 +73,7 @@ int main()
 	// Load resources from binary file
 	LoadResources(data);
 #endif // ENTITIES_LOADING_MODE = LOAD_XML
+
 	// Creating GameStateManager and pushing first state
 	GameStateManager* gsm = new GameStateManager(window);
 	gsm->pushState(new GameStateMenu(), false, false, false);

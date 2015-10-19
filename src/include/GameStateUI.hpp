@@ -17,33 +17,32 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-#ifndef TTOWER_H
-#define TTOWER_H
+#ifndef GAMESTATEUI_HPP
+#define GAMESTATEUI_HPP
 
-#include <vector>
+#include "GameState.hpp"
+#include "GameStatePlaying.hpp"
 
-#include "config.hpp"
-
-class TTower
+class GameStateUI : public GameState
 {
 public:
-	TTower(void);
-	TTower(int id, std::string name, Attack attack, Construction constr);
 
-	~TTower(void);
+	explicit GameStateUI(GameStatePlaying* gsp);
+	virtual ~GameStateUI(void);
 
-	int getId(void) const;
-	std::string getName(void) const;
-	std::vector<int>& getUpgrades(void);
-	Attack getAttack(void) const;
-	Construction getConstruction(void) const;
+	virtual void update(float deltaTimeInSeconds);
+	virtual void render(sf::RenderWindow& window);
+	virtual void mouseDown(sf::Mouse::Button button, int positionX, int positionY);
+	virtual void mouseUp(sf::Mouse::Button button, int positionX, int positionY);
+	virtual void mouseMove(int positionX, int positionY);
+	virtual void mouseWheel(int delta, int positionX, int positionY);
+	virtual void keyDown(sf::Keyboard::Key key);
+	virtual void keyUp(sf::Keyboard::Key key);
 
 protected:
-	int m_id;
-	std::string m_name;
-	std::vector<int> m_upgrades;
-	Attack m_attack;
-	Construction m_constr;
+
+	GameStatePlaying* m_gsp;
+
 };
 
-#endif
+#endif // GAMESTATEUI_HPP

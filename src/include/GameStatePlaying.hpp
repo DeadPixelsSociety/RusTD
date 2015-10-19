@@ -1,3 +1,22 @@
+/*
+
+	RusTD - A rusted Tower Defense game
+    Copyright (C) 2015  Beuzmoker, Enferium, Farijo, Vizepi
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 #ifndef GAMESTATEPLAYING_HPP
 #define GAMESTATEPLAYING_HPP
 
@@ -8,6 +27,13 @@
 #include "ProjectileList.hpp"
 #include "Random.hpp"
 #include <vector>
+#include <SFML/Graphics/View.hpp>
+
+#define WIDTH_VIEWPORT_COEF 0.8f
+#define SCROLL_PERCENT 0.1f
+#define SCROLL_MAX_SPEED 1000.0f
+
+class GameStateUI;
 
 class GameStatePlaying : public GameState
 {
@@ -38,7 +64,10 @@ protected:
 	std::vector<Tower*> m_towers;
 	std::vector<TTower*> m_ttowers;
 	Map* m_map;
-
+	GameStateUI* m_ui;
+	std::vector<float> m_zoomCoefs;
+	int m_currentZoom;
+	sf::View m_view;
 };
 
 #endif // GAMESTATEPLAYING_HPP
