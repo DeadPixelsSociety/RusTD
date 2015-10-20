@@ -31,7 +31,7 @@ Projectile::Projectile(void)
 	this->m_state = 0.f;
 	this->m_sprite = new sf::Sprite();
 	this->m_sprite->setTexture(*(ResourceManager::Instance()->getTexture("Static Water Projectile")));
-	//this->m_sprite->setRotation(Random::NextFloat(0.0f, 360.f));
+	this->m_sprite->setRotation(Random::NextFloat(0.0f, 360.f));
 	this->m_sprite->setOrigin(32.0f, 32.0f);
 	this->m_life_time = 0.0f;
 }
@@ -65,7 +65,7 @@ Projectile::Projectile(float speed, float damage, Creep* target, sf::Vector2f po
     }
 	this->m_sprite = new sf::Sprite();
 	this->m_sprite->setTexture(*(ResourceManager::Instance()->getTexture("Static Water Projectile")));
-	//this->m_sprite->setRotation(Random::NextFloat(0.0f, 360.f));
+	this->m_sprite->setRotation(Random::NextFloat(0.0f, 360.f));
 	this->m_sprite->setOrigin(32.0f, 32.0f);
 	this->m_life_time = 0.0f;
 }
@@ -116,9 +116,9 @@ void Projectile::update(float dt)
 
     this->m_position += vec_speed;
     this->m_life_time += dt;
-    //float factor = (PROJECTILE_MIN_SIZE + ((PROJECTILE_FULL_SCALE_SIZE - PROJECTILE_MIN_SIZE) * (m_life_time / PROJECTILE_FULL_SCALE_TIME))) /
-					this->m_sprite->getGlobalBounds().width;
-    //this->m_sprite->setScale(factor, factor);
+
+    float factor = PROJECTILE_MIN_SCALE + ((PROJECTILE_MAX_SCALE - PROJECTILE_MIN_SCALE) * (m_life_time / PROJECTILE_FULL_SCALE_TIME));
+    this->m_sprite->setScale(factor, factor);
     this->m_sprite->setPosition(this->m_position);
 }
 
