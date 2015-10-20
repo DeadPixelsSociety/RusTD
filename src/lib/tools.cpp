@@ -68,10 +68,12 @@ void switchFullScreen(sf::RenderWindow* pWindow, bool fullscreen)
 		if(fullscreen)
 		{
 			pWindow = new sf::RenderWindow(Window::availableVideoModes[Window::selectedFullScreenVideoMode], GAME_TITLE, sf::Style::Fullscreen);
+			pWindow->setFramerateLimit(WINDOW_FRAMERATE_LIMIT);
 		}
 		else
 		{
 			pWindow = new sf::RenderWindow(Window::windowedVideoMode, GAME_TITLE, sf::Style::Titlebar | sf::Style::Close);
+			pWindow->setFramerateLimit(WINDOW_FRAMERATE_LIMIT);
 		}
 		resizeWindow(*pWindow, pWindow->getSize().x, pWindow->getSize().y);
 		GameStateManager::Instance()->setWindow(*pWindow);

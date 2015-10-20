@@ -38,6 +38,12 @@
 
 class GameStateUI;
 
+enum PlayingState
+{
+	Normal,
+	PlacingTower
+};
+
 class GameStatePlaying : public GameState
 {
 public:
@@ -56,6 +62,8 @@ public:
 	virtual void mouseWheel(int delta, int positionX, int positionY);
 	virtual void keyDown(sf::Keyboard::Key key);
 	virtual void keyUp(sf::Keyboard::Key key);
+	virtual void SetState(PlayingState state);
+	virtual PlayingState GetState(void) const;
 
 protected:
 
@@ -71,6 +79,11 @@ protected:
 	std::vector<float> m_zoomCoefs;
 	int m_currentZoom;
 	sf::View m_view;
+	PlayingState m_state;
+	sf::Vector2f m_placementPosition;
+	Animation* m_animPlaceValid;
+	Animation* m_animPlaceInvalid;
+	bool m_placementValid;
 };
 
 #endif // GAMESTATEPLAYING_HPP

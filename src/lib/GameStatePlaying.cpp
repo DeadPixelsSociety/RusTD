@@ -21,11 +21,15 @@
 #include "../include/GameStateManager.hpp"
 #include "../include/GameStateUI.hpp"
 #include "../include/TDoodad.hpp"
+#include "../include/ResourceManager.hpp"
+#include "../include/tools.hpp"
 
 /*explicit*/ GameStatePlaying::GameStatePlaying()
 : GameState()
 , m_map(nullptr)
 , m_ui(nullptr)
+, m_state(Normal)
+, m_placementValid(true)
 {
     this->m_cl = new CreepList();
     this->m_pl = new ProjectileList();
@@ -62,6 +66,12 @@
 	m_view.setCenter(640 * m_zoomCoefs[m_currentZoom], 450 * m_zoomCoefs[m_currentZoom]);
 	m_view.setViewport(sf::FloatRect(0.f, 0.f, 1280.f / 1600.f, 1.f));
 	m_view.setRotation(0.0f);
+	sf::Sprite* placeValid = new sf::Sprite();
+	placeValid->setTexture(*(ResourceManager::Instance()->getTexture("Animation Place Tower Valid")));
+	sf::Sprite* placeInvalid = new sf::Sprite();
+	placeInvalid->setTexture(*(ResourceManager::Instance()->getTexture("Animation Place Tower Invalid")));
+	m_animPlaceValid = new Animation(1, "Animation Valid", placeValid, sf::IntRect(0, 0, 64, 64), 10, 50);
+	m_animPlaceInvalid = new Animation(1, "Animation Invalid", placeInvalid, sf::IntRect(0, 0, 64, 64), 10, 50);
 }
 
 /*virtual*/ GameStatePlaying::~GameStatePlaying()
@@ -71,6 +81,10 @@
 		delete *it;
 	}
 	delete m_map;
+	delete m_animPlaceValid->getSprite();
+	delete m_animPlaceInvalid->getSprite();
+	delete m_animPlaceValid;
+	delete m_animPlaceInvalid;
 }
 
 void GameStatePlaying::addCreep(Creep* cre)
@@ -147,6 +161,21 @@ void GameStatePlaying::addTower(Tower* tow)
 		center.y = MIN(center.y, LEVEL_HEIGHT - limit_world.y);
 		m_view.setCenter(center);
 	}
+
+	// Update position of placing tower mark
+	if(m_state == PlacingTower)
+	{
+		if(m_placementPosition.x != -1.0f && m_placementPosition.y != -1.0f)
+		{
+			m_placementPosition.x = (int)(m_placementPosition.x / 64) * 64.f;
+			m_placementPosition.y = (int)(m_placementPosition.y / 64) * 64.f;
+			m_animPlaceValid->getSprite()->setPosition(m_placementPosition.x, m_placementPosition.y);
+			m_animPlaceInvalid->getSprite()->setPosition(m_placementPosition.x, m_placementPosition.y);
+			m_animPlaceValid->update(dt);
+			m_animPlaceInvalid->update(dt);
+			// @TODO Check if position is already a tower or if it's on the road and change m_placementValid
+		}
+	}
 }
 
 /*virtual*/ void GameStatePlaying::render(sf::RenderWindow& window)
@@ -157,6 +186,16 @@ void GameStatePlaying::addTower(Tower* tow)
 	this->m_cl->render(window);
     this->m_tl->render(window);
     this->m_pl->render(window);
+    // Draw placing mark
+    if(m_state == PlacingTower)
+	{
+		sf::Sprite* mark = m_animPlaceValid->getSprite();
+		if(!m_placementValid)
+		{
+			mark = m_animPlaceInvalid->getSprite();
+		}
+		window.draw(*mark);
+	}
     window.setView(oldView);
 }
 
@@ -167,12 +206,39 @@ void GameStatePlaying::addTower(Tower* tow)
 
 /*virtual*/ void GameStatePlaying::mouseUp(sf::Mouse::Button button, int positionX, int positionY)
 {
-
+	if(button == sf::Mouse::Left)
+	{
+		if(m_state == PlacingTower)
+		{
+			// @TODO place tower if valid
+		}
+		else
+		{
+			// @TODO check what is clicked and do thinks
+		}
+	}
+	if(button == sf::Mouse::Right)
+	{
+		if(m_state == PlacingTower)
+		{
+			SetState(Normal);
+		}
+	}
 }
 
 /*virtual*/ void GameStatePlaying::mouseMove(int positionX, int positionY)
 {
-
+	if(m_state == PlacingTower)
+	{
+		if(positionX >= 0 && positionX <= VIEW_WIDTH * WIDTH_VIEWPORT_COEF && positionY >= 0 && positionY < VIEW_HEIGHT)
+		{
+			m_placementPosition = GameStateManager::Instance()->getWindow()->mapPixelToCoords(sf::Vector2i(positionX, positionY), m_view);
+		}
+		else
+		{
+			m_placementPosition = sf::Vector2f(-1.0f, -1.0f);
+		}
+	}
 }
 
 /*virtual*/ void GameStatePlaying::mouseWheel(int delta, int positionX, int positionY)
@@ -233,4 +299,14 @@ void GameStatePlaying::addTower(Tower* tow)
 		GameStateManager::Instance()->popState(); // Pop GameStateUI
 		GameStateManager::Instance()->popState(); // Pop GameStatePlaying
 	}
+}
+
+/*virtual*/ void GameStatePlaying::SetState(PlayingState state)
+{
+	m_state = state;
+}
+
+/*virtual*/ PlayingState GameStatePlaying::GetState() const
+{
+	return m_state;
 }

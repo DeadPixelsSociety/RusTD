@@ -42,6 +42,7 @@ public:
 protected:
 
 	GameStatePlaying* m_gsp;
+	sf::Sprite* m_panel;
 
 };
 

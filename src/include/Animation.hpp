@@ -48,6 +48,7 @@ public:
 	sf::IntRect getOriginalRect(void) const;
 	float getFrameTime(void) const;
 	int getFrameCount(void) const;
+	sf::Sprite* getSprite(void) const;
 
 protected:
 

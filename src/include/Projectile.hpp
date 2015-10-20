@@ -22,6 +22,11 @@
 
 #include "config.hpp"
 #include "Creep.hpp"
+#include <SFML/Graphics/Sprite.hpp>
+
+#define PROJECTILE_FULL_SCALE_TIME 1.0f
+#define PROJECTILE_FULL_SCALE_SIZE 32.0f
+#define PROJECTILE_MIN_SIZE 8.0f
 
 class Projectile
 {
@@ -44,6 +49,8 @@ protected:
 	sf::Vector2f m_position;
     sf::Vector2i m_target_sign;
     int m_state;
+    sf::Sprite* m_sprite;
+    float m_life_time;
 
 };
 

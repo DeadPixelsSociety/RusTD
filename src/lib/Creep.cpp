@@ -151,6 +151,8 @@ void Creep::update(float dt)
         }
     }
 	this->m_animation->update(dt);
+	float coef = this->m_current_health / this->m_tcreep->getStats().health;
+	this->m_sprite->setColor(sf::Color(200 + 55 * coef, 100 + 155 * coef, 255 * coef));
 }
 
 void Creep::render(sf::RenderWindow& window)

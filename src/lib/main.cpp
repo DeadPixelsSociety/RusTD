@@ -48,7 +48,7 @@ int main()
 	Window::Initialize();
     sf::RenderWindow& window = *(new sf::RenderWindow(Window::windowedVideoMode, GAME_TITLE, sf::Style::Titlebar | sf::Style::Close));
     resizeWindow(window, Window::windowedVideoMode.width, Window::windowedVideoMode.height);
-    window.setFramerateLimit(120);
+    window.setFramerateLimit(WINDOW_FRAMERATE_LIMIT);
 
     // Seed random class
     Random::SetSeed(time(NULL));

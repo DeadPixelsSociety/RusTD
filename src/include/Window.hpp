@@ -24,6 +24,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <vector>
 
+#define WINDOW_FRAMERATE_LIMIT 120
+
 class Window
 {
 public:

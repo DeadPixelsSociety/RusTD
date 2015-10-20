@@ -18,6 +18,8 @@
 
 */
 #include "../include/Projectile.hpp"
+#include "../include/ResourceManager.hpp"
+#include "../include/Random.hpp"
 
 Projectile::Projectile(void)
 {
@@ -27,6 +29,11 @@ Projectile::Projectile(void)
 	this->m_position = sf::Vector2f();
 	this->m_target_sign = sf::Vector2i();
 	this->m_state = 0.f;
+	this->m_sprite = new sf::Sprite();
+	this->m_sprite->setTexture(*(ResourceManager::Instance()->getTexture("Static Water Projectile")));
+	//this->m_sprite->setRotation(Random::NextFloat(0.0f, 360.f));
+	this->m_sprite->setOrigin(32.0f, 32.0f);
+	this->m_life_time = 0.0f;
 }
 
 Projectile::Projectile(float speed, float damage, Creep* target, sf::Vector2f position)
@@ -56,11 +63,17 @@ Projectile::Projectile(float speed, float damage, Creep* target, sf::Vector2f po
     {
         this->m_target_sign.y = 1;
     }
-
+	this->m_sprite = new sf::Sprite();
+	this->m_sprite->setTexture(*(ResourceManager::Instance()->getTexture("Static Water Projectile")));
+	//this->m_sprite->setRotation(Random::NextFloat(0.0f, 360.f));
+	this->m_sprite->setOrigin(32.0f, 32.0f);
+	this->m_life_time = 0.0f;
 }
 
 Projectile::~Projectile(void)
-{}
+{
+	delete this->m_sprite;
+}
 
 sf::Vector2f Projectile::getPosition(void)
 {
@@ -102,14 +115,20 @@ void Projectile::update(float dt)
     sf::Vector2f vec_speed = sf::Vector2f(distance_x*coef, distance_y*coef);
 
     this->m_position += vec_speed;
+    this->m_life_time += dt;
+    //float factor = (PROJECTILE_MIN_SIZE + ((PROJECTILE_FULL_SCALE_SIZE - PROJECTILE_MIN_SIZE) * (m_life_time / PROJECTILE_FULL_SCALE_TIME))) /
+					this->m_sprite->getGlobalBounds().width;
+    //this->m_sprite->setScale(factor, factor);
+    this->m_sprite->setPosition(this->m_position);
 }
 
 void Projectile::render(sf::RenderWindow& window)
 {
-    sf::CircleShape shape(5);
+    /*sf::CircleShape shape(5);
     shape.setFillColor(sf::Color::Green);
     shape.setPosition(this->m_position);
     shape.setOrigin(5,5);
-    window.draw(shape);
+    window.draw(shape);*/
+    window.draw(*(this->m_sprite));
 }
 

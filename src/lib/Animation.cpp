@@ -111,4 +111,9 @@ int Animation::getFrameCount() const
 	return m_count;
 }
 
+sf::Sprite* Animation::getSprite() const
+{
+	return m_sprite;
+}
+
 

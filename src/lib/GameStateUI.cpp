@@ -18,19 +18,24 @@
 
 */
 #include "../include/GameStateUI.hpp"
+#include "../include/ResourceManager.hpp"
+#include "../include/tools.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 
 /*explicit*/ GameStateUI::GameStateUI(GameStatePlaying* gsp)
 : GameState()
 , m_gsp(gsp)
+, m_panel(nullptr)
 {
-
+	m_panel = new sf::Sprite();
+	m_panel->setTexture(*(ResourceManager::Instance()->getTexture("Static Panel Ui")));
+	m_panel->setPosition(VIEW_WIDTH * WIDTH_VIEWPORT_COEF - 64.0f, 0.0f);
 }
 
 /*virtual*/ GameStateUI::~GameStateUI()
 {
-
+	delete m_panel;
 }
 
 /*virtual*/ void GameStateUI::update(float deltaTimeInSeconds)
@@ -40,16 +45,13 @@
 
 /*virtual*/ void GameStateUI::render(sf::RenderWindow& window)
 {
-	sf::RectangleShape rs;
-	rs.setFillColor(sf::Color::Red);
-	rs.setPosition(1280.f, 0.f);
-	rs.setSize(sf::Vector2f(320.f, 900.f));
-	window.draw(rs);
+	window.draw(*m_panel);
 }
 
 /*virtual*/ void GameStateUI::mouseDown(sf::Mouse::Button button, int positionX, int positionY)
 {
-
+	// @TODO : check if a tower is selected
+	m_gsp->SetState(PlacingTower);
 }
 
 /*virtual*/ void GameStateUI::mouseUp(sf::Mouse::Button button, int positionX, int positionY)
