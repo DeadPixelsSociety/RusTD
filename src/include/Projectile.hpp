@@ -25,8 +25,10 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 #define PROJECTILE_FULL_SCALE_TIME 1.0f
-#define PROJECTILE_FULL_SCALE_SIZE 32.0f
-#define PROJECTILE_MIN_SIZE 8.0f
+
+#define PROJECTILE_MIN_SCALE 0.6f
+#define PROJECTILE_MAX_SCALE 1.0f
+
 
 class Projectile
 {
