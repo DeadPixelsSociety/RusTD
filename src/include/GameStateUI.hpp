@@ -20,6 +20,7 @@
 #ifndef GAMESTATEUI_HPP
 #define GAMESTATEUI_HPP
 
+#include "Button.hpp"
 #include "GameState.hpp"
 #include "GameStatePlaying.hpp"
 
@@ -43,6 +44,8 @@ protected:
 
 	GameStatePlaying* m_gsp;
 	sf::Sprite* m_panel;
+    std::vector<std::pair<Button*,std::string>> m_aButtonString;
+    TTower* m_tt;
 
 };
 

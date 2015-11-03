@@ -20,6 +20,7 @@
 #include "../include/GameStateUI.hpp"
 #include "../include/ResourceManager.hpp"
 #include "../include/tools.hpp"
+#include "../include/TDoodad.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 
@@ -27,10 +28,19 @@
 : GameState()
 , m_gsp(gsp)
 , m_panel(nullptr)
+, m_tt(nullptr)
 {
 	m_panel = new sf::Sprite();
 	m_panel->setTexture(*(ResourceManager::Instance()->getTexture("Static Panel Ui")));
 	m_panel->setPosition(0.0f, 0.0f);
+
+    std::vector<int> ids = TDoodad::getTTowerIds();
+    for(std::vector<int>::iterator it=ids.begin() ; it!=ids.end() ; ++it)
+    {
+        TTower* tt = TDoodad::getTTower(*it);
+        Button* button = new Button(ResourceManager::Instance()->getTexture("Static Gear"),"",*(ResourceManager::Instance()->getFont("Global Font")),1);
+        this->m_aButtonString.push_back(std::pair<Button*,std::string>(button,tt->getName()));
+    }
 }
 
 /*virtual*/ GameStateUI::~GameStateUI()
@@ -54,10 +64,7 @@
 	m_gsp->SetState(PlacingTower);
 }
 
-/*virtual*/ void GameStateUI::mouseUp(sf::Mouse::Button button, int positionX, int positionY)
-{
-
-}
+/*virtual*/ void GameStateUI::mouseUp(sf::Mouse::Button button, int positionX, int positionY) {}
 
 /*virtual*/ void GameStateUI::mouseMove(int positionX, int positionY)
 {
