@@ -66,12 +66,8 @@
 	m_view.setCenter(640 * m_zoomCoefs[m_currentZoom], 450 * m_zoomCoefs[m_currentZoom]);
 	m_view.setViewport(sf::FloatRect(0.f, 0.f, 1280.f / 1600.f, 1.f));
 	m_view.setRotation(0.0f);
-	sf::Sprite* placeValid = new sf::Sprite();
-	placeValid->setTexture(*(ResourceManager::Instance()->getTexture("Animation Place Tower Valid")));
-	sf::Sprite* placeInvalid = new sf::Sprite();
-	placeInvalid->setTexture(*(ResourceManager::Instance()->getTexture("Animation Place Tower Invalid")));
-	m_animPlaceValid = new Animation(1, "Animation Valid", placeValid, sf::IntRect(0, 0, 64, 64), 10, 50);
-	m_animPlaceInvalid = new Animation(1, "Animation Invalid", placeInvalid, sf::IntRect(0, 0, 64, 64), 10, 50);
+	m_placeTower = new sf::Sprite();
+	m_placeTower->setTexture(*(ResourceManager::Instance()->getTexture("Static Tower Position")));
 }
 
 /*virtual*/ GameStatePlaying::~GameStatePlaying()
@@ -81,10 +77,7 @@
 		delete *it;
 	}
 	delete m_map;
-	delete m_animPlaceValid->getSprite();
-	delete m_animPlaceInvalid->getSprite();
-	delete m_animPlaceValid;
-	delete m_animPlaceInvalid;
+	delete m_placeTower;
 }
 
 void GameStatePlaying::addCreep(Creep* cre)
@@ -169,11 +162,15 @@ void GameStatePlaying::addTower(Tower* tow)
 		{
 			m_placementPosition.x = (int)(m_placementPosition.x / 64) * 64.f;
 			m_placementPosition.y = (int)(m_placementPosition.y / 64) * 64.f;
-			m_animPlaceValid->getSprite()->setPosition(m_placementPosition.x, m_placementPosition.y);
-			m_animPlaceInvalid->getSprite()->setPosition(m_placementPosition.x, m_placementPosition.y);
-			m_animPlaceValid->update(dt);
-			m_animPlaceInvalid->update(dt);
-			// @TODO Check if position is already a tower or if it's on the road and change m_placementValid
+			m_placeTower->setPosition(m_placementPosition.x, m_placementPosition.y);
+			if(true/* Place is valid */)
+			{
+				m_placeTower->setColor(sf::Color::Green);
+			}
+			else
+			{
+				m_placeTower->setColor(sf::Color::Red);
+			}
 		}
 	}
 }
@@ -189,12 +186,7 @@ void GameStatePlaying::addTower(Tower* tow)
     // Draw placing mark
     if(m_state == PlacingTower)
 	{
-		sf::Sprite* mark = m_animPlaceValid->getSprite();
-		if(!m_placementValid)
-		{
-			mark = m_animPlaceInvalid->getSprite();
-		}
-		window.draw(*mark);
+		window.draw(*m_placeTower);
 	}
     window.setView(oldView);
 }

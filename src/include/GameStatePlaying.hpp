@@ -81,8 +81,7 @@ protected:
 	sf::View m_view;
 	PlayingState m_state;
 	sf::Vector2f m_placementPosition;
-	Animation* m_animPlaceValid;
-	Animation* m_animPlaceInvalid;
+	sf::Sprite* m_placeTower;
 	bool m_placementValid;
 };
 

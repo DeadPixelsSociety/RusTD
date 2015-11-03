@@ -30,7 +30,7 @@
 {
 	m_panel = new sf::Sprite();
 	m_panel->setTexture(*(ResourceManager::Instance()->getTexture("Static Panel Ui")));
-	m_panel->setPosition(VIEW_WIDTH * WIDTH_VIEWPORT_COEF - 64.0f, 0.0f);
+	m_panel->setPosition(0.0f, 0.0f);
 }
 
 /*virtual*/ GameStateUI::~GameStateUI()
