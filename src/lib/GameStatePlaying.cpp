@@ -50,9 +50,9 @@
 
     m_towers.push_back(new Tower(tt2, sf::Vector2i(10,8)));
     this->addTower(m_towers.back());
-    m_towers.push_back(new Tower(tt2, sf::Vector2i(1,1)));
+    m_towers.push_back(new Tower(tt3, sf::Vector2i(1,1)));
     this->addTower(m_towers.back());
-    m_towers.push_back(new Tower(tt2, sf::Vector2i(0,0)));
+    m_towers.push_back(new Tower(tt3, sf::Vector2i(0,0)));
     this->addTower(m_towers.back());
     m_towers.push_back(new Tower(tt3, sf::Vector2i(5,6)));
     this->addTower(m_towers.back());

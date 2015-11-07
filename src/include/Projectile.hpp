@@ -52,6 +52,8 @@ protected:
     sf::Vector2i m_target_sign;
     int m_state;
     sf::Sprite* m_sprite;
+    sf::Sprite* m_sprite_splash;
+    Animation* m_animation_splash;
     float m_life_time;
 
 };

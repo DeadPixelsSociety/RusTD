@@ -55,7 +55,7 @@ void ProjectileList::update(float dt)
 	for(i=0 ; i<size ; i++)
 	{
 		this->m_aProjectile[i]->update(dt);
-		if(this->m_aProjectile[i]->getState()==1)
+		if(this->m_aProjectile[i]->getState()==2)
         {
             Projectile* aux = this->m_aProjectile[i];
             this->m_aProjectile.erase(this->m_aProjectile.begin() + i);
