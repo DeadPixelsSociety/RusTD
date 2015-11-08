@@ -31,6 +31,8 @@ public:
 	explicit GameStateUI(GameStatePlaying* gsp);
 	virtual ~GameStateUI(void);
 
+    TTower* getTTower(void);
+
 	virtual void update(float deltaTimeInSeconds);
 	virtual void render(sf::RenderWindow& window);
 	virtual void mouseDown(sf::Mouse::Button button, int positionX, int positionY);
@@ -39,6 +41,8 @@ public:
 	virtual void mouseWheel(int delta, int positionX, int positionY);
 	virtual void keyDown(sf::Keyboard::Key key);
 	virtual void keyUp(sf::Keyboard::Key key);
+
+    void setSelectedTTower(TTower* tt);
 
 protected:
 

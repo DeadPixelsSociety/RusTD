@@ -38,6 +38,7 @@ public:
     void addTower(Tower* tow);
 
 	void attackList(ProjectileList* ap,CreepList* ac);
+	bool isPlacementAvailable(sf::Vector2i placement);
 
 	void update(float dt);
 	void render(sf::RenderWindow& window);

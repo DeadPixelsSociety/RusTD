@@ -71,6 +71,11 @@ bool Tower::canAttack(Creep* c)
     return (att.availableTarget[tc->getMovement().type] && this->inRange(c));
 }
 
+bool Tower::isPlacementAvailable(sf::Vector2i placement)
+{
+    return !(this->m_position.x == placement.x && this->m_position.y == placement.y);
+}
+
 Projectile* Tower::attackList(CreepList* ac)
 {
     // Can attack ?

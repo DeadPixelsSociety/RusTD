@@ -51,6 +51,8 @@ public:
 	explicit GameStatePlaying(void);
 	virtual ~GameStatePlaying(void);
 
+    GameStateUI getUI(void);
+
     void addCreep(Creep* cre);
     void addTower(Tower* tow);
 

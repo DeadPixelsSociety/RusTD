@@ -37,6 +37,7 @@ public:
 
     bool inRange(Creep* c);
     bool canAttack(Creep* c);
+    bool isPlacementAvailable(sf::Vector2i placement);
 
 	Projectile* attackList(CreepList* ac);
     Projectile* attack(Creep* c);

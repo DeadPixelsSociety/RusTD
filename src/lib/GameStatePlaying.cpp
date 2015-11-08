@@ -68,6 +68,10 @@
 	m_view.setRotation(0.0f);
 	m_placeTower = new sf::Sprite();
 	m_placeTower->setTexture(*(ResourceManager::Instance()->getTexture("Static Tower Position")));
+
+	printf(this->m_tl->isPlacementAvailable(sf::Vector2i(0,0)) ? "true" : "false");
+    printf(this->m_tl->isPlacementAvailable(sf::Vector2i(0,1)) ? "true" : "false");
+    printf(this->m_tl->isPlacementAvailable(sf::Vector2i(5,6)) ? "true" : "false");
 }
 
 /*virtual*/ GameStatePlaying::~GameStatePlaying()
@@ -163,7 +167,8 @@ void GameStatePlaying::addTower(Tower* tow)
 			m_placementPosition.x = (int)(m_placementPosition.x / 64) * 64.f;
 			m_placementPosition.y = (int)(m_placementPosition.y / 64) * 64.f;
 			m_placeTower->setPosition(m_placementPosition.x, m_placementPosition.y);
-			if(true/* Place is valid */)
+			m_placementValid = this->m_tl->isPlacementAvailable(sf::Vector2i((int)m_placementPosition.x/64,(int)m_placementPosition.y/64));
+			if(m_placementValid)
 			{
 				m_placeTower->setColor(sf::Color::Green);
 			}
@@ -191,10 +196,7 @@ void GameStatePlaying::addTower(Tower* tow)
     window.setView(oldView);
 }
 
-/*virtual*/ void GameStatePlaying::mouseDown(sf::Mouse::Button button, int positionX, int positionY)
-{
-
-}
+/*virtual*/ void GameStatePlaying::mouseDown(sf::Mouse::Button button, int positionX, int positionY) {}
 
 /*virtual*/ void GameStatePlaying::mouseUp(sf::Mouse::Button button, int positionX, int positionY)
 {
@@ -203,6 +205,12 @@ void GameStatePlaying::addTower(Tower* tow)
 		if(m_state == PlacingTower)
 		{
 			// @TODO place tower if valid
+            if(m_placementValid)
+            {
+                sf::Vector2i pos = sf::Vector2i((int)m_placementPosition.x/GRID_UNIT,(int)m_placementPosition.y/GRID_UNIT);
+                Tower* new_tower = new Tower(m_ui->getTTower(),pos);
+                this->addTower(new_tower);
+            }
 		}
 		else
 		{
@@ -296,6 +304,9 @@ void GameStatePlaying::addTower(Tower* tow)
 /*virtual*/ void GameStatePlaying::SetState(PlayingState state)
 {
 	m_state = state;
+	if(this->m_state==Normal) {
+        this->m_ui = nullptr;
+	}
 }
 
 /*virtual*/ PlayingState GameStatePlaying::GetState() const

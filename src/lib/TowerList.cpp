@@ -44,6 +44,20 @@ void TowerList::attackList(ProjectileList* ap,CreepList* ac)
 	}
 }
 
+bool TowerList::isPlacementAvailable(sf::Vector2i placement)
+{
+    int i;
+    int size = this->m_aTower.size();
+    for(i=0 ; i<size ; i++)
+    {
+        if(!this->m_aTower[i]->isPlacementAvailable(placement))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 void TowerList::update(float dt)
 {
     int i;

@@ -62,7 +62,7 @@ Projectile::Projectile(float speed, float damage, Creep* target, sf::Vector2f po
 
 	this->m_sprite_splash = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Water Splash")));
 	this->m_sprite_splash->setOrigin(32.0f, 32.0f);
-    this->m_animation_splash = new Animation(2, "", this->m_sprite_splash, sf::IntRect(0, 0, 64, 64), 10, 100);
+    this->m_animation_splash = new Animation(2, "", this->m_sprite_splash, sf::IntRect(0, 0, 64, 64), 5, 75);
 }
 
 Projectile::~Projectile(void)
@@ -121,7 +121,7 @@ void Projectile::update(float dt)
     if(this->m_state==1)
     {
         this->m_position = target_pos;
-        if(this->m_life_time<1.f)
+        if(this->m_life_time<0.375f)
         {
             this->m_animation_splash->update(dt);
         }
