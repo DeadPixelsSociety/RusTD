@@ -32,6 +32,7 @@ public:
 	virtual ~GameStateUI(void);
 
     TTower* getTTower(void);
+    void setTTower(TTower* tt);
 
 	virtual void update(float deltaTimeInSeconds);
 	virtual void render(sf::RenderWindow& window);

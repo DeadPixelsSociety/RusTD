@@ -41,7 +41,8 @@ class GameStateUI;
 enum PlayingState
 {
 	Normal,
-	PlacingTower
+	PlacingTower,
+	TowerSelected
 };
 
 class GameStatePlaying : public GameState
@@ -67,13 +68,15 @@ public:
 	virtual void SetState(PlayingState state);
 	virtual PlayingState GetState(void) const;
 
+	void isPlacementAvailable();
+	void creepLeak();
+
 protected:
 
 	CreepList* m_cl;
     ProjectileList* m_pl;
     TowerList* m_tl;
     std::vector<sf::Vector2i> m_path;
-    float t_creep_spawn_cd;
 	std::vector<Tower*> m_towers;
 	std::vector<TTower*> m_ttowers;
 	Map* m_map;
@@ -85,6 +88,9 @@ protected:
 	sf::Vector2f m_placementPosition;
 	sf::Sprite* m_placeTower;
 	bool m_placementValid;
+	int m_leaks;
+
+    float t_creep_spawn_cd; // @TOREMOVE
 };
 
 #endif // GAMESTATEPLAYING_HPP

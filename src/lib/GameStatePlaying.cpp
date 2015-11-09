@@ -30,6 +30,8 @@
 , m_ui(nullptr)
 , m_state(Normal)
 , m_placementValid(true)
+, m_leaks(0)
+, t_creep_spawn_cd(10000.f)
 {
     this->m_cl = new CreepList();
     this->m_pl = new ProjectileList();
@@ -43,7 +45,6 @@
     this->m_path.push_back(sf::Vector2i(7,2));
     this->m_path.push_back(sf::Vector2i(7,12));
 //
-    this->t_creep_spawn_cd = 100000.f;
 
     TTower* tt2 = TDoodad::getTTower(5);
     TTower* tt3 = TDoodad::getTTower(6);
@@ -68,10 +69,6 @@
 	m_view.setRotation(0.0f);
 	m_placeTower = new sf::Sprite();
 	m_placeTower->setTexture(*(ResourceManager::Instance()->getTexture("Static Tower Position")));
-
-	printf(this->m_tl->isPlacementAvailable(sf::Vector2i(0,0)) ? "true" : "false");
-    printf(this->m_tl->isPlacementAvailable(sf::Vector2i(0,1)) ? "true" : "false");
-    printf(this->m_tl->isPlacementAvailable(sf::Vector2i(5,6)) ? "true" : "false");
 }
 
 /*virtual*/ GameStatePlaying::~GameStatePlaying()
@@ -158,26 +155,7 @@ void GameStatePlaying::addTower(Tower* tow)
 		center.y = MIN(center.y, LEVEL_HEIGHT - limit_world.y);
 		m_view.setCenter(center);
 	}
-
-	// Update position of placing tower mark
-	if(m_state == PlacingTower)
-	{
-		if(m_placementPosition.x != -1.0f && m_placementPosition.y != -1.0f)
-		{
-			m_placementPosition.x = (int)(m_placementPosition.x / 64) * 64.f;
-			m_placementPosition.y = (int)(m_placementPosition.y / 64) * 64.f;
-			m_placeTower->setPosition(m_placementPosition.x, m_placementPosition.y);
-			m_placementValid = this->m_tl->isPlacementAvailable(sf::Vector2i((int)m_placementPosition.x/64,(int)m_placementPosition.y/64));
-			if(m_placementValid)
-			{
-				m_placeTower->setColor(sf::Color::Green);
-			}
-			else
-			{
-				m_placeTower->setColor(sf::Color::Red);
-			}
-		}
-	}
+    this->isPlacementAvailable();
 }
 
 /*virtual*/ void GameStatePlaying::render(sf::RenderWindow& window)
@@ -210,6 +188,7 @@ void GameStatePlaying::addTower(Tower* tow)
                 sf::Vector2i pos = sf::Vector2i((int)m_placementPosition.x/GRID_UNIT,(int)m_placementPosition.y/GRID_UNIT);
                 Tower* new_tower = new Tower(m_ui->getTTower(),pos);
                 this->addTower(new_tower);
+                // @TODO remove ttower pointeur
             }
 		}
 		else
@@ -304,8 +283,9 @@ void GameStatePlaying::addTower(Tower* tow)
 /*virtual*/ void GameStatePlaying::SetState(PlayingState state)
 {
 	m_state = state;
-	if(this->m_state==Normal) {
-        this->m_ui = nullptr;
+	if(this->m_state==Normal)
+    {
+        this->m_ui->setTTower(nullptr);
 	}
 }
 
@@ -313,3 +293,68 @@ void GameStatePlaying::addTower(Tower* tow)
 {
 	return m_state;
 }
+
+void GameStatePlaying::isPlacementAvailable()
+{
+    if(m_state == PlacingTower)
+	{
+		if(m_placementPosition.x != -1.0f && m_placementPosition.y != -1.0f)
+		{
+			this->m_placementPosition.x = (int)(m_placementPosition.x / 64) * 64.f;
+			this->m_placementPosition.y = (int)(m_placementPosition.y / 64) * 64.f;
+			this->m_placeTower->setPosition(m_placementPosition.x, m_placementPosition.y);
+
+			// On tower
+			sf::Vector2i gridPlacementPosition = sf::Vector2i((int)m_placementPosition.x/64,(int)m_placementPosition.y/64);
+			this->m_placementValid = this->m_tl->isPlacementAvailable(gridPlacementPosition);
+
+			// On path
+            if(this->m_placementValid)
+            {
+                int i;
+                int size = this->m_path.size();
+                if(size>0)
+                {
+                    if(gridPlacementPosition.x==this->m_path[0].x && gridPlacementPosition.y==this->m_path[0].y)
+                    {
+                        this->m_placementValid = false;
+                    }
+                    else
+                    {
+                        for(i=1 ; i<size ; i++)
+                        {
+                            int min_limit_x = MIN(this->m_path[i-1].x,this->m_path[i].x);
+                            int min_limit_y = MIN(this->m_path[i-1].y,this->m_path[i].y);
+                            int max_limit_x = MAX(this->m_path[i-1].x,this->m_path[i].x);
+                            int max_limit_y = MAX(this->m_path[i-1].y,this->m_path[i].y);
+
+                            if(gridPlacementPosition.x>=min_limit_x && gridPlacementPosition.x<=max_limit_x
+                               && gridPlacementPosition.y>=min_limit_y && gridPlacementPosition.y<=max_limit_y)
+                            {
+                                this->m_placementValid = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Update tower mark
+			if(this->m_placementValid)
+			{
+				this->m_placeTower->setColor(sf::Color::Green);
+			}
+			else
+			{
+				this->m_placeTower->setColor(sf::Color::Red);
+			}
+		}
+	}
+}
+
+void GameStatePlaying::creepLeak()
+{
+
+}
+
+

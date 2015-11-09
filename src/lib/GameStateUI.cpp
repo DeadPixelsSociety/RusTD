@@ -57,6 +57,12 @@ TTower* GameStateUI::getTTower(void)
     return this->m_tt;
 }
 
+void GameStateUI::setTTower(TTower* tt)
+{
+    this->m_tt = tt;
+}
+
+
 /*virtual*/ void GameStateUI::update(float deltaTimeInSeconds)
 {
 

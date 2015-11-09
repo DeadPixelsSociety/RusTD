@@ -35,6 +35,7 @@ public:
     Creep* getCreep(int i);
 
     void addCreep(Creep* cre);
+    void removeCreep(Creep* cre);
 
 	void update(float dt);
 	void render(sf::RenderWindow& window);

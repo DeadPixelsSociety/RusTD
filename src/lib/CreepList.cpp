@@ -40,6 +40,17 @@ void CreepList::addCreep(Creep* cre)
     this->m_aCreep.push_back(cre);
 }
 
+void CreepList::removeCreep(Creep* cre)
+{
+    std::vector<Creep*>::iterator itb = this->m_aCreep.begin();
+    std::vector<Creep*>::iterator ite = this->m_aCreep.end();
+    std::vector<Creep*>::iterator it = std::find(itb,ite,cre);
+    if(it!=ite)
+    {
+        this->m_aCreep.erase(it);
+    }
+}
+
 void CreepList::update(float dt)
 {
     int i;
