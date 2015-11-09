@@ -49,7 +49,7 @@ protected:
 
 	GameStatePlaying* m_gsp;
 	sf::Sprite* m_panel;
-    std::vector<std::pair<Button*,std::string>> m_aButtonString;
+    std::vector<std::pair<Button*,TTower*>> m_aButtonTTower;
     TTower* m_tt;
 
 };

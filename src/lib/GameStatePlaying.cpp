@@ -188,6 +188,7 @@ void GameStatePlaying::addTower(Tower* tow)
                 sf::Vector2i pos = sf::Vector2i((int)m_placementPosition.x/GRID_UNIT,(int)m_placementPosition.y/GRID_UNIT);
                 Tower* new_tower = new Tower(m_ui->getTTower(),pos);
                 this->addTower(new_tower);
+                this->SetState(Normal);
                 // @TODO remove ttower pointeur
             }
 		}
@@ -283,10 +284,10 @@ void GameStatePlaying::addTower(Tower* tow)
 /*virtual*/ void GameStatePlaying::SetState(PlayingState state)
 {
 	m_state = state;
-	if(this->m_state==Normal)
+	if(state==Normal)
     {
-        this->m_ui->setTTower(nullptr);
-	}
+        //this->m_ui->setTTower(nullptr);
+    }
 }
 
 /*virtual*/ PlayingState GameStatePlaying::GetState() const

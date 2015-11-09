@@ -42,7 +42,7 @@
         this->m_tt = tt;
         Button* button = new Button(ResourceManager::Instance()->getTexture("Static Gear"),"",*(ResourceManager::Instance()->getFont("Global Font")),1);
         button->setPosition(sf::Vector2f(1400.f,i*64.f));
-        this->m_aButtonString.push_back(std::pair<Button*,std::string>(button,tt->getName()));
+        this->m_aButtonTTower.push_back(std::pair<Button*,TTower*>(button,tt));
         i++;
     }
 }
@@ -71,22 +71,40 @@ void GameStateUI::setTTower(TTower* tt)
 /*virtual*/ void GameStateUI::render(sf::RenderWindow& window)
 {
 	window.draw(*m_panel);
-	int i;
-	int size = this->m_aButtonString.size();
-	for(i=0 ; i<size ; i++) {
-        this->m_aButtonString[i].first->render(window);
+	unsigned int size = this->m_aButtonTTower.size();
+	for(unsigned int i=0 ; i<size ; i++) {
+        this->m_aButtonTTower[i].first->render(window);
+        sf::Text text = sf::Text();
+        text.setFont(*(ResourceManager::Instance()->getFont("Global Font")));
+        text.setString(this->m_aButtonTTower[i].second->getName());
+        text.setCharacterSize(16);
+        sf::Vector2f button_position = this->m_aButtonTTower[i].first->getShape()->getPosition();
+        text.setPosition(button_position.x+50.f,button_position.y);
+        window.draw(text);
 	}
 }
 
 /*virtual*/ void GameStateUI::mouseDown(sf::Mouse::Button button, int positionX, int positionY)
 {
 	// @TODO : check if a tower is selected
-	m_gsp->SetState(PlacingTower);
+	//m_gsp->SetState(PlacingTower);
 }
 
 /*virtual*/ void GameStateUI::mouseUp(sf::Mouse::Button button, int positionX, int positionY)
 {
-
+    if(button == sf::Mouse::Left)
+	{
+	    unsigned int size = this->m_aButtonTTower.size();
+		for(unsigned int i=0; i<size ; i++)
+		{
+			if(this->m_aButtonTTower[i].first->isInButton(positionX, positionY))
+			{
+			    this->m_tt = this->m_aButtonTTower[i].second;
+			    this->m_gsp->SetState(PlacingTower);
+				return;
+			}
+		}
+	}
 }
 
 /*virtual*/ void GameStateUI::mouseMove(int positionX, int positionY) {}
