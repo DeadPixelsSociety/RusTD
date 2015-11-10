@@ -27,6 +27,13 @@
 class Projectile;
 class ProjectileList;
 
+enum class CreepState
+{
+	Normal,
+	Dead,
+	Leaked
+};
+
 class Creep
 {
 public:
@@ -37,10 +44,11 @@ public:
 
     TCreep* getTCreep(void);
     sf::Vector2f getPosition(void);
-    int getState(void);
+    CreepState getState(void);
     float getCurrentHealth(void);
 
     void setPath(std::vector<sf::Vector2i>& path);
+    void setState(CreepState state);
 
     void addProjectile(Projectile* proj);
     void removeProjectile(Projectile* proj);
@@ -59,7 +67,7 @@ protected:
     std::vector<sf::Vector2i> m_path;//?
     ProjectileList* m_aProjectile;
     unsigned int m_path_point_index;
-    int m_state;
+    CreepState m_state;
     sf::Sprite* m_sprite;
     Animation* m_animation;
 	float m_rand_dead;

@@ -86,7 +86,7 @@ Projectile* Tower::attackList(CreepList* ac)
 
     Creep* new_target = nullptr;
 
-    if(this->m_last_target!=nullptr && this->m_last_target->getState()==0)
+    if(this->m_last_target!=nullptr && this->m_last_target->getState()==CreepState::Normal)
     {
         if(this->inRange(this->m_last_target))
         {
@@ -106,7 +106,7 @@ Projectile* Tower::attackList(CreepList* ac)
                 continue;
             }
 
-            if(this->canAttack(cc) && cc->getState()==0)
+            if(this->canAttack(cc) && cc->getState()==CreepState::Normal)
             {
                 aCreep.push_back(cc);
             }

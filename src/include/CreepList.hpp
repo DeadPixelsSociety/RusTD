@@ -37,6 +37,8 @@ public:
     void addCreep(Creep* cre);
     void removeCreep(Creep* cre);
 
+    void creepLeak(sf::Vector2i pos);
+
 	void update(float dt);
 	void render(sf::RenderWindow& window);
 

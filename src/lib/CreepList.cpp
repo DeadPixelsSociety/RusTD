@@ -51,6 +51,22 @@ void CreepList::removeCreep(Creep* cre)
     }
 }
 
+void CreepList::creepLeak(sf::Vector2i pos)
+{
+	unsigned int size = this->m_aCreep.size();
+	for(unsigned int i=0 ; i<size ; i++)
+	{
+		Creep* c = this->m_aCreep[i];
+		sf::Vector2f posf = sf::Vector2f(pos.x*GRID_UNIT,pos.y*GRID_UNIT);
+		sf::FloatRect rect = sf::FloatRect(posf.x,posf.y,posf.x+GRID_UNIT,posf.y+GRID_UNIT);
+		sf::Vector2f creep_pos = c->getPosition();
+		if(rect.contains(creep_pos))
+        {
+            c->setState(CreepState::Leaked);
+        }
+	}
+}
+
 void CreepList::update(float dt)
 {
     int i;
@@ -58,9 +74,14 @@ void CreepList::update(float dt)
 	for(i=0 ; i<size ; i++)
 	{
 		this->m_aCreep[i]->update(dt);
-		if(this->m_aCreep[i]->getState()>0 && !this->m_aCreep[i]->isChasedByProjectile())
+		Creep* aux = this->m_aCreep[i];
+		if(aux->getState()!=CreepState::Normal && !aux->isChasedByProjectile())
         {
-            Creep* aux = this->m_aCreep[i];
+        	if(aux->getState()==CreepState::Leaked)
+			{
+				// TODO ajouter leak score
+			}
+
             this->m_aCreep.erase(this->m_aCreep.begin() + i);
             if(aux!=nullptr)
             {
@@ -79,6 +100,10 @@ void CreepList::render(sf::RenderWindow& window)
 	int size = this->m_aCreep.size();
 	for(i=0 ; i<size ; i++)
 	{
+		if(this->m_aCreep[i]->getState()==CreepState::Leaked)
+		{
+			continue;
+		}
 		this->m_aCreep[i]->render(window);
 	}
 }

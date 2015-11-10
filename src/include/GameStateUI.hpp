@@ -51,6 +51,7 @@ protected:
 	sf::Sprite* m_panel;
     std::vector<std::pair<Button*,TTower*>> m_aButtonTTower;
     TTower* m_tt;
+    sf::Text* m_leaks_text;
 
 };
 

@@ -45,6 +45,12 @@
         this->m_aButtonTTower.push_back(std::pair<Button*,TTower*>(button,tt));
         i++;
     }
+
+	this->m_leaks_text = new sf::Text();
+    this->m_leaks_text->setFont(*(ResourceManager::Instance()->getFont("Global Font")));
+	this->m_leaks_text->setString("Leaks");
+    this->m_leaks_text->setCharacterSize(24);
+    this->m_leaks_text->setPosition(100.f,800.f);
 }
 
 /*virtual*/ GameStateUI::~GameStateUI()
@@ -65,12 +71,15 @@ void GameStateUI::setTTower(TTower* tt)
 
 /*virtual*/ void GameStateUI::update(float deltaTimeInSeconds)
 {
-
+	char s[100];
+	sprintf(s,"Leaks : %d",this->m_gsp->getLeak());
+	this->m_leaks_text->setString(s);
 }
 
 /*virtual*/ void GameStateUI::render(sf::RenderWindow& window)
 {
 	window.draw(*m_panel);
+	window.draw(*(this->m_leaks_text));
 	unsigned int size = this->m_aButtonTTower.size();
 	for(unsigned int i=0 ; i<size ; i++) {
         this->m_aButtonTTower[i].first->render(window);
@@ -100,7 +109,7 @@ void GameStateUI::setTTower(TTower* tt)
 			if(this->m_aButtonTTower[i].first->isInButton(positionX, positionY))
 			{
 			    this->m_tt = this->m_aButtonTTower[i].second;
-			    this->m_gsp->SetState(PlacingTower);
+			    this->m_gsp->SetState(PlayingState::PlacingTower);
 				return;
 			}
 		}

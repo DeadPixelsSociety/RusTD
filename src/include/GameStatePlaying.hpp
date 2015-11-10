@@ -38,7 +38,7 @@
 
 class GameStateUI;
 
-enum PlayingState
+enum class PlayingState
 {
 	Normal,
 	PlacingTower,
@@ -53,6 +53,7 @@ public:
 	virtual ~GameStatePlaying(void);
 
     GameStateUI getUI(void);
+	int getLeak(void);
 
     void addCreep(Creep* cre);
     void addTower(Tower* tow);

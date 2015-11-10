@@ -28,7 +28,7 @@
 : GameState()
 , m_map(nullptr)
 , m_ui(nullptr)
-, m_state(Normal)
+, m_state(PlayingState::Normal)
 , m_placementValid(true)
 , m_leaks(0)
 , t_creep_spawn_cd(10000.f)
@@ -46,11 +46,11 @@
     this->m_path.push_back(sf::Vector2i(7,12));
 //
 
-    TTower* tt2 = TDoodad::getTTower(5);
+    //TTower* tt2 = TDoodad::getTTower(5);
     TTower* tt3 = TDoodad::getTTower(6);
 
-    m_towers.push_back(new Tower(tt2, sf::Vector2i(10,8)));
-    this->addTower(m_towers.back());
+    //m_towers.push_back(new Tower(tt2, sf::Vector2i(10,8)));
+    //this->addTower(m_towers.back());
     m_towers.push_back(new Tower(tt3, sf::Vector2i(1,1)));
     this->addTower(m_towers.back());
     m_towers.push_back(new Tower(tt3, sf::Vector2i(0,0)));
@@ -79,6 +79,11 @@
 	}
 	delete m_map;
 	delete m_placeTower;
+}
+
+int GameStatePlaying::getLeak(void)
+{
+	return this->m_leaks;
 }
 
 void GameStatePlaying::addCreep(Creep* cre)
@@ -156,6 +161,7 @@ void GameStatePlaying::addTower(Tower* tow)
 		m_view.setCenter(center);
 	}
     this->isPlacementAvailable();
+    this->creepLeak();
 }
 
 /*virtual*/ void GameStatePlaying::render(sf::RenderWindow& window)
@@ -167,7 +173,7 @@ void GameStatePlaying::addTower(Tower* tow)
     this->m_tl->render(window);
     this->m_pl->render(window);
     // Draw placing mark
-    if(m_state == PlacingTower)
+    if(m_state == PlayingState::PlacingTower)
 	{
 		window.draw(*m_placeTower);
 	}
@@ -180,7 +186,7 @@ void GameStatePlaying::addTower(Tower* tow)
 {
 	if(button == sf::Mouse::Left)
 	{
-		if(m_state == PlacingTower)
+		if(m_state == PlayingState::PlacingTower)
 		{
 			// @TODO place tower if valid
             if(m_placementValid)
@@ -188,7 +194,7 @@ void GameStatePlaying::addTower(Tower* tow)
                 sf::Vector2i pos = sf::Vector2i((int)m_placementPosition.x/GRID_UNIT,(int)m_placementPosition.y/GRID_UNIT);
                 Tower* new_tower = new Tower(m_ui->getTTower(),pos);
                 this->addTower(new_tower);
-                this->SetState(Normal);
+                this->SetState(PlayingState::Normal);
                 // @TODO remove ttower pointeur
             }
 		}
@@ -199,16 +205,16 @@ void GameStatePlaying::addTower(Tower* tow)
 	}
 	if(button == sf::Mouse::Right)
 	{
-		if(m_state == PlacingTower)
+		if(m_state == PlayingState::PlacingTower)
 		{
-			SetState(Normal);
+			SetState(PlayingState::Normal);
 		}
 	}
 }
 
 /*virtual*/ void GameStatePlaying::mouseMove(int positionX, int positionY)
 {
-	if(m_state == PlacingTower)
+	if(m_state == PlayingState::PlacingTower)
 	{
 		if(positionX >= 0 && positionX <= VIEW_WIDTH * WIDTH_VIEWPORT_COEF && positionY >= 0 && positionY < VIEW_HEIGHT)
 		{
@@ -284,7 +290,7 @@ void GameStatePlaying::addTower(Tower* tow)
 /*virtual*/ void GameStatePlaying::SetState(PlayingState state)
 {
 	m_state = state;
-	if(state==Normal)
+	if(state==PlayingState::Normal)
     {
         //this->m_ui->setTTower(nullptr);
     }
@@ -297,7 +303,7 @@ void GameStatePlaying::addTower(Tower* tow)
 
 void GameStatePlaying::isPlacementAvailable()
 {
-    if(m_state == PlacingTower)
+    if(m_state == PlayingState::PlacingTower)
 	{
 		if(m_placementPosition.x != -1.0f && m_placementPosition.y != -1.0f)
 		{
@@ -355,7 +361,11 @@ void GameStatePlaying::isPlacementAvailable()
 
 void GameStatePlaying::creepLeak()
 {
-
+	int size = this->m_path.size();
+	if(size>0)
+	{
+		this->m_cl->creepLeak(this->m_path[size-1]);
+	}
 }
 
 

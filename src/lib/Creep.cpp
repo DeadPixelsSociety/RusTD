@@ -25,18 +25,8 @@
 #include "../include/Random.hpp"
 
 Creep::Creep(void)
-{
-	this->m_tcreep = nullptr;
-	this->m_current_health = 1.f;
-	this->m_position = sf::Vector2f();
-	this->m_state = 0;
-	this->m_path_point_index = 0;
-	this->m_aProjectile = new ProjectileList();
-	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Basic Robot")));
-	this->m_sprite->setOrigin(32, 32);
-	this->m_animation = new Animation(0, "", m_sprite, sf::IntRect(0, 0, 64, 64), 10, 100);
-	this->m_rand_dead = Random::NextFloat(0, 360);
-}
+: Creep(nullptr)
+{}
 
 Creep::Creep(TCreep* tc)
 {
@@ -46,7 +36,7 @@ Creep::Creep(TCreep* tc)
         this->m_current_health = this->m_tcreep->getStats().health;
     }
     this->m_position = sf::Vector2f();
-    this->m_state = 0;
+    this->m_state = CreepState::Normal;
     this->m_path_point_index = 0;
 	this->m_aProjectile = new ProjectileList();
 	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Basic Robot")));
@@ -76,7 +66,7 @@ sf::Vector2f Creep::getPosition(void)
     return this->m_position;
 }
 
-int Creep::getState(void)
+CreepState Creep::getState(void)
 {
     return this->m_state;
 }
@@ -93,6 +83,11 @@ void Creep::setPath(std::vector<sf::Vector2i>& path)
     this->m_next_point.x += Random::NextFloat(16.f, 48.f);
     this->m_position = m_next_point;
     this->m_path_point_index = 0;
+}
+
+void Creep::setState(CreepState state)
+{
+    this->m_state = state;
 }
 
 void Creep::addProjectile(Projectile* proj)
@@ -117,12 +112,12 @@ void Creep::takeDamage(float damage)
 
 void Creep::update(float dt)
 {
-    if(this->m_state==0 && this->m_current_health<=0.f)
+    if(this->m_state==CreepState::Normal && this->m_current_health<=0.f)
     {
-        this->m_state = 1;
+        this->m_state = CreepState::Dead;
     }
 
-    if(this->m_state>0)
+    if(this->m_state!=CreepState::Normal)
     {
         return;
     }
@@ -157,7 +152,7 @@ void Creep::update(float dt)
 
 void Creep::render(sf::RenderWindow& window)
 {
-    if(this->m_state>0)
+    if(this->m_state==CreepState::Dead)
     {
     	sf::Sprite dead(*(ResourceManager::Instance()->getTexture("Static Dead Basic Robot")));
     	dead.setOrigin(32, 32);
