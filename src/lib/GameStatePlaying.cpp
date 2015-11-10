@@ -169,9 +169,10 @@ void GameStatePlaying::addTower(Tower* tow)
 	sf::View oldView = window.getView();
 	window.setView(m_view);
 	window.draw(sf::Sprite(*(this->m_map->getTexture())));
-	this->m_cl->render(window);
+	this->m_cl->renderCreep(window);
     this->m_tl->render(window);
     this->m_pl->render(window);
+	this->m_cl->renderDialog(window);
     // Draw placing mark
     if(m_state == PlayingState::PlacingTower)
 	{

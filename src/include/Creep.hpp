@@ -58,7 +58,8 @@ public:
     void takeDamage(float damage);
 
 	void update(float dt);
-    void render(sf::RenderWindow& window);
+    void renderCreep(sf::RenderWindow& window);
+    void renderDialog(sf::RenderWindow& window);
 
 protected:
 	TCreep* m_tcreep;

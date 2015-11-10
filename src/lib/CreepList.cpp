@@ -94,17 +94,28 @@ void CreepList::update(float dt)
 	}
 }
 
-void CreepList::render(sf::RenderWindow& window)
+void CreepList::renderCreep(sf::RenderWindow& window)
 {
-    int i;
 	int size = this->m_aCreep.size();
-	for(i=0 ; i<size ; i++)
+	for(int i=0 ; i<size ; i++)
 	{
 		if(this->m_aCreep[i]->getState()==CreepState::Leaked)
 		{
 			continue;
 		}
-		this->m_aCreep[i]->render(window);
+		this->m_aCreep[i]->renderCreep(window);
+	}
+}
+
+void CreepList::renderDialog(sf::RenderWindow& window)
+{
+	int size = this->m_aCreep.size();
+	for(int i=0 ; i<size ; i++)
+	{
+		if(this->m_aCreep[i]->getState()==CreepState::Normal)
+		{
+			this->m_aCreep[i]->renderDialog(window);
+		}
 	}
 }
 
