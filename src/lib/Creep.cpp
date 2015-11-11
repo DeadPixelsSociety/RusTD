@@ -31,16 +31,16 @@ Creep::Creep(void)
 {}
 
 Creep::Creep(TCreep* tc)
+: m_position(sf::Vector2f())
+, m_path_point_index(0)
 {
 	this->m_tcreep = tc;
     if(tc!=nullptr)
     {
         this->m_current_health = this->m_tcreep->getStats().health;
     }
-    this->m_position = sf::Vector2f();
     this->m_state = CreepState::Normal;
-    this->m_path_point_index = 0;
-	this->m_aProjectile = new ProjectileList();
+    this->m_aProjectile = new ProjectileList();
 	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Basic Robot")));
 	this->m_sprite->setOrigin(32, 32);
 	// TODO get the animation from index and doodad, replace by following two lines

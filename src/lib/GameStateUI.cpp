@@ -83,6 +83,7 @@ void GameStateUI::setTTower(TTower* tt)
 	unsigned int size = this->m_aButtonTTower.size();
 	for(unsigned int i=0 ; i<size ; i++) {
         this->m_aButtonTTower[i].first->render(window);
+        // @TODO ne pas créer des sf::text à chaque itération de boucle
         sf::Text text = sf::Text();
         text.setFont(*(ResourceManager::Instance()->getFont("Global Font")));
         text.setString(this->m_aButtonTTower[i].second->getName());

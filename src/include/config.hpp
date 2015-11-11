@@ -35,7 +35,7 @@
 
 #define GAME_TITLE "RusTD"
 
-const float GRID_UNIT = 64.f;
+#define GRID_UNIT 64
 
 // Enumeration
 enum UnitType
@@ -44,46 +44,6 @@ enum UnitType
 	AIR = 1,
 	WATER = 2,
 	UNITTYPE_COUNT
-};
-
-// Structure
-// Tower
-struct Range
-{
-	float minimal, maximal;
-};
-
-struct Attack
-{
-	float damage, speed;
-	Range range;
-	bool availableTarget[UnitType::UNITTYPE_COUNT];
-};
-
-struct Foundation
-{
-	int size;
-	UnitType type;
-};
-
-struct Construction
-{
-	int cost;
-	float time;
-	Foundation foundation;
-};
-
-// Creep
-struct Movement
-{
-	UnitType type;
-	float speed;
-};
-
-struct Stats
-{
-	float health, health_regen;
-	int bounty;
 };
 
 #endif

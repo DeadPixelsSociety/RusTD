@@ -23,7 +23,9 @@ TowerList::TowerList(void)
 {}
 
 TowerList::~TowerList(void)
-{}
+{
+
+}
 
 void TowerList::addTower(Tower* tow)
 {

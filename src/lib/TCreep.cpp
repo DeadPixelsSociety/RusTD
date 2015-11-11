@@ -20,9 +20,9 @@
 #include "../include/TCreep.hpp"
 
 TCreep::TCreep(void)
+: m_id(-1)
+, m_name("")
 {
-	this->m_id = -1;
-	this->m_name = "";
 	this->m_movement = Movement();
 	this->m_movement.type = UnitType::GROUND;
 	this->m_movement.speed = 0;
@@ -33,12 +33,11 @@ TCreep::TCreep(void)
 }
 
 TCreep::TCreep(int id, std::string name, Movement movement, Stats stats)
-{
-	this->m_id = id;
-	this->m_name = name;
-	this->m_movement = movement;
-	this->m_stats = stats;
-}
+: m_id(id)
+, m_name(name)
+, m_movement(movement)
+, m_stats(stats)
+{}
 
 TCreep::~TCreep(void)
 {}

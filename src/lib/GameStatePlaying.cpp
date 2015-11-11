@@ -51,12 +51,9 @@
 
     //m_towers.push_back(new Tower(tt2, sf::Vector2i(10,8)));
     //this->addTower(m_towers.back());
-    m_towers.push_back(new Tower(tt3, sf::Vector2i(1,1)));
-    this->addTower(m_towers.back());
-    m_towers.push_back(new Tower(tt3, sf::Vector2i(0,0)));
-    this->addTower(m_towers.back());
-    m_towers.push_back(new Tower(tt3, sf::Vector2i(5,6)));
-    this->addTower(m_towers.back());
+    this->addTower(new Tower(tt3, sf::Vector2i(1,1)));
+    this->addTower(new Tower(tt3, sf::Vector2i(0,0)));
+    this->addTower(new Tower(tt3, sf::Vector2i(5,6)));
     m_map = new Map(40, 30, this->m_path);
     for(int i = 0; i < 16; ++i)
 	{
@@ -73,12 +70,12 @@
 
 /*virtual*/ GameStatePlaying::~GameStatePlaying()
 {
-	for(std::vector<Tower*>::iterator it = m_towers.begin(); it != m_towers.end(); ++it)
-	{
-		delete *it;
-	}
-	delete m_map;
-	delete m_placeTower;
+    delete this->m_cl;
+    delete this->m_pl;
+	delete this->m_tl;
+    delete this->m_ui;
+	delete this->m_map;
+	delete this->m_placeTower;
 }
 
 int GameStatePlaying::getLeak(void)
@@ -365,7 +362,7 @@ void GameStatePlaying::creepLeak()
 	int size = this->m_path.size();
 	if(size>0)
 	{
-		this->m_cl->creepLeak(this->m_path[size-1]);
+		this->m_leaks += this->m_cl->creepLeak(this->m_path[size-1]);
 	}
 }
 

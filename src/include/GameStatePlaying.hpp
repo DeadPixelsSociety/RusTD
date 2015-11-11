@@ -78,8 +78,8 @@ protected:
     ProjectileList* m_pl;
     TowerList* m_tl;
     std::vector<sf::Vector2i> m_path;
-	std::vector<Tower*> m_towers;
-	std::vector<TTower*> m_ttowers;
+	//std::vector<Tower*> m_towers;
+	//std::vector<TTower*> m_ttowers;
 	Map* m_map;
 	GameStateUI* m_ui;
 	std::vector<float> m_zoomCoefs;

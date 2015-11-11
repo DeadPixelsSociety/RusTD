@@ -26,23 +26,17 @@
 #include "../include/tools.hpp"
 
 Tower::Tower(void)
-{
-	this->m_ttower = nullptr;
-	this->m_attack_cooldown = 0.f;
-    this->m_proj_speed = 1.f;
-	this->m_position = sf::Vector2i();
-    this->m_last_target = nullptr;
-    this->m_show_range = false;
-}
+: Tower(nullptr,sf::Vector2i())
+{}
 
 Tower::Tower(TTower* tt, sf::Vector2i position)
+: m_attack_cooldown(0.f)
+, m_proj_speed(500.f)
+, m_last_target(nullptr)
+, m_show_range(false)
 {
 	this->m_ttower = tt;
-	this->m_attack_cooldown = 0.f;
-    this->m_proj_speed = 500.f;
 	this->m_position = position;
-    this->m_last_target = nullptr;
-    this->m_show_range = false;
 }
 
 Tower::~Tower(void)
