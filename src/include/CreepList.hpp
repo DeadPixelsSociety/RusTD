@@ -39,6 +39,8 @@ public:
 
     int creepLeak(sf::Vector2i pos);
 
+    Creep* findCreepAtPosition(sf::Vector2f position);
+
 	void update(float dt);
 	void renderCreep(sf::RenderWindow& window);
 	void renderDialog(sf::RenderWindow& window);

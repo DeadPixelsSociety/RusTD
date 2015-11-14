@@ -112,6 +112,14 @@ void Creep::takeDamage(float damage)
     this->m_current_health = MAX(0.f,this->m_current_health-damage);
 }
 
+bool Creep::collide(sf::Vector2f position)
+{
+    float distance_x = position.x - this->m_position.x;
+    float distance_y = position.y - this->m_position.y;
+
+    return distance_x*distance_x + distance_y*distance_y < CREEP_SELECTION_RADIUS_AU_CARRE;
+}
+
 void Creep::update(float dt)
 {
     if(this->m_state==CreepState::Normal && this->m_current_health<=0.f)

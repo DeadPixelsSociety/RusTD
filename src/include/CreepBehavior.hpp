@@ -17,36 +17,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-#ifndef TOWER_LIST_H
-#define TOWER_LIST_H
+#ifndef CREEP_BEHAVIOR_H
+#define CREEP_BEHAVIOR_H
 
-#include <vector>
+#include <SFML/Graphics/Sprite.hpp>
 
-#include "Tower.hpp"
-#include "ProjectileList.hpp"
-
-class TowerList
+class CreepBehavior
 {
 public:
-	TowerList(void);
+	CreepBehavior(void);
 
-	~TowerList(void);
-
-    //int getSize(void);
-    Tower* getTower(int i);
-
-    void addTower(Tower* tow);
-
-	void attackList(ProjectileList* ap,CreepList* ac);
-	bool isPlacementAvailable(sf::Vector2i placement);
-    Tower* findTowerAtPosition(sf::Vector2i position);
-
-	void update(float dt);
-	void render(sf::RenderWindow& window);
+	~CreepBehavior(void);
 
 protected:
-	std::vector<Tower*> m_aTower;
-
+	float m_movement_coefficient;
+	float m_damage_over_time;
+    bool m_confusion;
+    sf::Sprite* m_sprite;
 };
 
 #endif

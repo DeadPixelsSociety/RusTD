@@ -30,6 +30,7 @@
 , m_ui(nullptr)
 , m_state(PlayingState::Normal)
 , m_placementValid(true)
+, m_selected_tower(nullptr)
 , m_leaks(0)
 , t_creep_spawn_cd(10000.f)
 {
@@ -47,7 +48,7 @@
 //
 
     //TTower* tt2 = TDoodad::getTTower(5);
-    TTower* tt3 = TDoodad::getTTower(6);
+    TTower* tt3 = TDoodad::getTTower(7);
 
     //m_towers.push_back(new Tower(tt2, sf::Vector2i(10,8)));
     //this->addTower(m_towers.back());
@@ -178,51 +179,79 @@ void GameStatePlaying::addTower(Tower* tow)
     window.setView(oldView);
 }
 
-/*virtual*/ void GameStatePlaying::mouseDown(sf::Mouse::Button button, int positionX, int positionY) {}
+/*virtual*/ void GameStatePlaying::mouseDown(sf::Mouse::Button button, int positionX, int positionY)
+{}
 
 /*virtual*/ void GameStatePlaying::mouseUp(sf::Mouse::Button button, int positionX, int positionY)
 {
 	if(button == sf::Mouse::Left)
 	{
-		if(m_state == PlayingState::PlacingTower)
-		{
-			// @TODO place tower if valid
-            if(m_placementValid)
-            {
-                sf::Vector2i pos = sf::Vector2i((int)m_placementPosition.x/GRID_UNIT,(int)m_placementPosition.y/GRID_UNIT);
-                Tower* new_tower = new Tower(m_ui->getTTower(),pos);
-                this->addTower(new_tower);
+	    switch(this->m_state)
+	    {
+            case PlayingState::Normal:
+                this->m_selected_tower = this->m_tl->findTowerAtPosition(sf::Vector2i((int)m_placementPosition.x/GRID_UNIT,(int)m_placementPosition.y/GRID_UNIT));
+                if(this->m_selected_tower!=nullptr)
+                {
+                    this->m_selected_tower->enableRangeIndicator(true);
+                    this->SetState(PlayingState::TowerSelected);
+                }
+                break;
+
+            case PlayingState::PlacingTower:
+                if(m_placementValid)
+                {
+                    sf::Vector2i pos = sf::Vector2i((int)m_placementPosition.x/GRID_UNIT,(int)m_placementPosition.y/GRID_UNIT);
+                    Tower* new_tower = new Tower(m_ui->getTTower(),pos);
+                    this->addTower(new_tower);
+                    this->SetState(PlayingState::Normal);
+                }
+                break;
+
+            case PlayingState::TowerSelected:
+                this->m_selected_tower->enableRangeIndicator(false);
+                this->m_selected_tower = nullptr;
                 this->SetState(PlayingState::Normal);
-                // @TODO remove ttower pointeur
-            }
-		}
-		else
-		{
-			// @TODO check what is clicked and do thinks
-		}
+
+                this->m_selected_tower = this->m_tl->findTowerAtPosition(sf::Vector2i((int)m_placementPosition.x/GRID_UNIT,(int)m_placementPosition.y/GRID_UNIT));
+                if(this->m_selected_tower!=nullptr)
+                {
+                    this->m_selected_tower->enableRangeIndicator(true);
+                    this->SetState(PlayingState::TowerSelected);
+                }
+                break;
+
+            default: break;
+	    }
 	}
+
 	if(button == sf::Mouse::Right)
 	{
-		if(m_state == PlayingState::PlacingTower)
-		{
-			SetState(PlayingState::Normal);
-		}
+	    Creep* aux;
+	    switch(this->m_state)
+	    {
+            case PlayingState::PlacingTower:
+                this->SetState(PlayingState::Normal);
+                break;
+
+            case PlayingState::TowerSelected:
+                aux = this->m_cl->findCreepAtPosition(this->m_placementPosition);
+                if(aux!=nullptr && this->m_selected_tower!=nullptr)
+                {
+                    if(this->m_selected_tower->canAttack(aux))
+                    {
+                        this->m_selected_tower->setTarget(aux);
+                    }
+                }
+                break;
+
+            default: break;
+	    }
 	}
 }
 
 /*virtual*/ void GameStatePlaying::mouseMove(int positionX, int positionY)
 {
-	if(m_state == PlayingState::PlacingTower)
-	{
-		if(positionX >= 0 && positionX <= VIEW_WIDTH * WIDTH_VIEWPORT_COEF && positionY >= 0 && positionY < VIEW_HEIGHT)
-		{
-			m_placementPosition = GameStateManager::Instance()->getWindow()->mapPixelToCoords(sf::Vector2i(positionX, positionY), m_view);
-		}
-		else
-		{
-			m_placementPosition = sf::Vector2f(-1.0f, -1.0f);
-		}
-	}
+	computeMousePosition(positionX, positionY);
 }
 
 /*virtual*/ void GameStatePlaying::mouseWheel(int delta, int positionX, int positionY)
@@ -272,9 +301,7 @@ void GameStatePlaying::addTower(Tower* tow)
 }
 
 /*virtual*/ void GameStatePlaying::keyDown(sf::Keyboard::Key key)
-{
-
-}
+{}
 
 /*virtual*/ void GameStatePlaying::keyUp(sf::Keyboard::Key key)
 {
@@ -297,6 +324,18 @@ void GameStatePlaying::addTower(Tower* tow)
 /*virtual*/ PlayingState GameStatePlaying::GetState() const
 {
 	return m_state;
+}
+
+void GameStatePlaying::computeMousePosition(int positionX, int positionY)
+{
+    if(positionX>=0 && positionX<=VIEW_WIDTH*WIDTH_VIEWPORT_COEF && positionY>=0 && positionY<VIEW_HEIGHT)
+    {
+        m_placementPosition = GameStateManager::Instance()->getWindow()->mapPixelToCoords(sf::Vector2i(positionX, positionY), m_view);
+    }
+    else
+    {
+        m_placementPosition = sf::Vector2f(-1.0f, -1.0f);
+    }
 }
 
 void GameStatePlaying::isPlacementAvailable()

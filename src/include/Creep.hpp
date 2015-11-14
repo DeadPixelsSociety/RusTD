@@ -24,6 +24,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "../include/Animation.hpp"
 
+#define CREEP_SELECTION_RADIUS_AU_CARRE 30
+
 class Projectile;
 class ProjectileList;
 
@@ -56,6 +58,8 @@ public:
     bool isChasedByProjectile(void);
 
     void takeDamage(float damage);
+
+    bool collide(sf::Vector2f position);
 
 	void update(float dt);
     void renderCreep(sf::RenderWindow& window);

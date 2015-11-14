@@ -102,6 +102,20 @@ int CreepList::creepLeak(sf::Vector2i pos)
 	return leaks;
 }
 
+Creep* CreepList::findCreepAtPosition(sf::Vector2f position)
+{
+    int size = this->m_aCreep.size();
+	for(int i=0 ; i<size ; i++)
+	{
+	    Creep* aux = this->m_aCreep[i];
+		if(aux->collide(position))
+        {
+            return aux;
+        }
+	}
+	return nullptr;
+}
+
 void CreepList::update(float dt)
 {
 	int size = this->m_aCreep.size();

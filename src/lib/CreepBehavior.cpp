@@ -17,36 +17,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-#ifndef TOWER_LIST_H
-#define TOWER_LIST_H
 
-#include <vector>
+#include "../include/CreepBehavior.hpp"
 
-#include "Tower.hpp"
-#include "ProjectileList.hpp"
+CreepBehavior::CreepBehavior(void)
+: m_movement_coefficient(0.f)
+, m_damage_over_time(0.f)
+, m_confusion(false)
+, m_sprite(nullptr)
+{}
 
-class TowerList
-{
-public:
-	TowerList(void);
+CreepBehavior::~CreepBehavior(void)
+{}
 
-	~TowerList(void);
-
-    //int getSize(void);
-    Tower* getTower(int i);
-
-    void addTower(Tower* tow);
-
-	void attackList(ProjectileList* ap,CreepList* ac);
-	bool isPlacementAvailable(sf::Vector2i placement);
-    Tower* findTowerAtPosition(sf::Vector2i position);
-
-	void update(float dt);
-	void render(sf::RenderWindow& window);
-
-protected:
-	std::vector<Tower*> m_aTower;
-
-};
-
-#endif
