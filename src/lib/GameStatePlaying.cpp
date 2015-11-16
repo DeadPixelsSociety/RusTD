@@ -31,6 +31,7 @@
 , m_state(PlayingState::Normal)
 , m_placementValid(true)
 , m_selected_tower(nullptr)
+, m_selected_creep(nullptr)
 , m_leaks(0)
 , t_creep_spawn_cd(10000.f)
 {
@@ -226,7 +227,6 @@ void GameStatePlaying::addTower(Tower* tow)
 
 	if(button == sf::Mouse::Right)
 	{
-	    Creep* aux;
 	    switch(this->m_state)
 	    {
             case PlayingState::PlacingTower:
@@ -234,12 +234,11 @@ void GameStatePlaying::addTower(Tower* tow)
                 break;
 
             case PlayingState::TowerSelected:
-                aux = this->m_cl->findCreepAtPosition(this->m_placementPosition);
-                if(aux!=nullptr && this->m_selected_tower!=nullptr)
+                if(this->m_selected_creep!=nullptr && this->m_selected_tower!=nullptr)
                 {
-                    if(this->m_selected_tower->canAttack(aux))
+                    if(this->m_selected_tower->canAttack(this->m_selected_creep))
                     {
-                        this->m_selected_tower->setTarget(aux);
+                        this->m_selected_tower->setTarget(this->m_selected_creep);
                     }
                 }
                 break;
@@ -252,6 +251,15 @@ void GameStatePlaying::addTower(Tower* tow)
 /*virtual*/ void GameStatePlaying::mouseMove(int positionX, int positionY)
 {
 	computeMousePosition(positionX, positionY);
+	if(this->m_selected_creep!=nullptr)
+    {
+        this->m_selected_creep->setHoverIndicatorEnabled(false);
+    }
+	this->m_selected_creep = this->m_cl->findCreepAtPosition(this->m_placementPosition);
+    if(this->m_selected_creep!=nullptr)
+    {
+        this->m_selected_creep->setHoverIndicatorEnabled(true);
+    }
 }
 
 /*virtual*/ void GameStatePlaying::mouseWheel(int delta, int positionX, int positionY)

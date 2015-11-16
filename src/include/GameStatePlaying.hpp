@@ -91,6 +91,7 @@ protected:
 	sf::Sprite* m_placeTower;
 	bool m_placementValid;
 	Tower* m_selected_tower;
+    Creep* m_selected_creep;
 	int m_leaks;
 
     float t_creep_spawn_cd; // @TOREMOVE
