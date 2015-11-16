@@ -35,6 +35,8 @@ void LoadResources(Data* data)
 	R->registerTexture(DATA_DIR"texture/static_shadow.png", "Static Shadow");
 	R->registerTexture(DATA_DIR"texture/static_road.png", "Static Road");
 	R->registerTexture(DATA_DIR"texture/static_option_background.png", "Static Option Background");
+	R->registerTexture(DATA_DIR"texture/static_tower_00_base.png", "Static Tower 00 Base");
+	R->registerTexture(DATA_DIR"texture/static_tower_00_head.png", "Static Tower 00 Head");
 	// Registering fonts
 	R->registerFont(DATA_DIR"font/global_font.ttf", "Global Font");
 	// Registering musics

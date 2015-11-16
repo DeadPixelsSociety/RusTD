@@ -24,6 +24,7 @@
 #include "../include/Random.hpp"
 #include "../include/Tower.hpp"
 #include "../include/tools.hpp"
+#include "../include/ResourceManager.hpp"
 
 Tower::Tower(void)
 {
@@ -191,8 +192,23 @@ void Tower::render(sf::RenderWindow& window)
         window.draw(range);
     }
 
-
-    window.draw(shape);
+	sf::Sprite sprite;
+	sprite.setTexture(*ResourceManager::Instance()->getTexture("Static Tower 00 Base"));
+	sprite.setScale(0.25, 0.25);
+	sprite.setPosition(shape.getPosition());
+	sf::Sprite head;
+	head.setTexture(*ResourceManager::Instance()->getTexture("Static Tower 00 Head"));
+	head.setScale(0.25, 0.25);
+	head.setPosition(shape.getPosition() + sf::Vector2f(32, 32));
+	head.setOrigin(128, 128);
+	if(m_last_target != nullptr)
+	{
+		sf::Vector2f diff = m_last_target->getPosition() - head.getPosition();
+		float rotation = atan2(diff.x, -diff.y) + 270.f;
+		head.setRotation(rotation * 180 / 3.14);
+	}
+    window.draw(sprite);
+    window.draw(head);
     window.draw(cooldown_bar_back);
     window.draw(cooldown_bar);
 }
