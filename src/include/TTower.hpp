@@ -24,6 +24,31 @@
 
 #include "config.hpp"
 
+struct Range
+{
+	float minimal, maximal;
+};
+
+struct Attack
+{
+	float damage, speed;
+	Range range;
+	bool availableTarget[UnitType::UNITTYPE_COUNT];
+};
+
+struct Foundation
+{
+	int size;
+	UnitType type;
+};
+
+struct Construction
+{
+	int cost;
+	float time;
+	Foundation foundation;
+};
+
 class TTower
 {
 public:

@@ -20,9 +20,9 @@
 #include "../include/TTower.hpp"
 
 TTower::TTower()
+: m_id(-1)
+, m_name("")
 {
-	this->m_id = -1;
-	this->m_name = "";
 	this->m_attack = Attack();
 	this->m_attack.damage = 0;
 	this->m_attack.speed = 0;
@@ -40,12 +40,11 @@ TTower::TTower()
 }
 
 TTower::TTower(int id, std::string name, Attack attack, Construction constr)
-{
-	this->m_id = id;
-	this->m_name = name;
-	this->m_attack = attack;
-	this->m_constr = constr;
-}
+: m_id(id)
+, m_name(name)
+, m_attack(attack)
+, m_constr(constr)
+{}
 
 TTower::~TTower()
 {}

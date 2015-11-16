@@ -22,6 +22,18 @@
 
 #include "config.hpp"
 
+struct Movement
+{
+	UnitType type;
+	float speed;
+};
+
+struct Stats
+{
+	float health, health_regen;
+	int bounty;
+};
+
 class TCreep
 {
 public:

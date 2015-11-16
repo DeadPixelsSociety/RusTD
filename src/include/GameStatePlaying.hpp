@@ -66,8 +66,11 @@ public:
 	virtual void mouseWheel(int delta, int positionX, int positionY);
 	virtual void keyDown(sf::Keyboard::Key key);
 	virtual void keyUp(sf::Keyboard::Key key);
+
 	virtual void SetState(PlayingState state);
 	virtual PlayingState GetState(void) const;
+
+    void computeMousePosition(int positionX, int positionY);
 
 	void isPlacementAvailable();
 	void creepLeak();
@@ -78,8 +81,6 @@ protected:
     ProjectileList* m_pl;
     TowerList* m_tl;
     std::vector<sf::Vector2i> m_path;
-	std::vector<Tower*> m_towers;
-	std::vector<TTower*> m_ttowers;
 	Map* m_map;
 	GameStateUI* m_ui;
 	std::vector<float> m_zoomCoefs;
@@ -89,6 +90,7 @@ protected:
 	sf::Vector2f m_placementPosition;
 	sf::Sprite* m_placeTower;
 	bool m_placementValid;
+	Tower* m_selected_tower;
 	int m_leaks;
 
     float t_creep_spawn_cd; // @TOREMOVE

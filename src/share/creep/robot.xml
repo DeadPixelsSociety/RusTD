@@ -3,6 +3,6 @@
 
 <creep id="0">
 	<name>robot</name>
-	<stats health="250" health_regen="0" bounty="100"/>
+	<stats health="50" health_regen="0" bounty="100"/>
 	<movement speed="150" type="ground"/>
 </creep>

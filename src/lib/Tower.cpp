@@ -26,28 +26,33 @@
 #include "../include/tools.hpp"
 #include "../include/ResourceManager.hpp"
 
+
 Tower::Tower(void)
-{
-	this->m_ttower = nullptr;
-	this->m_attack_cooldown = 0.f;
-    this->m_proj_speed = 1.f;
-	this->m_position = sf::Vector2i();
-    this->m_last_target = nullptr;
-    this->m_show_range = false;
-}
+: Tower(nullptr,sf::Vector2i())
+{}
 
 Tower::Tower(TTower* tt, sf::Vector2i position)
+: m_attack_cooldown(0.f)
+, m_proj_speed(500.f)
+, m_last_target(nullptr)
+, m_show_range_indicator(false)
 {
 	this->m_ttower = tt;
-	this->m_attack_cooldown = 0.f;
-    this->m_proj_speed = 500.f;
 	this->m_position = position;
-    this->m_last_target = nullptr;
-    this->m_show_range = false;
 }
 
 Tower::~Tower(void)
 {}
+
+void Tower::enableRangeIndicator(bool e)
+{
+    this->m_show_range_indicator = e;
+}
+
+void Tower::setTarget(Creep* c)
+{
+    this->m_last_target = c;
+}
 
 bool Tower::inRange(Creep* c)
 {
@@ -72,9 +77,9 @@ bool Tower::canAttack(Creep* c)
     return (att.availableTarget[tc->getMovement().type] && this->inRange(c));
 }
 
-bool Tower::isPlacementAvailable(sf::Vector2i placement)
+bool Tower::isTowerPosition(sf::Vector2i placement)
 {
-    return !(this->m_position.x == placement.x && this->m_position.y == placement.y);
+    return (this->m_position.x==placement.x && this->m_position.y== placement.y);
 }
 
 Projectile* Tower::attackList(CreepList* ac)
@@ -167,29 +172,57 @@ void Tower::render(sf::RenderWindow& window)
     cooldown_bar.setFillColor(sf::Color::Red);
     cooldown_bar.setPosition(cooldown_bar_pos);
 
+    //window.draw(shape);
+    window.draw(cooldown_bar_back);
+    window.draw(cooldown_bar);
 
-    if(this->m_show_range)
+    if(this->m_show_range_indicator)
     {
         Attack att = this->m_ttower->getAttack();
-
-        sf::CircleShape range;
-        if(att.range.minimal==0)
+        if(att.range.maximal>0)
         {
-            range.setRadius(att.range.maximal);
-            range.setOrigin(sf::Vector2f(att.range.maximal-GRID_UNIT/2,att.range.maximal-GRID_UNIT/2));
-            range.setOutlineThickness(1.f);
-        }
-        else
-        {
-            range.setRadius(att.range.minimal);
-            range.setOrigin(sf::Vector2f(att.range.minimal-GRID_UNIT/2,att.range.minimal-GRID_UNIT/2));
-            range.setOutlineThickness(att.range.maximal-att.range.minimal);
+            sf::CircleShape max_range;
+            max_range.setRadius(att.range.maximal);
+            max_range.setOrigin(sf::Vector2f(att.range.maximal-GRID_UNIT/2,att.range.maximal-GRID_UNIT/2));
+            max_range.setOutlineThickness(3.f);
+            max_range.setFillColor(sf::Color(0,0,0,0));
+            max_range.setOutlineColor(RANGE_INDICATOR_LIMIT_COLOR);
+            max_range.setPosition(tower_pos);
+            window.draw(max_range);
         }
 
-        range.setFillColor(sf::Color(255, 255, 255, 0));
-        range.setOutlineColor(sf::Color(255, 255, 255, 150));
-        range.setPosition(tower_pos);
-        window.draw(range);
+        if(att.range.minimal>0)
+        {
+            sf::CircleShape min_range;
+            min_range.setRadius(att.range.minimal);
+            min_range.setOrigin(sf::Vector2f(att.range.minimal-GRID_UNIT/2,att.range.minimal-GRID_UNIT/2));
+            min_range.setOutlineThickness(3.f);
+            min_range.setFillColor(sf::Color(0,0,0,0));
+            min_range.setOutlineColor(RANGE_INDICATOR_LIMIT_COLOR);
+            min_range.setPosition(tower_pos);
+            window.draw(min_range);
+        }
+
+        if(att.range.minimal>=0 && att.range.maximal>0 && att.range.maximal>att.range.minimal)
+        {
+            sf::CircleShape range;
+            if(att.range.minimal==0)
+            {
+                range.setRadius(att.range.maximal);
+                range.setFillColor(RANGE_INDICATOR_ZONE_COLOR);
+                range.setOrigin(sf::Vector2f(att.range.maximal-GRID_UNIT/2,att.range.maximal-GRID_UNIT/2));
+            }
+            else
+            {
+                range.setRadius(att.range.minimal);
+                range.setOutlineThickness(att.range.maximal-att.range.minimal);
+                range.setFillColor(sf::Color(0,0,0,0));
+                range.setOutlineColor(RANGE_INDICATOR_ZONE_COLOR);
+                range.setOrigin(sf::Vector2f(att.range.minimal-GRID_UNIT/2,att.range.minimal-GRID_UNIT/2));
+            }
+            range.setPosition(tower_pos);
+            window.draw(range);
+        }
     }
 
 	sf::Sprite sprite;

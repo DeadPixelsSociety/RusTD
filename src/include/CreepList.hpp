@@ -37,10 +37,13 @@ public:
     void addCreep(Creep* cre);
     void removeCreep(Creep* cre);
 
-    void creepLeak(sf::Vector2i pos);
+    int creepLeak(sf::Vector2i pos);
+
+    Creep* findCreepAtPosition(sf::Vector2f position);
 
 	void update(float dt);
-	void render(sf::RenderWindow& window);
+	void renderCreep(sf::RenderWindow& window);
+	void renderDialog(sf::RenderWindow& window);
 
 protected:
 	std::vector<Creep*> m_aCreep;

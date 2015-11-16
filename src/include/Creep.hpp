@@ -24,6 +24,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "../include/Animation.hpp"
 
+#define CREEP_SELECTION_RADIUS_AU_CARRE 30
+
 class Projectile;
 class ProjectileList;
 
@@ -57,8 +59,11 @@ public:
 
     void takeDamage(float damage);
 
+    bool collide(sf::Vector2f position);
+
 	void update(float dt);
-    void render(sf::RenderWindow& window);
+    void renderCreep(sf::RenderWindow& window);
+    void renderDialog(sf::RenderWindow& window);
 
 protected:
 	TCreep* m_tcreep;

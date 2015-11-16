@@ -27,6 +27,9 @@
 const sf::Vector2f COOLDOWN_BAR_RECTANGLE = sf::Vector2f(GRID_UNIT,3.f);
 const sf::Vector2f COOLDOWN_BAR_OFFSET = sf::Vector2f(0.f,0.f);
 
+const sf::Color RANGE_INDICATOR_LIMIT_COLOR = sf::Color(100, 255, 150, 150);
+const sf::Color RANGE_INDICATOR_ZONE_COLOR = sf::Color(100, 255, 150, 25);
+
 class Tower
 {
 public:
@@ -35,9 +38,13 @@ public:
 
 	~Tower(void);
 
+    void enableRangeIndicator(bool e);
+
+    void setTarget(Creep* c);
+
     bool inRange(Creep* c);
     bool canAttack(Creep* c);
-    bool isPlacementAvailable(sf::Vector2i placement);
+    bool isTowerPosition(sf::Vector2i placement);
 
 	Projectile* attackList(CreepList* ac);
     Projectile* attack(Creep* c);
@@ -50,7 +57,7 @@ protected:
 	float m_attack_cooldown, m_proj_speed;
 	sf::Vector2i m_position;
 	Creep* m_last_target;
-	bool m_show_range;
+	bool m_show_range_indicator;
 
 };
 

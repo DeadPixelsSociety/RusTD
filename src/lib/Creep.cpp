@@ -24,21 +24,23 @@
 #include "../include/ResourceManager.hpp"
 #include "../include/Random.hpp"
 
+#define HEALTH_BAR_LENGTH 30
+
 Creep::Creep(void)
 : Creep(nullptr)
 {}
 
 Creep::Creep(TCreep* tc)
+: m_position(sf::Vector2f())
+, m_path_point_index(0)
 {
 	this->m_tcreep = tc;
     if(tc!=nullptr)
     {
         this->m_current_health = this->m_tcreep->getStats().health;
     }
-    this->m_position = sf::Vector2f();
     this->m_state = CreepState::Normal;
-    this->m_path_point_index = 0;
-	this->m_aProjectile = new ProjectileList();
+    this->m_aProjectile = new ProjectileList();
 	this->m_sprite = new sf::Sprite(*(ResourceManager::Instance()->getTexture("Animation Basic Robot")));
 	this->m_sprite->setOrigin(32, 32);
 	// TODO get the animation from index and doodad, replace by following two lines
@@ -110,6 +112,14 @@ void Creep::takeDamage(float damage)
     this->m_current_health = MAX(0.f,this->m_current_health-damage);
 }
 
+bool Creep::collide(sf::Vector2f position)
+{
+    float distance_x = position.x - this->m_position.x;
+    float distance_y = position.y - this->m_position.y;
+
+    return distance_x*distance_x + distance_y*distance_y < CREEP_SELECTION_RADIUS_AU_CARRE;
+}
+
 void Creep::update(float dt)
 {
     if(this->m_state==CreepState::Normal && this->m_current_health<=0.f)
@@ -150,7 +160,7 @@ void Creep::update(float dt)
 	this->m_sprite->setColor(sf::Color(200 + 55 * coef, 100 + 155 * coef, 255 * coef));
 }
 
-void Creep::render(sf::RenderWindow& window)
+void Creep::renderCreep(sf::RenderWindow& window)
 {
     if(this->m_state==CreepState::Dead)
     {
@@ -167,18 +177,23 @@ void Creep::render(sf::RenderWindow& window)
     	shadow.setPosition(this->m_position);
     	window.draw(shadow);
 		window.draw(*m_sprite);
-
-        sf::RectangleShape health_bar_back(sf::Vector2f(20, 3));
-        health_bar_back.setFillColor(sf::Color::Red);
-        health_bar_back.setOrigin(10,2);
-        health_bar_back.setPosition(sf::Vector2f(this->m_position.x,this->m_position.y-15));
-        window.draw(health_bar_back);
-
-        float pour_cd = MAX(0.f,this->m_current_health / this->m_tcreep->getStats().health);
-        sf::RectangleShape health_bar(sf::Vector2f(pour_cd*20, 3));
-        health_bar.setFillColor(sf::Color::Green);
-        health_bar.setOrigin(10,2);
-        health_bar.setPosition(sf::Vector2f(this->m_position.x,this->m_position.y-15));
-        window.draw(health_bar);
     }
 }
+
+void Creep::renderDialog(sf::RenderWindow& window)
+{
+	sf::RectangleShape health_bar_back(sf::Vector2f(HEALTH_BAR_LENGTH, 3));
+	health_bar_back.setFillColor(sf::Color::Red);
+	health_bar_back.setOrigin(HEALTH_BAR_LENGTH/2,2);
+	health_bar_back.setPosition(sf::Vector2f(this->m_position.x,this->m_position.y-15));
+
+	float pour_cd = MAX(0.f,this->m_current_health/this->m_tcreep->getStats().health);
+	sf::RectangleShape health_bar(sf::Vector2f(pour_cd*HEALTH_BAR_LENGTH, 3));
+	health_bar.setFillColor(sf::Color::Green);
+	health_bar.setOrigin(HEALTH_BAR_LENGTH/2,2);
+	health_bar.setPosition(sf::Vector2f(this->m_position.x,this->m_position.y-15));
+
+	window.draw(health_bar_back);
+	window.draw(health_bar);
+}
+

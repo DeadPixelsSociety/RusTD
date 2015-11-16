@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE bibliography SYSTEM "tower.dtd" >
+
+<tower id="7">
+	<name>Tour de siège</name>
+	<construction time="2" cost="80">
+		<foundation size="1" type="ground"/>
+	</construction>
+	<attack speed="2" damage="12">
+		<range minimal="200" maximal="500"/>
+		<target ground="true" air="false" water="false"/>
+	</attack>
+</tower>
