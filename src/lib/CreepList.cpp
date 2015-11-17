@@ -19,20 +19,17 @@
 */
 #include "../include/CreepList.hpp"
 
-CreepList::CreepList(void)
+CreepList::CreepList()
 {}
 
-CreepList::~CreepList(void)
+CreepList::~CreepList()
 {
-    printf("--delete \n");
     for(std::vector<Creep*>::iterator it=this->m_aCreep.begin() ; it!=this->m_aCreep.end() ; ++it)
     {
         Creep* aux = *it;
         this->m_aCreep.erase(it);
         if(aux!=nullptr)
         {
-            printf("delete \n");
-
             delete aux;
             aux = nullptr;
             --it;
@@ -58,7 +55,7 @@ CreepList::~CreepList(void)
 	}*/
 }
 
-int CreepList::getSize(void)
+int CreepList::getSize()
 {
     return this->m_aCreep.size();
 }

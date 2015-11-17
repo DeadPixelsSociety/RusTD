@@ -74,7 +74,6 @@
     delete this->m_cl;
     delete this->m_pl;
 	delete this->m_tl;
-    delete this->m_ui;
 	delete this->m_map;
 	delete this->m_placeTower;
 }

@@ -73,15 +73,17 @@ struct GameStateHandler
 {
 	if(m_stateStack.size() > 0)
 	{
-		if(m_stateStack.back().m_gameState == m_currentState)
+		m_pendingDelete = true;
+		if(m_stateStack.size() > 0)
 		{
-			m_pendingDelete = true;
+			m_statesToDelete.push_back(m_stateStack.back().m_gameState);
+			m_stateStack.pop_back();
 		}
-		m_stateStack.pop_back();
 		if((int)m_stateStack.size() < m_loopStackSize)
 		{
 			m_loopStackSize = m_stateStack.size();
 		}
+		m_currentState = nullptr;
 	}
 }
 
@@ -97,6 +99,7 @@ struct GameStateHandler
 	{
 		m_loopStackSize = m_stateStack.size();
 	}
+	m_currentState = nullptr;
 	return gsh;
 }
 
@@ -109,7 +112,10 @@ struct GameStateHandler
 		{
 			m_stateStack[i].m_gameState->update(deltaTimeInSeconds);
 		}
-		m_currentState->update(deltaTimeInSeconds);
+		if(m_currentState != nullptr)
+		{
+			m_currentState->update(deltaTimeInSeconds);
+		}
 	}
 }
 
@@ -122,7 +128,10 @@ struct GameStateHandler
 		{
 			m_stateStack[i].m_gameState->render(window);
 		}
-		m_currentState->render(window);
+		if(m_currentState != nullptr)
+		{
+			m_currentState->render(window);
+		}
 	}
 }
 
@@ -135,7 +144,10 @@ struct GameStateHandler
 		{
 			m_stateStack[i].m_gameState->mouseDown(button, positionX, positionY);
 		}
-		m_currentState->mouseDown(button, positionX, positionY);
+		if(m_currentState != nullptr)
+		{
+			m_currentState->mouseDown(button, positionX, positionY);
+		}
 	}
 }
 
@@ -148,7 +160,10 @@ struct GameStateHandler
 		{
 			m_stateStack[i].m_gameState->mouseUp(button, positionX, positionY);
 		}
-		m_currentState->mouseUp(button, positionX, positionY);
+		if(m_currentState != nullptr)
+		{
+			m_currentState->mouseUp(button, positionX, positionY);
+		}
 	}
 }
 
@@ -161,7 +176,10 @@ struct GameStateHandler
 		{
 			m_stateStack[i].m_gameState->mouseMove(positionX, positionY);
 		}
-		m_currentState->mouseMove(positionX, positionY);
+		if(m_currentState != nullptr)
+		{
+			m_currentState->mouseMove(positionX, positionY);
+		}
 	}
 }
 
@@ -174,7 +192,10 @@ struct GameStateHandler
 		{
 			m_stateStack[i].m_gameState->mouseWheel(delta, positionX, positionY);
 		}
-		m_currentState->mouseWheel(delta, positionX, positionY);
+		if(m_currentState != nullptr)
+		{
+			m_currentState->mouseWheel(delta, positionX, positionY);
+		}
 	}
 }
 
@@ -187,7 +208,10 @@ struct GameStateHandler
 		{
 			m_stateStack[i].m_gameState->keyDown(key);
 		}
-		m_currentState->keyDown(key);
+		if(m_currentState != nullptr)
+		{
+			m_currentState->keyDown(key);
+		}
 	}
 }
 
@@ -200,7 +224,10 @@ struct GameStateHandler
 		{
 			m_stateStack[i].m_gameState->keyUp(key);
 		}
-		m_currentState->keyUp(key);
+		if(m_currentState != nullptr)
+		{
+			m_currentState->keyUp(key);
+		}
 	}
 }
 
@@ -211,13 +238,18 @@ struct GameStateHandler
 		m_currentState = m_stateStack.back().m_gameState;
 		m_loopStackSize = m_stateStack.size() - 1;
 	}
+	m_statesToDelete.clear();
 }
 
 /*virtual*/ void GameStateManager::endLoop(sf::RenderWindow& window)
 {
 	if(m_pendingDelete)
 	{
-		delete m_currentState;
+		int length = m_statesToDelete.size();
+		for(int i = length - 1; i >= 0; --i)
+		{
+			delete m_statesToDelete[i];
+		}
 	}
 	m_pendingDelete = false;
 	m_currentState = nullptr;

@@ -68,6 +68,7 @@ protected:
 	virtual int computeInputDepth();
 
 	std::vector<GameStateHandler> m_stateStack;
+	std::vector<GameState*> m_statesToDelete;
 
 	GameState* m_currentState;
 	int m_loopStackSize;
