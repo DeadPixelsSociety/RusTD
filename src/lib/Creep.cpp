@@ -17,6 +17,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
+#include <sstream>
+
 #include "../include/Creep.hpp"
 #include "../include/Projectile.hpp"
 #include "../include/ProjectileList.hpp"
@@ -209,6 +211,22 @@ void Creep::renderDialog(sf::RenderWindow& window)
         hover_indicator.setOutlineColor(sf::Color(255,100,100,150));
         hover_indicator.setPosition(this->m_position);
         window.draw(hover_indicator);
+
+		int healthI = (int)this->m_current_health;
+		if(healthI>0)
+		{
+			sf::Text text = sf::Text();
+			text.setFont(*(ResourceManager::Instance()->getFont("Global Font")));
+			std::stringstream ss;
+			ss<<healthI<<" / "<<(int)this->m_tcreep->getStats().health;
+			text.setString(ss.str());
+			text.setCharacterSize(18);
+			text.setPosition(this->m_position.x-(text.getLocalBounds().width)/2.f
+							,this->m_position.y-text.getLocalBounds().height-20.f);
+
+			window.draw(text);
+		}
+
     }
 
 	window.draw(health_bar_back);

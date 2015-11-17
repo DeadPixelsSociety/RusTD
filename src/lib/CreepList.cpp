@@ -35,24 +35,6 @@ CreepList::~CreepList()
             --it;
         }
     }
-
-
-
-/*
-    int size = this->m_aCreep.size();
-	for(int i=0 ; i<size ; i++)
-	{
-	    Creep* aux = this->m_aCreep[i];
-        this->m_aCreep.erase(this->m_aCreep.begin()+i);
-        if(aux!=nullptr)
-        {
-            printf("delete %d\n",i);
-            delete aux;
-            aux = nullptr;
-            --i;
-            --size;
-        }
-	}*/
 }
 
 int CreepList::getSize()
