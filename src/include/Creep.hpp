@@ -24,7 +24,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "../include/Animation.hpp"
 
-#define CREEP_SELECTION_RADIUS_AU_CARRE 30
+#define CREEP_SELECTION_RADIUS 25
 
 class Projectile;
 class ProjectileList;
@@ -51,6 +51,7 @@ public:
 
     void setPath(std::vector<sf::Vector2i>& path);
     void setState(CreepState state);
+    void setHoverIndicatorEnabled(bool e);
 
     void addProjectile(Projectile* proj);
     void removeProjectile(Projectile* proj);
@@ -77,6 +78,7 @@ protected:
     Animation* m_animation;
 	float m_rand_dead;
 	sf::Vector2f m_next_point;
+	bool m_hover_indicator;
 };
 
 #endif

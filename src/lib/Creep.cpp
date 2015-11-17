@@ -33,6 +33,7 @@ Creep::Creep(void)
 Creep::Creep(TCreep* tc)
 : m_position(sf::Vector2f())
 , m_path_point_index(0)
+, m_hover_indicator(false)
 {
 	this->m_tcreep = tc;
     if(tc!=nullptr)
@@ -92,6 +93,11 @@ void Creep::setState(CreepState state)
     this->m_state = state;
 }
 
+void Creep::setHoverIndicatorEnabled(bool e)
+{
+    this->m_hover_indicator = e;
+}
+
 void Creep::addProjectile(Projectile* proj)
 {
     this->m_aProjectile->addProjectile(proj);
@@ -117,7 +123,7 @@ bool Creep::collide(sf::Vector2f position)
     float distance_x = position.x - this->m_position.x;
     float distance_y = position.y - this->m_position.y;
 
-    return distance_x*distance_x + distance_y*distance_y < CREEP_SELECTION_RADIUS_AU_CARRE;
+    return distance_x*distance_x + distance_y*distance_y < CREEP_SELECTION_RADIUS*CREEP_SELECTION_RADIUS;
 }
 
 void Creep::update(float dt)
@@ -192,6 +198,18 @@ void Creep::renderDialog(sf::RenderWindow& window)
 	health_bar.setFillColor(sf::Color::Green);
 	health_bar.setOrigin(HEALTH_BAR_LENGTH/2,2);
 	health_bar.setPosition(sf::Vector2f(this->m_position.x,this->m_position.y-15));
+
+    if(this->m_hover_indicator)
+    {
+        sf::CircleShape hover_indicator;
+        hover_indicator.setRadius(CREEP_SELECTION_RADIUS);
+        hover_indicator.setOrigin(sf::Vector2f(CREEP_SELECTION_RADIUS,CREEP_SELECTION_RADIUS));
+        hover_indicator.setOutlineThickness(3.f);
+        hover_indicator.setFillColor(sf::Color(0,0,0,0));
+        hover_indicator.setOutlineColor(sf::Color(255,100,100,150));
+        hover_indicator.setPosition(this->m_position);
+        window.draw(hover_indicator);
+    }
 
 	window.draw(health_bar_back);
 	window.draw(health_bar);
