@@ -37,6 +37,8 @@ TTower::TTower()
 	this->m_constr.time = 0;
 	this->m_constr.foundation.size = 1;
 	this->m_constr.foundation.type = UnitType::GROUND;
+
+	this->setIdent("","","","","");
 }
 
 TTower::TTower(int id, std::string name, Attack attack, Construction constr)
@@ -44,7 +46,9 @@ TTower::TTower(int id, std::string name, Attack attack, Construction constr)
 , m_name(name)
 , m_attack(attack)
 , m_constr(constr)
-{}
+{
+	this->setIdent("","","","","");
+}
 
 TTower::~TTower()
 {}
