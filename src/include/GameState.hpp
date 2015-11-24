@@ -23,6 +23,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Graphics/View.hpp>
 
 class GameState
 {
@@ -39,8 +40,15 @@ public:
 	virtual void mouseWheel(int delta, int positionX, int positionY){}
 	virtual void keyDown(sf::Keyboard::Key key){}
 	virtual void keyUp(sf::Keyboard::Key key){}
+	virtual sf::View getView(void);
+	virtual void setViewPositionX(int px);
+	virtual void setViewPositionY(int px);
+	virtual void setViewWidth(int px);
+	virtual void setViewHeight(int px);
 
 protected:
+
+	sf::View m_view;
 
 };
 

@@ -23,7 +23,7 @@
 #include <SFML/Graphics.hpp>
 
 #define SHARE_DIR "../src/share" // !! No ending '/'
-#define DATA_DIR "data/" // !! With ending '/'
+#define DATA_DIR "../src/share/" // !! With ending '/'
 
 #define LOAD_XML 0
 #define LOAD_BIN 1
