@@ -26,9 +26,9 @@
 			<!ATTLIST target ground (yes | no) "yes">
 			<!ATTLIST target air (yes | no) "yes">
 
-		<!ELEMENT resource EMPTY>
-			<!ATTLIST resource icon CDATA "">
-			<!ATTLIST resource base CDATA "">
-			<!ATTLIST resource head CDATA "">
-			<!ATTLIST resource projectile CDATA "">
-			<!ATTLIST resource splash CDATA "">
+	<!ELEMENT resource (icon, base, head, projectile, splash)>
+		<!ELEMENT icon #PCDATA>
+		<!ELEMENT base #PCDATA>
+		<!ELEMENT head #PCDATA>
+		<!ELEMENT projectile #PCDATA>
+		<!ELEMENT splash #PCDATA>
