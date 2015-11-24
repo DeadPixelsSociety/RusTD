@@ -2,7 +2,7 @@
 <!DOCTYPE bibliography SYSTEM "tower.dtd" >
 
 <tower id="7">
-	<name>Tour de siège</name>
+	<name>Tour de siÃ¨ge</name>
 	<construction time="2" cost="80">
 		<foundation size="1" type="ground"/>
 	</construction>
@@ -10,4 +10,11 @@
 		<range minimal="200" maximal="500"/>
 		<target ground="true" air="false" water="false"/>
 	</attack>
+	<resource>
+		<icon>Static Gear</icon>
+		<base>Static Tower 00 Base</base>
+		<head>Static Tower 00 Head</head>
+		<projectile>Static Water Projectile</projectile>
+		<splash>Animation Water Splash</splash>
+	</resource>
 </tower>
