@@ -127,14 +127,22 @@ bool TDoodad::load_towerFile(const std::string& tower_file_path)
 	constructionTower.foundation = foundationTower;
 
 	int id = tower->IntAttribute("id");
-	if(m_ttower.find(id) == m_ttower.end())
-	{
-		m_ttower[id] = new TTower(id, std::string(tower->FirstChildElement("name")->GetText()), attackTower, constructionTower);
-	}
-	else
+	if(m_ttower.find(id) != m_ttower.end())
 	{
 		fprintf(stderr, "TTower with id [%d] already exists.\n", id);
+		return false;
 	}
+	
+	m_ttower[id] = new TTower(id, std::string(tower->FirstChildElement("name")->GetText()), attackTower, constructionTower);
+	
+	tinyxml2::XMLElement* resource = tower->FirstChildElement("resource");
+	m_ttower[id].setIdent(
+		resource->FirstChildElement("icon")->GetText(), 
+		resource->FirstChildElement("base")->GetText(), 
+		resource->FirstChildElement("head")->GetText(), 
+		resource->FirstChildElement("projectile")->GetText(), 
+		resource->FirstChildElement("splash")->GetText(), 
+		);
 
 	return true;
 }
