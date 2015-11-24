@@ -62,6 +62,7 @@ public:
 	std::vector<int>& getUpgrades(void);
 	Attack getAttack(void) const;
 	Construction getConstruction(void) const;
+	void setIdent(std::string icon, std::string base, std::string head, std::string projectile, std::string splash);
 
 protected:
 	int m_id;
@@ -69,6 +70,12 @@ protected:
 	std::vector<int> m_upgrades;
 	Attack m_attack;
 	Construction m_constr;
+	std::string m_icon_ident;
+	std::string m_base_ident;
+	std::string m_head_ident;
+	std::string m_projectile_ident;
+	std::string m_splash_ident;
+
 };
 
 #endif

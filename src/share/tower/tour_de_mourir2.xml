@@ -2,7 +2,7 @@
 <!DOCTYPE bibliography SYSTEM "tower.dtd" >
 
 <tower id="6">
-	<name>Tour lente</name>
+	<name>tour lente</name>
 	<construction time="2" cost="80">
 		<foundation size="1" type="ground"/>
 	</construction>

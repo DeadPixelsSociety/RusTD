@@ -1,4 +1,4 @@
-<!ELEMENT tower (id, name, construction?, upgrade*, attack?)>
+<!ELEMENT tower (name, construction?, upgrade*, attack?,resource?)>
 	
 	<!ATTLIST tower id CDATA>
 
@@ -25,3 +25,10 @@
 		<!ELEMENT target EMPTY>
 			<!ATTLIST target ground (yes | no) "yes">
 			<!ATTLIST target air (yes | no) "yes">
+
+		<!ELEMENT resource EMPTY>
+			<!ATTLIST resource icon CDATA "">
+			<!ATTLIST resource base CDATA "">
+			<!ATTLIST resource head CDATA "">
+			<!ATTLIST resource projectile CDATA "">
+			<!ATTLIST resource splash CDATA "">

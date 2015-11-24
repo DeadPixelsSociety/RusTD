@@ -73,3 +73,12 @@ Construction TTower::getConstruction() const
 {
 	return m_constr;
 }
+
+void TTower::setIdent(std::string icon, std::string base, std::string head, std::string projectile, std::string splash)
+{
+	this->m_icon_ident = icon;
+	this->m_base_ident = base;
+	this->m_head_ident = head;
+	this->m_projectile_ident = projectile;
+	this->m_splash_ident = splash;
+}
