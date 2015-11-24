@@ -11,4 +11,11 @@
 		<range minimal="0" maximal="400"/>
 		<target ground="true" air="true" water="false"/>
 	</attack>
+	<resource>
+		<icon>Static Gear</icon>
+		<base>Static Tower 00 Base</base>
+		<head>Static Tower 00 Head</head>
+		<projectile>Static Water Projectile</projectile>
+		<splash>Animation Water Splash</splash>
+	</resource>
 </tower>
