@@ -141,7 +141,7 @@ bool TDoodad::load_towerFile(const std::string& tower_file_path)
 		resource->FirstChildElement("base")->GetText(), 
 		resource->FirstChildElement("head")->GetText(), 
 		resource->FirstChildElement("projectile")->GetText(), 
-		resource->FirstChildElement("splash")->GetText(), 
+		resource->FirstChildElement("splash")->GetText()
 		);
 
 	return true;
