@@ -28,8 +28,9 @@ void LoadResources(Data* data)
 	// Registering textures
 	R->registerTexture(DATA_DIR"texture/static_dead_basic_robot.png", "Static Dead Basic Robot");
 	R->registerTexture(DATA_DIR"texture/animation_basic_robot.png", "Animation Basic Robot");
+	R->registerTexture(DATA_DIR"texture/animation_water_splash.png", "Animation Water Splash");
 	R->registerTexture(DATA_DIR"texture/menu_background.png", "Menu Background");
-	R->registerTexture(DATA_DIR"texture/qusetion_box_panel.png", "Question Box Panel");
+	R->registerTexture(DATA_DIR"texture/question_box_panel.png", "Question Box Panel");
 	R->registerTexture(DATA_DIR"texture/static_gear.png", "Static Gear");
 	R->registerTexture(DATA_DIR"texture/static_ground_textures.png", "Static Ground Textures");
 	R->registerTexture(DATA_DIR"texture/static_shadow.png", "Static Shadow");
@@ -37,6 +38,9 @@ void LoadResources(Data* data)
 	R->registerTexture(DATA_DIR"texture/static_option_background.png", "Static Option Background");
 	R->registerTexture(DATA_DIR"texture/static_tower_00_base.png", "Static Tower 00 Base");
 	R->registerTexture(DATA_DIR"texture/static_tower_00_head.png", "Static Tower 00 Head");
+	R->registerTexture(DATA_DIR"texture/static_panel_ui.png", "Static Panel Ui");
+	R->registerTexture(DATA_DIR"texture/static_tower_position.png", "Static Tower Position");
+	R->registerTexture(DATA_DIR"texture/static_water_projectile.png", "Static Water Projectile");
 	// Registering fonts
 	R->registerFont(DATA_DIR"font/global_font.ttf", "Global Font");
 	// Registering musics
