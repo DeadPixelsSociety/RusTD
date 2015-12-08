@@ -93,6 +93,7 @@ protected:
 	Tower* m_selected_tower;
     Creep* m_selected_creep;
 	int m_leaks;
+	bool m_maj_pressed;
 
     float t_creep_spawn_cd; // @TOREMOVE
 };

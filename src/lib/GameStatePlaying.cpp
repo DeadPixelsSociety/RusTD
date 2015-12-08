@@ -33,6 +33,8 @@
 , m_selected_tower(nullptr)
 , m_selected_creep(nullptr)
 , m_leaks(0)
+, m_maj_pressed(false)
+
 , t_creep_spawn_cd(10000.f)
 {
     this->m_cl = new CreepList();
@@ -203,7 +205,10 @@ void GameStatePlaying::addTower(Tower* tow)
                     sf::Vector2i pos = sf::Vector2i((int)m_placementPosition.x/GRID_UNIT,(int)m_placementPosition.y/GRID_UNIT);
                     Tower* new_tower = new Tower(m_ui->getTTower(),pos);
                     this->addTower(new_tower);
-                    this->SetState(PlayingState::Normal);
+                    if(!this->m_maj_pressed)
+					{
+						this->SetState(PlayingState::Normal);
+					}
                 }
                 break;
 
@@ -308,7 +313,12 @@ void GameStatePlaying::addTower(Tower* tow)
 }
 
 /*virtual*/ void GameStatePlaying::keyDown(sf::Keyboard::Key key)
-{}
+{
+	if(key == sf::Keyboard::LShift)
+	{
+        this->m_maj_pressed = true;
+	}
+}
 
 /*virtual*/ void GameStatePlaying::keyUp(sf::Keyboard::Key key)
 {
@@ -316,6 +326,11 @@ void GameStatePlaying::addTower(Tower* tow)
 	{
 		GameStateManager::Instance()->popState(); // Pop GameStateUI
 		GameStateManager::Instance()->popState(); // Pop GameStatePlaying
+	}
+
+	if(key == sf::Keyboard::LShift)
+	{
+        this->m_maj_pressed = false;
 	}
 }
 
