@@ -27,9 +27,11 @@ TCreep::TCreep(void)
 	this->m_movement.type = UnitType::GROUND;
 	this->m_movement.speed = 0;
 	this->m_stats = Stats();
-	this->m_stats.health = 1;
+	this->m_stats.health_base = 1;
+	this->m_stats.health_coefficient = 0;
 	this->m_stats.health_regen = 0;
-	this->m_stats.bounty = 0;
+	this->m_stats.bounty_base = 0;
+	this->m_stats.bounty_coefficient = 0;
 }
 
 TCreep::TCreep(int id, std::string name, Movement movement, Stats stats)

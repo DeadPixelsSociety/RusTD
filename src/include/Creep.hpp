@@ -41,6 +41,7 @@ class Creep
 public:
 	Creep(void);
 	Creep(TCreep* tc);
+	Creep(TCreep* tc, unsigned int rank);
 
 	~Creep(void);
 
@@ -68,7 +69,7 @@ public:
 
 protected:
 	TCreep* m_tcreep;
-	float m_current_health;
+	float m_maximal_health, m_current_health;
 	sf::Vector2f m_position;
     std::vector<sf::Vector2i> m_path;//?
     ProjectileList* m_aProjectile;
@@ -79,6 +80,7 @@ protected:
 	float m_rand_dead;
 	sf::Vector2f m_next_point;
 	bool m_hover_indicator;
+	unsigned int m_rank;
 };
 
 #endif

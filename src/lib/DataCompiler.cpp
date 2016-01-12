@@ -144,9 +144,11 @@ bool dc_compileCreep(TCreep* tc, data_byte data_bloc, int* data_pointer, int blo
 	if(!dc_compileString(&name, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_compileInteger(&(movement_type), data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_compileFloat(&(movement.speed), data_bloc, data_pointer, bloc_size))return false;
-	if(!dc_compileFloat(&(stats.health), data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_compileFloat(&(stats.health_base), data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_compileFloat(&(stats.health_coefficient), data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_compileFloat(&(stats.health_regen), data_bloc, data_pointer, bloc_size))return false;
-	if(!dc_compileInteger(&(stats.bounty), data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_compileInteger(&(stats.bounty_base), data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_compileInteger(&(stats.bounty_coefficient), data_bloc, data_pointer, bloc_size))return false;
 	return true;
 }
 
@@ -566,20 +568,24 @@ bool dc_extractCreep(TCreep** tc, data_byte data_bloc, int* data_pointer, int bl
 	int movement_type;
 	float movement_speed;
 	Stats stats;
-	float stats_health, stats_health_regen;
-	int stats_bounty;
+	float stats_health_base, stats_health_coefficient, stats_health_regen;
+	int stats_bounty_base, stats_bounty_coefficient;
 	if(!dc_extractInteger(&id, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractString(&name, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractInteger(&movement_type, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractFloat(&movement_speed, data_bloc, data_pointer, bloc_size))return false;
-	if(!dc_extractFloat(&stats_health, data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_extractFloat(&stats_health_base, data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_extractFloat(&stats_health_coefficient, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractFloat(&stats_health_regen, data_bloc, data_pointer, bloc_size))return false;
-	if(!dc_extractInteger(&stats_bounty, data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_extractInteger(&stats_bounty_base, data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_extractInteger(&stats_bounty_coefficient, data_bloc, data_pointer, bloc_size))return false;
 	movement.type = (UnitType)movement_type;
 	movement.speed = movement_speed;
-	stats.health = stats_health;
+	stats.health_base = stats_health_base;
+	stats.health_coefficient = stats_health_coefficient;
 	stats.health_regen = stats_health_regen;
-	stats.bounty = stats_bounty;
+	stats.bounty_base = stats_bounty_base;
+	stats.bounty_coefficient = stats_bounty_coefficient;
 	*tc = new TCreep(id, name, movement, stats);
 	return true;
 }

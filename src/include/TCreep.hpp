@@ -30,8 +30,8 @@ struct Movement
 
 struct Stats
 {
-	float health, health_regen;
-	int bounty;
+	float health_base, health_coefficient, health_regen;
+	int bounty_base, bounty_coefficient;
 };
 
 class TCreep

@@ -29,18 +29,25 @@
 #define HEALTH_BAR_LENGTH 30
 
 Creep::Creep(void)
-: Creep(nullptr)
+: Creep(nullptr,0)
 {}
 
 Creep::Creep(TCreep* tc)
+: Creep(tc,0)
+{}
+
+Creep::Creep(TCreep* tc, unsigned int rank)
 : m_position(sf::Vector2f())
 , m_path_point_index(0)
 , m_hover_indicator(false)
+, m_rank(rank)
 {
 	this->m_tcreep = tc;
     if(tc!=nullptr)
     {
-        this->m_current_health = this->m_tcreep->getStats().health;
+		Stats stats = this->m_tcreep->getStats();
+		this->m_maximal_health = stats.health_base + m_rank*stats.health_coefficient;
+        this->m_current_health = this->m_maximal_health;
     }
     this->m_state = CreepState::Normal;
     this->m_aProjectile = new ProjectileList();
@@ -164,7 +171,7 @@ void Creep::update(float dt)
         }
     }
 	this->m_animation->update(dt);
-	float coef = this->m_current_health / this->m_tcreep->getStats().health;
+	float coef = this->m_current_health / this->m_maximal_health;
 	this->m_sprite->setColor(sf::Color(200 + 55 * coef, 100 + 155 * coef, 255 * coef));
 }
 
@@ -195,7 +202,7 @@ void Creep::renderDialog(sf::RenderWindow& window)
 	health_bar_back.setOrigin(HEALTH_BAR_LENGTH/2,2);
 	health_bar_back.setPosition(sf::Vector2f(this->m_position.x,this->m_position.y-15));
 
-	float pour_cd = MAX(0.f,this->m_current_health/this->m_tcreep->getStats().health);
+	float pour_cd = MAX(0.f,this->m_current_health/this->m_maximal_health);
 	sf::RectangleShape health_bar(sf::Vector2f(pour_cd*HEALTH_BAR_LENGTH, 3));
 	health_bar.setFillColor(sf::Color::Green);
 	health_bar.setOrigin(HEALTH_BAR_LENGTH/2,2);
@@ -218,12 +225,11 @@ void Creep::renderDialog(sf::RenderWindow& window)
 			sf::Text text = sf::Text();
 			text.setFont(*(ResourceManager::Instance()->getFont("Global Font")));
 			std::stringstream ss;
-			ss<<healthI<<" / "<<(int)this->m_tcreep->getStats().health;
+			//ss<<healthI<<" / "<<(int)this->m_tcreep->getStats().health;
 			text.setString(ss.str());
 			text.setCharacterSize(18);
 			text.setPosition(this->m_position.x-(text.getLocalBounds().width)/2.f
 							,this->m_position.y-text.getLocalBounds().height-20.f);
-
 			window.draw(text);
 		}
 
