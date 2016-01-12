@@ -11,12 +11,10 @@
 			<!ATTLIST foundation size CDATA "1">
 			<!ATTLIST foundation type (ground | water) "ground">
 
-	<!ELEMENT upgrade EMPTY>
-		<!ATTLIST upgrade tower_id CDATA #REQUIRED>
-
 	<!ELEMENT attack (range?, target?)>
 		<!ATTLIST attack speed CDATA "1">
-		<!ATTLIST attack damage CDATA "0">
+		<!ATTLIST attack damage_base CDATA "0">
+		<!ATTLIST attack damage_coefficient CDATA "0">
 
 		<!ELEMENT range EMPTY>
 			<!ATTLIST range minimal CDATA "0">

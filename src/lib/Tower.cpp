@@ -74,7 +74,7 @@ bool Tower::canAttack(Creep* c)
 {
     TCreep* tc = c->getTCreep();
     Attack att = this->m_ttower->getAttack();
-    return (att.availableTarget[tc->getMovement().type] && this->inRange(c));
+    return (att.availableTarget[tc->getMovement().type] && this->inRange(c) && c->getState()==CreepState::Normal);
 }
 
 bool Tower::isTowerPosition(sf::Vector2i placement)
