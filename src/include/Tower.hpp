@@ -35,6 +35,7 @@ class Tower
 public:
 	Tower(void);
 	Tower(TTower* tt, sf::Vector2i position);
+	Tower(TTower* tt, sf::Vector2i position, unsigned int rank);
 
 	~Tower(void);
 
@@ -54,7 +55,8 @@ public:
 
 protected:
 	TTower* m_ttower;
-	float m_attack_cooldown, m_proj_speed;
+	float m_attack_cooldown, m_proj_speed, m_damage;
+	unsigned int m_rank;
 	sf::Vector2i m_position;
 	Creep* m_last_target;
 	bool m_show_range_indicator;

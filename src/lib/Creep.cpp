@@ -225,7 +225,7 @@ void Creep::renderDialog(sf::RenderWindow& window)
 			sf::Text text = sf::Text();
 			text.setFont(*(ResourceManager::Instance()->getFont("Global Font")));
 			std::stringstream ss;
-			//ss<<healthI<<" / "<<(int)this->m_tcreep->getStats().health;
+			ss<<healthI<<" / "<<(int)this->m_maximal_health;
 			text.setString(ss.str());
 			text.setCharacterSize(18);
 			text.setPosition(this->m_position.x-(text.getLocalBounds().width)/2.f

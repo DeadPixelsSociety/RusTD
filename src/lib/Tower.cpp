@@ -28,17 +28,24 @@
 
 
 Tower::Tower(void)
-: Tower(nullptr,sf::Vector2i())
+: Tower(nullptr,sf::Vector2i(),0)
 {}
 
 Tower::Tower(TTower* tt, sf::Vector2i position)
-: m_attack_cooldown(0.f)
-, m_proj_speed(500.f)
+: Tower(tt,position,0)
+{}
+
+Tower::Tower(TTower* tt, sf::Vector2i position, unsigned int rank)
+: m_ttower(tt)
+, m_position(position)
+, m_attack_cooldown(0.f)
 , m_last_target(nullptr)
 , m_show_range_indicator(false)
+, m_proj_speed(500.f) // DEFAULT
+, m_rank(rank)
 {
-	this->m_ttower = tt;
-	this->m_position = position;
+	Attack attack = tt->getAttack();
+	this->m_damage = attack.damage_base + m_rank*attack.damage_bonus;
 }
 
 Tower::~Tower(void)
@@ -136,7 +143,7 @@ Projectile* Tower::attack(Creep* c)
         return nullptr;
     }
 
-    Attack att = this->m_ttower->getAttack();
+    //Attack att = this->m_ttower->getAttack();
 
     // Lancement du cooldown de l'attaque
     this->m_attack_cooldown = this->m_ttower->getAttack().speed;
@@ -144,7 +151,7 @@ Projectile* Tower::attack(Creep* c)
     //
     float offset = GRID_UNIT/2.f;
     sf::Vector2f tower_pos = getConvertedPosition(this->m_position)+sf::Vector2f(offset,offset);
-    Projectile* p = new Projectile(this->m_proj_speed, att.damage, c, tower_pos);
+    Projectile* p = new Projectile(this->m_proj_speed, this->m_damage, c, tower_pos);
     c->addProjectile(p);
     return p;
 }

@@ -171,7 +171,8 @@ bool dc_compileTower(TTower* tt, data_byte data_bloc, int* data_pointer, int blo
 		int uid = upgrades[i];
 		if(!dc_compileInteger(&(uid), data_bloc, data_pointer, bloc_size))return false;
 	}
-	if(!dc_compileFloat(&(attack.damage), data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_compileFloat(&(attack.damage_base), data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_compileFloat(&(attack.damage_bonus), data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_compileFloat(&(attack.speed), data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_compileFloat(&(attack.range.minimal), data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_compileFloat(&(attack.range.maximal), data_bloc, data_pointer, bloc_size))return false;
@@ -597,7 +598,7 @@ bool dc_extractTower(TTower** tt, data_byte data_bloc, int* data_pointer, int bl
 	std::vector<int> upgrades;
 	int usize;
 	Attack attack;
-	float attack_damage, attack_speed;
+	float attack_damage_base, attack_damage_bonus, attack_speed;
 	float attack_range_minimal, attack_range_maximal;
 	bool attack_availableTarget[(int)UnitType::UNITTYPE_COUNT];
 	Construction construction;
@@ -614,7 +615,8 @@ bool dc_extractTower(TTower** tt, data_byte data_bloc, int* data_pointer, int bl
 		upgrades.push_back(u);
 
 	}
-	if(!dc_extractFloat(&attack_damage, data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_extractFloat(&attack_damage_base, data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_extractFloat(&attack_damage_bonus, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractFloat(&attack_speed, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractFloat(&attack_range_minimal, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractFloat(&attack_range_maximal, data_bloc, data_pointer, bloc_size))return false;
@@ -628,7 +630,8 @@ bool dc_extractTower(TTower** tt, data_byte data_bloc, int* data_pointer, int bl
 	if(!dc_extractFloat(&construction_time, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractInteger(&construction_foundation_size, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractInteger(&construction_foundation_type, data_bloc, data_pointer, bloc_size))return false;
-	attack.damage = attack_damage;
+	attack.damage_base = attack_damage_base;
+	attack.damage_bonus = attack_damage_bonus;
 	attack.speed = attack_speed;
 	attack.range.minimal = attack_range_minimal;
 	attack.range.maximal = attack_range_maximal;

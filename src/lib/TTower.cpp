@@ -24,7 +24,8 @@ TTower::TTower()
 , m_name("")
 {
 	this->m_attack = Attack();
-	this->m_attack.damage = 0;
+	this->m_attack.damage_base = 0;
+	this->m_attack.damage_bonus = 0;
 	this->m_attack.speed = 0;
 	this->m_attack.range.minimal = 0;
 	this->m_attack.range.maximal = 0;

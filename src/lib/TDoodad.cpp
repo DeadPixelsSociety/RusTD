@@ -95,7 +95,8 @@ bool TDoodad::load_towerFile(const std::string& tower_file_path)
     rangeTower.maximal = tower->FirstChildElement("attack")->FirstChildElement("range")->FloatAttribute("maximal");
 
     Attack attackTower;
-    attackTower.damage = tower->FirstChildElement("attack")->FloatAttribute("damage");
+    attackTower.damage_base = tower->FirstChildElement("attack")->FloatAttribute("damage_base");
+	attackTower.damage_bonus = tower->FirstChildElement("attack")->FloatAttribute("damage_bonus");
     attackTower.speed = tower->FirstChildElement("attack")->FloatAttribute("speed");
     attackTower.range = rangeTower;
     attackTower.availableTarget[UnitType::GROUND] = tower->FirstChildElement("attack")->FirstChildElement("target")->BoolAttribute("ground");
