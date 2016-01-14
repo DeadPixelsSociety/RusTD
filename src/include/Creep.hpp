@@ -24,7 +24,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "../include/Animation.hpp"
 
-#define CREEP_SELECTION_RADIUS 25
+#define CREEP_SELECTION_RADIUS 20
 
 class Projectile;
 class ProjectileList;

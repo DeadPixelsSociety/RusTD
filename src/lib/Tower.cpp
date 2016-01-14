@@ -20,6 +20,7 @@
 #include <cmath>
 
 #include <cstdio>
+#include <iostream>
 
 #include "../include/Random.hpp"
 #include "../include/Tower.hpp"
@@ -46,6 +47,8 @@ Tower::Tower(TTower* tt, sf::Vector2i position, unsigned int rank)
 {
 	Attack attack = tt->getAttack();
 	this->m_damage = attack.damage_base + m_rank*attack.damage_bonus;
+
+    std::cout << "**********:" << tt->getBaseIdent();
 }
 
 Tower::~Tower(void)
@@ -233,11 +236,11 @@ void Tower::render(sf::RenderWindow& window)
     }
 
 	sf::Sprite sprite;
-	sprite.setTexture(*ResourceManager::Instance()->getTexture("Static Tower 00 Base"));
+    sprite.setTexture(*ResourceManager::Instance()->getTexture(this->m_ttower->getBaseIdent()));
 	sprite.setScale(0.25, 0.25);
 	sprite.setPosition(shape.getPosition());
 	sf::Sprite head;
-	head.setTexture(*ResourceManager::Instance()->getTexture("Static Tower 00 Head"));
+	head.setTexture(*ResourceManager::Instance()->getTexture(this->m_ttower->getHeadIdent()));
 	head.setScale(0.25, 0.25);
 	head.setPosition(shape.getPosition() + sf::Vector2f(32, 32));
 	head.setOrigin(128, 128);

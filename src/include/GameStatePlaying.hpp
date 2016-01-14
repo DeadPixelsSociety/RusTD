@@ -90,8 +90,11 @@ protected:
 	sf::Vector2f m_placementPosition;
 	sf::Sprite* m_placeTower;
 	bool m_placementValid;
+
 	Tower* m_selected_tower;
-    Creep* m_selected_creep;
+    Creep* m_hovered_creep;
+    //Creep* m_selected_creep;
+
 	int m_leaks;
 	bool m_maj_pressed;
 

@@ -27,8 +27,8 @@
 const sf::Vector2f COOLDOWN_BAR_RECTANGLE = sf::Vector2f(GRID_UNIT,3.f);
 const sf::Vector2f COOLDOWN_BAR_OFFSET = sf::Vector2f(0.f,0.f);
 
-const sf::Color RANGE_INDICATOR_LIMIT_COLOR = sf::Color(100, 255, 150, 150);
-const sf::Color RANGE_INDICATOR_ZONE_COLOR = sf::Color(100, 255, 150, 25);
+const sf::Color RANGE_INDICATOR_LIMIT_COLOR = sf::Color(255, 255, 150, 100);
+const sf::Color RANGE_INDICATOR_ZONE_COLOR = sf::Color(100, 255, 150, 10);
 
 class Tower
 {

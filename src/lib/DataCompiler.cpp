@@ -158,6 +158,8 @@ bool dc_compileTower(TTower* tt, data_byte data_bloc, int* data_pointer, int blo
 	int id = tt->getId();
 	char trueChar = 't', falseChar = 'f';
 	std::string name = tt->getName();
+    std::string base = tt->getBaseIdent();
+    std::string head = tt->getHeadIdent();
 	std::vector<int> upgrades = tt->getUpgrades();
 	int usize = upgrades.size();
 	Attack attack = tt->getAttack();
@@ -191,6 +193,10 @@ bool dc_compileTower(TTower* tt, data_byte data_bloc, int* data_pointer, int blo
 	if(!dc_compileFloat(&(construction.time), data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_compileInteger(&(construction.foundation.size), data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_compileInteger(&(construction_foundation_type), data_bloc, data_pointer, bloc_size))return false;
+
+    if(!dc_compileString(&base, data_bloc, data_pointer, bloc_size))return false;
+    if(!dc_compileString(&head, data_bloc, data_pointer, bloc_size))return false;
+
 	return true;
 }
 
@@ -594,7 +600,7 @@ bool dc_extractCreep(TCreep** tc, data_byte data_bloc, int* data_pointer, int bl
 bool dc_extractTower(TTower** tt, data_byte data_bloc, int* data_pointer, int bloc_size)
 {
 	int id;
-	std::string name;
+	std::string name, base, head;
 	std::vector<int> upgrades;
 	int usize;
 	Attack attack;
@@ -643,7 +649,13 @@ bool dc_extractTower(TTower** tt, data_byte data_bloc, int* data_pointer, int bl
 	construction.time = construction_time;
 	construction.foundation.size = construction_foundation_size;
 	construction.foundation.type = (UnitType)construction_foundation_type;
+
+    if(!dc_extractString(&base, data_bloc, data_pointer, bloc_size))return false;
+    if(!dc_extractString(&head, data_bloc, data_pointer, bloc_size))return false;
+
 	*tt = new TTower(id, name, attack, construction);
+    (*tt)->setIdent("",base,head,"","");
+
 	return true;
 }
 

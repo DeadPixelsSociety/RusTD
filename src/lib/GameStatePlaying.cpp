@@ -31,7 +31,7 @@
 , m_state(PlayingState::Normal)
 , m_placementValid(true)
 , m_selected_tower(nullptr)
-, m_selected_creep(nullptr)
+, m_hovered_creep(nullptr)
 , m_leaks(0)
 , m_maj_pressed(false)
 
@@ -56,8 +56,8 @@
     //m_towers.push_back(new Tower(tt2, sf::Vector2i(10,8)));
     //this->addTower(m_towers.back());
     this->addTower(new Tower(tt3, sf::Vector2i(1,1)));
-    this->addTower(new Tower(tt3, sf::Vector2i(0,0)));
-    this->addTower(new Tower(tt3, sf::Vector2i(5,6)));
+    //this->addTower(new Tower(tt3, sf::Vector2i(0,0)));
+    //this->addTower(new Tower(tt3, sf::Vector2i(5,6)));
     m_map = new Map(40, 30, this->m_path);
     for(int i = 0; i < 16; ++i)
 	{
@@ -238,11 +238,11 @@ void GameStatePlaying::addTower(Tower* tow)
                 break;
 
             case PlayingState::TowerSelected:
-                if(this->m_selected_creep!=nullptr && this->m_selected_tower!=nullptr)
+                if(this->m_hovered_creep!=nullptr && this->m_selected_tower!=nullptr)
                 {
-                    if(this->m_selected_tower->canAttack(this->m_selected_creep))
+                    if(this->m_selected_tower->canAttack(this->m_hovered_creep))
                     {
-                        this->m_selected_tower->setTarget(this->m_selected_creep);
+                        this->m_selected_tower->setTarget(this->m_hovered_creep);
                     }
                 }
                 break;
@@ -255,14 +255,14 @@ void GameStatePlaying::addTower(Tower* tow)
 /*virtual*/ void GameStatePlaying::mouseMove(int positionX, int positionY)
 {
 	computeMousePosition(positionX, positionY);
-	if(this->m_selected_creep!=nullptr)
+	if(this->m_hovered_creep!=nullptr)
     {
-        this->m_selected_creep->setHoverIndicatorEnabled(false);
+        this->m_hovered_creep->setHoverIndicatorEnabled(false);
     }
-	this->m_selected_creep = this->m_cl->findCreepAtPosition(this->m_placementPosition);
-    if(this->m_selected_creep!=nullptr)
+	this->m_hovered_creep = this->m_cl->findCreepAtPosition(this->m_placementPosition);
+    if(this->m_hovered_creep!=nullptr)
     {
-        this->m_selected_creep->setHoverIndicatorEnabled(true);
+        this->m_hovered_creep->setHoverIndicatorEnabled(true);
     }
 }
 

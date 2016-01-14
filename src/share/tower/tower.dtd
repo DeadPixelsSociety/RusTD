@@ -15,6 +15,7 @@
 		<!ATTLIST attack speed CDATA "1">
 		<!ATTLIST attack damage_base CDATA "0">
 		<!ATTLIST attack damage_bonus CDATA "0">
+		<!ATTLIST attack projectile_speed CDATA "600">
 
 		<!ELEMENT range EMPTY>
 			<!ATTLIST range minimal CDATA "0">

@@ -187,6 +187,18 @@ void Creep::renderCreep(sf::RenderWindow& window)
     }
     else
     {
+        if(this->m_hover_indicator)
+        {
+            sf::CircleShape hover_indicator;
+            hover_indicator.setRadius(CREEP_SELECTION_RADIUS);
+            hover_indicator.setOrigin(sf::Vector2f(CREEP_SELECTION_RADIUS,CREEP_SELECTION_RADIUS));
+            hover_indicator.setOutlineThickness(3.f);
+            hover_indicator.setFillColor(sf::Color(0,0,0,0));
+            hover_indicator.setOutlineColor(sf::Color(100,255,100,150));
+            hover_indicator.setPosition(this->m_position);
+            window.draw(hover_indicator);
+        }
+
     	sf::Sprite shadow(*(ResourceManager::Instance()->getTexture("Static Shadow")));
     	shadow.setOrigin(32, 32);
     	shadow.setPosition(this->m_position);
@@ -210,15 +222,6 @@ void Creep::renderDialog(sf::RenderWindow& window)
 
     if(this->m_hover_indicator)
     {
-        sf::CircleShape hover_indicator;
-        hover_indicator.setRadius(CREEP_SELECTION_RADIUS);
-        hover_indicator.setOrigin(sf::Vector2f(CREEP_SELECTION_RADIUS,CREEP_SELECTION_RADIUS));
-        hover_indicator.setOutlineThickness(3.f);
-        hover_indicator.setFillColor(sf::Color(0,0,0,0));
-        hover_indicator.setOutlineColor(sf::Color(255,100,100,150));
-        hover_indicator.setPosition(this->m_position);
-        window.draw(hover_indicator);
-
 		int healthI = (int)this->m_current_health;
 		if(healthI>0)
 		{
@@ -232,7 +235,6 @@ void Creep::renderDialog(sf::RenderWindow& window)
 							,this->m_position.y-text.getLocalBounds().height-20.f);
 			window.draw(text);
 		}
-
     }
 
 	window.draw(health_bar_back);

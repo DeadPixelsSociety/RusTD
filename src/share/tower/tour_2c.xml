@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE bibliography SYSTEM "tower.dtd" >
+
+<tower id="42">
+	<name>tour double canon</name>
+	<construction time="2" cost="80">
+		<foundation size="1" type="ground"/>
+	</construction>
+	<attack speed="1.5" damage_base="8" damage_bonus="2">
+		<range minimal="0" maximal="300"/>
+		<target ground="true" air="true" water="false"/>
+	</attack>
+	<resource>
+		<icon>Static Gear</icon>
+		<base>Static Tower 01 Base</base>
+		<head>Static Tower 01 Head</head>
+		<projectile>Static Water Projectile</projectile>
+		<splash>Animation Water Splash</splash>
+	</resource>
+</tower>

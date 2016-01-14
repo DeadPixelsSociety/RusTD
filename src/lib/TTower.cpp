@@ -79,6 +79,16 @@ Construction TTower::getConstruction() const
 	return m_constr;
 }
 
+std::string TTower::getBaseIdent()
+{
+    return m_base_ident;
+}
+
+std::string TTower::getHeadIdent()
+{
+    return m_head_ident;
+}
+
 void TTower::setIdent(std::string icon, std::string base, std::string head, std::string projectile, std::string splash)
 {
 	this->m_icon_ident = icon;
