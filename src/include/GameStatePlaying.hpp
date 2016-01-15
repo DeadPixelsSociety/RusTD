@@ -24,6 +24,7 @@
 #include "Map.hpp"
 #include "TowerList.hpp"
 #include "CreepList.hpp"
+#include "CreepWave.hpp"
 #include "ProjectileList.hpp"
 #include "Random.hpp"
 #include <vector>
@@ -35,6 +36,8 @@
 
 #define LEVEL_WIDTH 2560
 #define LEVEL_HEIGHT 1800
+
+#define CREEP_SPAWN_PERIOD 1
 
 class GameStateUI;
 
@@ -69,6 +72,8 @@ public:
 
 	virtual void SetState(PlayingState state);
 	virtual PlayingState GetState(void) const;
+	void setCreepWave(CreepWave* cw);
+
 
     void computeMousePosition(int positionX, int positionY);
 
@@ -93,12 +98,13 @@ protected:
 
 	Tower* m_selected_tower;
     Creep* m_hovered_creep;
-    //Creep* m_selected_creep;
+
+	CreepWave* m_current_creep_wave;
 
 	int m_leaks;
 	bool m_maj_pressed;
 
-    float t_creep_spawn_cd; // @TOREMOVE
+    float m_creep_spawn_cd;
 };
 
 #endif // GAMESTATEPLAYING_HPP

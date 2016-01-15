@@ -32,10 +32,10 @@
 , m_placementValid(true)
 , m_selected_tower(nullptr)
 , m_hovered_creep(nullptr)
+, m_current_creep_wave(nullptr)
 , m_leaks(0)
 , m_maj_pressed(false)
-
-, t_creep_spawn_cd(10000.f)
+, m_creep_spawn_cd(CREEP_SPAWN_PERIOD)
 {
     this->m_cl = new CreepList();
     this->m_pl = new ProjectileList();
@@ -51,11 +51,11 @@
 //
 
     //TTower* tt2 = TDoodad::getTTower(5);
-    TTower* tt3 = TDoodad::getTTower(7);
+    //TTower* tt3 = TDoodad::getTTower(7);
 
     //m_towers.push_back(new Tower(tt2, sf::Vector2i(10,8)));
     //this->addTower(m_towers.back());
-    this->addTower(new Tower(tt3, sf::Vector2i(1,1)));
+    //this->addTower(new Tower(tt3, sf::Vector2i(1,1)));
     //this->addTower(new Tower(tt3, sf::Vector2i(0,0)));
     //this->addTower(new Tower(tt3, sf::Vector2i(5,6)));
     m_map = new Map(40, 30, this->m_path);
@@ -70,6 +70,9 @@
 	m_view.setRotation(0.0f);
 	m_placeTower = new sf::Sprite();
 	m_placeTower->setTexture(*(ResourceManager::Instance()->getTexture("Static Tower Position")));
+
+	TCreep* tc = TDoodad::getTCreep(0);
+	this->m_current_creep_wave = new CreepWave(tc,2,0);
 }
 
 /*virtual*/ GameStatePlaying::~GameStatePlaying()
@@ -107,14 +110,22 @@ void GameStatePlaying::addTower(Tower* tow)
 
     this->m_tl->attackList(this->m_pl,this->m_cl);
 
-    this->t_creep_spawn_cd += dt;
-    if(this->t_creep_spawn_cd>=1.5f)
+    this->m_creep_spawn_cd += dt;
+    if(this->m_creep_spawn_cd>=CREEP_SPAWN_PERIOD && this->m_current_creep_wave!=nullptr)
     {
-        TCreep* tc = TDoodad::getTCreep(0);
-
-        Creep* new_c = new Creep(tc);
-        this->addCreep(new_c);
-        this->t_creep_spawn_cd = 0.f;
+    	if(this->m_current_creep_wave->isCreepRemaining())
+		{
+			Creep* new_c = new Creep(this->m_current_creep_wave->getTCreep(),this->m_current_creep_wave->getCreepRank());
+			this->addCreep(new_c);
+			this->m_current_creep_wave->decrementCreepAmount();
+			this->m_creep_spawn_cd = 0.f;
+		}
+		else {
+			delete this->m_current_creep_wave;
+			TCreep* tc = TDoodad::getTCreep(0);
+			this->m_current_creep_wave = new CreepWave(tc,Random::NextInt(4,8),Random::NextInt(1,4));
+			this->m_creep_spawn_cd = 0.f;
+		}
     }
 
     this->m_cl->update(dt);
@@ -343,6 +354,12 @@ void GameStatePlaying::addTower(Tower* tow)
     }
 }
 
+void GameStatePlaying::setCreepWave(CreepWave* cw)
+{
+	this->m_current_creep_wave = cw;
+}
+
+
 /*virtual*/ PlayingState GameStatePlaying::GetState() const
 {
 	return m_state;
@@ -426,5 +443,3 @@ void GameStatePlaying::creepLeak()
 		this->m_leaks += this->m_cl->creepLeak(this->m_path[size-1]);
 	}
 }
-
-

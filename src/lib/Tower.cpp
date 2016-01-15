@@ -27,29 +27,26 @@
 #include "../include/tools.hpp"
 #include "../include/ResourceManager.hpp"
 
-
-Tower::Tower(void)
-: Tower(nullptr,sf::Vector2i(),0)
-{}
+Tower::Tower(TTower* tt, sf::Vector2i position, unsigned int rank)
+: m_ttower(tt)
+, m_rank(rank)
+, m_position(position)
+, m_show_range_indicator(false)
+, m_attack_cooldown(0.f)
+, m_proj_speed(500.f) // DEFAULT
+, m_last_target(nullptr)
+{
+	Attack attack = tt->getAttack();
+	this->m_damage = attack.damage_base + m_rank*attack.damage_bonus;
+}
 
 Tower::Tower(TTower* tt, sf::Vector2i position)
 : Tower(tt,position,0)
 {}
 
-Tower::Tower(TTower* tt, sf::Vector2i position, unsigned int rank)
-: m_ttower(tt)
-, m_position(position)
-, m_attack_cooldown(0.f)
-, m_last_target(nullptr)
-, m_show_range_indicator(false)
-, m_proj_speed(500.f) // DEFAULT
-, m_rank(rank)
-{
-	Attack attack = tt->getAttack();
-	this->m_damage = attack.damage_base + m_rank*attack.damage_bonus;
-
-    std::cout << "**********:" << tt->getBaseIdent();
-}
+Tower::Tower(void)
+: Tower(nullptr,sf::Vector2i())
+{}
 
 Tower::~Tower(void)
 {}
