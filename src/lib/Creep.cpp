@@ -46,7 +46,7 @@ Creep::Creep(TCreep* tc, unsigned int rank)
     if(tc!=nullptr)
     {
 		Stats stats = this->m_tcreep->getStats();
-		this->m_maximal_health = stats.health_base + m_rank*stats.health_coefficient;
+		this->m_maximal_health = stats.health_base + m_rank*stats.health_bonus;
         this->m_current_health = this->m_maximal_health;
     }
     this->m_state = CreepState::Normal;

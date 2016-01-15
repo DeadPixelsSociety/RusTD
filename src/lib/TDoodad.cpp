@@ -222,7 +222,7 @@ bool TDoodad::load_creepFile(const std::string& creep_file_path)
 
     Stats statsCreep;
     statsCreep.health_base = creep->FirstChildElement("stats")->FloatAttribute("health_base");
-	statsCreep.health_coefficient = creep->FirstChildElement("stats")->FloatAttribute("health_coefficient");
+	statsCreep.health_bonus = creep->FirstChildElement("stats")->FloatAttribute("health_bonus");
 	statsCreep.health_regen = creep->FirstChildElement("stats")->FloatAttribute("health_regen");
     statsCreep.bounty_base = creep->FirstChildElement("stats")->IntAttribute("bounty_base");
 	statsCreep.bounty_coefficient = creep->FirstChildElement("stats")->IntAttribute("bounty_coefficient");

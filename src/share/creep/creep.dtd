@@ -5,7 +5,7 @@
 
 	<!ELEMENT stats EMPTY>
 		<!ATTLIST stats health_base CDATA "1">
-		<!ATTLIST stats health_coefficient CDATA "0">
+		<!ATTLIST stats health_bonus CDATA "0">
 		<!ATTLIST stats health_regen CDATA "0">
 		<!ATTLIST stats bounty_base CDATA "0">
 		<!ATTLIST stats bounty_coefficient CDATA "0">

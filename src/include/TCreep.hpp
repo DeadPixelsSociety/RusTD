@@ -30,7 +30,7 @@ struct Movement
 
 struct Stats
 {
-	float health_base, health_coefficient, health_regen;
+	float health_base, health_bonus, health_regen;
 	int bounty_base, bounty_coefficient;
 };
 
