@@ -33,7 +33,6 @@ Tower::Tower(TTower* tt, sf::Vector2i position, unsigned int rank)
 , m_position(position)
 , m_show_range_indicator(false)
 , m_attack_cooldown(0.f)
-, m_proj_speed(500.f) // DEFAULT
 , m_last_target(nullptr)
 {
 	Attack attack = tt->getAttack();
@@ -146,12 +145,12 @@ Projectile* Tower::attack(Creep* c)
     //Attack att = this->m_ttower->getAttack();
 
     // Lancement du cooldown de l'attaque
-    this->m_attack_cooldown = this->m_ttower->getAttack().speed;
+    this->m_attack_cooldown = this->m_ttower->getAttack().period;
 
     //
     float offset = GRID_UNIT/2.f;
     sf::Vector2f tower_pos = getConvertedPosition(this->m_position)+sf::Vector2f(offset,offset);
-    Projectile* p = new Projectile(this->m_proj_speed, this->m_damage, c, tower_pos);
+    Projectile* p = new Projectile(this->m_ttower->getAttack().projectile_velocity, this->m_damage, c, tower_pos);
     c->addProjectile(p);
     return p;
 }
@@ -174,7 +173,7 @@ void Tower::render(sf::RenderWindow& window)
     cooldown_bar_back.setFillColor(sf::Color::Yellow);
     cooldown_bar_back.setPosition(cooldown_bar_pos);
 
-    float pour_cd = MAX(0.f,this->m_attack_cooldown / this->m_ttower->getAttack().speed);
+    float pour_cd = MAX(0.f,this->m_attack_cooldown / this->m_ttower->getAttack().period);
     sf::RectangleShape cooldown_bar(sf::Vector2f(pour_cd*COOLDOWN_BAR_RECTANGLE.x,COOLDOWN_BAR_RECTANGLE.y));
     cooldown_bar.setFillColor(sf::Color::Red);
     cooldown_bar.setPosition(cooldown_bar_pos);

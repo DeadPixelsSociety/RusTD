@@ -1,4 +1,4 @@
-<!ELEMENT tower (name, construction?, upgrade*, attack?,resource?)>
+<!ELEMENT tower (name, construction?, attack?,resource?)>
 	
 	<!ATTLIST tower id CDATA>
 
@@ -12,10 +12,10 @@
 			<!ATTLIST foundation type (ground | water) "ground">
 
 	<!ELEMENT attack (range?, target?)>
-		<!ATTLIST attack speed CDATA "1">
+		<!ATTLIST attack period CDATA "1">
 		<!ATTLIST attack damage_base CDATA "0">
 		<!ATTLIST attack damage_bonus CDATA "0">
-		<!ATTLIST attack projectile_speed CDATA "600">
+		<!ATTLIST attack projectile_velocity CDATA "600">
 
 		<!ELEMENT range EMPTY>
 			<!ATTLIST range minimal CDATA "0">
@@ -24,6 +24,7 @@
 		<!ELEMENT target EMPTY>
 			<!ATTLIST target ground (yes | no) "yes">
 			<!ATTLIST target air (yes | no) "yes">
+			<!ATTLIST target water (yes | no) "yes">
 
 	<!ELEMENT resource (icon, base, head, projectile, splash)>
 		<!ELEMENT icon #PCDATA>

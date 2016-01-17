@@ -6,8 +6,7 @@
 	<construction time="2" cost="80">
 		<foundation size="1" type="ground"/>
 	</construction>
-	<upgrade tower_id="21"/>
-	<attack speed="2" damage_base="10" damage_bonus="1">
+	<attack period="2" damage_base="10" damage_bonus="1" projectile_velocity="300">
 		<range minimal="0" maximal="400"/>
 		<target ground="true" air="true" water="false"/>
 	</attack>

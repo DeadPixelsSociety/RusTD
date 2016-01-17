@@ -31,7 +31,7 @@ struct Range
 
 struct Attack
 {
-	float damage_base, damage_bonus, speed;
+	float damage_base, damage_bonus, period, projectile_velocity;
 	Range range;
 	bool availableTarget[UnitType::UNITTYPE_COUNT];
 };

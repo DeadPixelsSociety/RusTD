@@ -6,7 +6,7 @@
 	<construction time="2" cost="80">
 		<foundation size="1" type="ground"/>
 	</construction>
-	<attack speed="2" damage_base="12" damage_bonus="4">
+	<attack period="2" damage_base="12" damage_bonus="4" projectile_velocity="700">
 		<range minimal="200" maximal="500"/>
 		<target ground="true" air="false" water="false"/>
 	</attack>

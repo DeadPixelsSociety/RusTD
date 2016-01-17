@@ -26,7 +26,7 @@ TTower::TTower()
 	this->m_attack = Attack();
 	this->m_attack.damage_base = 0;
 	this->m_attack.damage_bonus = 0;
-	this->m_attack.speed = 0;
+	this->m_attack.period = 0;
 	this->m_attack.range.minimal = 0;
 	this->m_attack.range.maximal = 0;
 	for(int i=0 ; i<UnitType::UNITTYPE_COUNT ; i++)

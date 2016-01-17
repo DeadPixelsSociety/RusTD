@@ -58,7 +58,7 @@ protected:
 	unsigned int m_rank;
 	sf::Vector2i m_position;
 	bool m_show_range_indicator;
-	float m_attack_cooldown, m_proj_speed, m_damage;
+	float m_attack_cooldown, m_damage;
 	Creep* m_last_target;
 };
 

@@ -175,7 +175,8 @@ bool dc_compileTower(TTower* tt, data_byte data_bloc, int* data_pointer, int blo
 	}
 	if(!dc_compileFloat(&(attack.damage_base), data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_compileFloat(&(attack.damage_bonus), data_bloc, data_pointer, bloc_size))return false;
-	if(!dc_compileFloat(&(attack.speed), data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_compileFloat(&(attack.period), data_bloc, data_pointer, bloc_size))return false;
+    if(!dc_compileFloat(&(attack.projectile_velocity), data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_compileFloat(&(attack.range.minimal), data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_compileFloat(&(attack.range.maximal), data_bloc, data_pointer, bloc_size))return false;
 	for(int i = 0; i < (int)(UnitType::UNITTYPE_COUNT); ++i)
@@ -604,7 +605,7 @@ bool dc_extractTower(TTower** tt, data_byte data_bloc, int* data_pointer, int bl
 	std::vector<int> upgrades;
 	int usize;
 	Attack attack;
-	float attack_damage_base, attack_damage_bonus, attack_speed;
+	float attack_damage_base, attack_damage_bonus, attack_period, attack_projectile_velocity;
 	float attack_range_minimal, attack_range_maximal;
 	bool attack_availableTarget[(int)UnitType::UNITTYPE_COUNT];
 	Construction construction;
@@ -623,7 +624,8 @@ bool dc_extractTower(TTower** tt, data_byte data_bloc, int* data_pointer, int bl
 	}
 	if(!dc_extractFloat(&attack_damage_base, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractFloat(&attack_damage_bonus, data_bloc, data_pointer, bloc_size))return false;
-	if(!dc_extractFloat(&attack_speed, data_bloc, data_pointer, bloc_size))return false;
+	if(!dc_extractFloat(&attack_period, data_bloc, data_pointer, bloc_size))return false;
+    if(!dc_extractFloat(&attack_projectile_velocity, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractFloat(&attack_range_minimal, data_bloc, data_pointer, bloc_size))return false;
 	if(!dc_extractFloat(&attack_range_maximal, data_bloc, data_pointer, bloc_size))return false;
 	for(int i = 0; i < (int)UnitType::UNITTYPE_COUNT; ++i)
@@ -638,7 +640,8 @@ bool dc_extractTower(TTower** tt, data_byte data_bloc, int* data_pointer, int bl
 	if(!dc_extractInteger(&construction_foundation_type, data_bloc, data_pointer, bloc_size))return false;
 	attack.damage_base = attack_damage_base;
 	attack.damage_bonus = attack_damage_bonus;
-	attack.speed = attack_speed;
+	attack.period = attack_period;
+    attack.projectile_velocity = attack_projectile_velocity;
 	attack.range.minimal = attack_range_minimal;
 	attack.range.maximal = attack_range_maximal;
 	for(int i = 0; i < (int)UnitType::UNITTYPE_COUNT; ++i)
