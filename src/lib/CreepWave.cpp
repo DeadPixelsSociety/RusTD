@@ -45,7 +45,7 @@ unsigned int CreepWave::getCreepRank(void)
 
 void CreepWave::decrementCreepAmount(void)
 {
-	this->m_creep_amount -= 1;
+	this->m_creep_amount--;
 }
 
 bool CreepWave::isCreepRemaining(void)

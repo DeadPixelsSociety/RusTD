@@ -38,6 +38,7 @@
 #define LEVEL_HEIGHT 1800
 
 #define CREEP_SPAWN_PERIOD 1
+#define CREEP_WAVE_PERIOD 5
 
 class GameStateUI;
 
@@ -104,7 +105,7 @@ protected:
 	int m_leaks;
 	bool m_maj_pressed;
 
-    float m_creep_spawn_cd;
+    float m_creep_spawn_cd, m_creep_wave_cd;
 };
 
 #endif // GAMESTATEPLAYING_HPP

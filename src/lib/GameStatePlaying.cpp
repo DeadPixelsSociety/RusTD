@@ -36,6 +36,7 @@
 , m_leaks(0)
 , m_maj_pressed(false)
 , m_creep_spawn_cd(CREEP_SPAWN_PERIOD)
+, m_creep_wave_cd(CREEP_WAVE_PERIOD)
 {
     this->m_cl = new CreepList();
     this->m_pl = new ProjectileList();
@@ -71,8 +72,9 @@
 	m_placeTower = new sf::Sprite();
 	m_placeTower->setTexture(*(ResourceManager::Instance()->getTexture("Static Tower Position")));
 
-	TCreep* tc = TDoodad::getTCreep(0);
-	this->m_current_creep_wave = new CreepWave(tc,2,0);
+	//TCreep* tc = TDoodad::getTCreep(0);
+	//this->m_current_creep_wave = new CreepWave(tc,2,0);
+	this->m_current_creep_wave = nullptr;
 }
 
 /*virtual*/ GameStatePlaying::~GameStatePlaying()
@@ -110,23 +112,36 @@ void GameStatePlaying::addTower(Tower* tow)
 
     this->m_tl->attackList(this->m_pl,this->m_cl);
 
-    this->m_creep_spawn_cd += dt;
-    if(this->m_creep_spawn_cd>=CREEP_SPAWN_PERIOD && this->m_current_creep_wave!=nullptr)
-    {
-    	if(this->m_current_creep_wave->isCreepRemaining())
+    if(this->m_current_creep_wave!=nullptr)
+	{
+		if(this->m_current_creep_wave->isCreepRemaining())
 		{
-			Creep* new_c = new Creep(this->m_current_creep_wave->getTCreep(),this->m_current_creep_wave->getCreepRank());
-			this->addCreep(new_c);
-			this->m_current_creep_wave->decrementCreepAmount();
-			this->m_creep_spawn_cd = 0.f;
+			this->m_creep_spawn_cd += dt;
+			if(this->m_creep_spawn_cd>=CREEP_SPAWN_PERIOD)
+			{
+				Creep* new_c = new Creep(this->m_current_creep_wave->getTCreep(),this->m_current_creep_wave->getCreepRank());
+				this->addCreep(new_c);
+				this->m_current_creep_wave->decrementCreepAmount();
+				this->m_creep_spawn_cd = 0.f;
+			}
 		}
-		else {
+		else
+		{
 			delete this->m_current_creep_wave;
-			TCreep* tc = TDoodad::getTCreep(0);
-			this->m_current_creep_wave = new CreepWave(tc,Random::NextInt(4,8),Random::NextInt(1,4));
-			this->m_creep_spawn_cd = 0.f;
+			this->m_current_creep_wave = nullptr;
+			this->m_creep_wave_cd = 0.f;
 		}
     }
+    else
+	{
+		this->m_creep_wave_cd += dt;
+		if(this->m_creep_wave_cd>=CREEP_WAVE_PERIOD)
+		{
+			TCreep* tc = TDoodad::getTCreep(0);
+			this->m_creep_spawn_cd = CREEP_SPAWN_PERIOD;
+			this->m_current_creep_wave = new CreepWave(tc,4,Random::NextInt(0,4));
+		}
+	}
 
     this->m_cl->update(dt);
     this->m_tl->update(dt);
