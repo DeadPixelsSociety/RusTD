@@ -12,8 +12,8 @@
 	</attack>
 	<resource>
 		<icon>Static Gear</icon>
-		<base>Static Tower 00 Base</base>
-		<head>Static Tower 00 Head</head>
+		<base>Static Tower 02 Base</base>
+		<head>Static Tower 02 Head</head>
 		<projectile>Static Water Projectile</projectile>
 		<splash>Animation Water Splash</splash>
 	</resource>
