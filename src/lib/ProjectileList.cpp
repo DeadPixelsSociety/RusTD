@@ -50,24 +50,28 @@ void ProjectileList::removeProjectile(Projectile* proj)
 
 void ProjectileList::update(float dt)
 {
-    int i;
+	int i;
 	int size = this->m_aProjectile.size();
 	for(i=0 ; i<size ; i++)
 	{
 		this->m_aProjectile[i]->update(dt);
 		if(this->m_aProjectile[i]->getState()==2)
-        {
-            Projectile* aux = this->m_aProjectile[i];
-            this->m_aProjectile.erase(this->m_aProjectile.begin() + i);
-            aux->getTarget()->removeProjectile(aux);
-            if(aux!=nullptr)
-            {
-                delete aux;
-                aux = nullptr;
-                --i;
-                --size;
-            }
-        }
+		{
+			Projectile* aux = this->m_aProjectile[i];
+			this->m_aProjectile.erase(this->m_aProjectile.begin() + i);
+			if(aux != nullptr)
+			{
+				Creep* target = aux->getTarget();
+				if(nullptr != target)
+				{
+					target->removeProjectile(aux);
+				}
+				delete aux;
+				aux = nullptr;
+				--i;
+				--size;
+			}
+		}
 	}
 }
 
