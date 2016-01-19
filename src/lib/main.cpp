@@ -123,7 +123,7 @@ int main()
 
         gsm->endLoop(window);
     }
-
+//COMENT
 	delete gsm;
 	ResourceManager::Destroy();
 	TDoodad::destroy_objects();
