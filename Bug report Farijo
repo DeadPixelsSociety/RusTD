@@ -1,0 +1,15 @@
+#0  ProjectileList::addProjectile (this=0x4296000000000001, 
+    proj=proj@entry=0xf80a70) at src/lib/ProjectileList.cpp:37
+#1  0x00000000004076a9 in Creep::addProjectile (this=this@entry=0xf29210, 
+    proj=proj@entry=0xf80a70) at src/lib/Creep.cpp:112
+#2  0x000000000042452a in Tower::attack (this=this@entry=0xf81610, c=0xf29210)
+    at src/lib/Tower.cpp:154
+#3  0x0000000000425176 in Tower::attackList (this=0xf81610, 
+    ac=ac@entry=0x665cb0) at src/lib/Tower.cpp:134
+#4  0x0000000000425268 in TowerList::attackList (this=0xf5ef10, ap=0x665cd0, 
+    ac=0x665cb0) at src/lib/TowerList.cpp:44
+#5  0x000000000040fc1d in GameStatePlaying::update (this=0xa95300, 
+    dt=0,0147010004) at src/lib/GameStatePlaying.cpp:111
+#6  0x000000000040d9a4 in GameStateManager::update (this=0xec3e20, 
+    deltaTimeInSeconds=0,0147010004) at src/lib/GameStateManager.cpp:113
+#7  0x00000000004061f2 in main () at src/lib/main.cpp:118
